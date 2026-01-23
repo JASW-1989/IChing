@@ -1,0 +1,5719 @@
+{
+  "metadata": {
+    "system": "Digital I-Ching Engine v3.5",
+    "features": [
+      "Na Jia",
+      "Six Relatives",
+      "Fu Shen (Hidden Spirit)",
+      "Shi-Ying"
+    ],
+    "lsb_definition": "Bit 0 = First Line (初爻)",
+    "generated_at": "2026-01-23T01:08:11.727Z"
+  },
+  "hexagrams": [
+    {
+      "id": 63,
+      "binary": "111111",
+      "name": "乾",
+      "seq": 1,
+      "palace": "乾",
+      "palace_wuxing": "金",
+      "note": "六世卦 (本宮)",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "世",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "binary": "000000",
+      "name": "坤",
+      "seq": 2,
+      "palace": "坤",
+      "palace_wuxing": "土",
+      "note": "六世卦 (本宮)",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "子孫",
+          "role": "世",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "binary": "010001",
+      "name": "屯",
+      "seq": 3,
+      "palace": "坎",
+      "palace_wuxing": "水",
+      "note": "二世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "子孫",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "坎",
+            "stem": "戊",
+            "branch": "午",
+            "wuxing": "火",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "binary": "100010",
+      "name": "蒙",
+      "seq": 4,
+      "palace": "離",
+      "palace_wuxing": "火",
+      "note": "四世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "離",
+            "stem": "己",
+            "branch": "酉",
+            "wuxing": "金",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "binary": "010111",
+      "name": "需",
+      "seq": 5,
+      "palace": "坤",
+      "palace_wuxing": "土",
+      "note": "遊魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "坤",
+            "stem": "乙",
+            "branch": "巳",
+            "wuxing": "火",
+            "relative": "父母"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "子孫",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "binary": "111010",
+      "name": "訟",
+      "seq": 6,
+      "palace": "離",
+      "palace_wuxing": "火",
+      "note": "遊魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "離",
+            "stem": "己",
+            "branch": "亥",
+            "wuxing": "水",
+            "relative": "官鬼"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "binary": "000010",
+      "name": "師",
+      "seq": 7,
+      "palace": "坎",
+      "palace_wuxing": "水",
+      "note": "歸魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "binary": "010000",
+      "name": "比",
+      "seq": 8,
+      "palace": "坤",
+      "palace_wuxing": "土",
+      "note": "歸魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "binary": "110111",
+      "name": "小畜",
+      "seq": 9,
+      "palace": "巽",
+      "palace_wuxing": "木",
+      "note": "一世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "巽",
+            "stem": "辛",
+            "branch": "酉",
+            "wuxing": "金",
+            "relative": "官鬼"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "binary": "111011",
+      "name": "履",
+      "seq": 10,
+      "palace": "艮",
+      "palace_wuxing": "土",
+      "note": "五世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "子孫",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "艮",
+            "stem": "丙",
+            "branch": "子",
+            "wuxing": "水",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "binary": "000111",
+      "name": "泰",
+      "seq": 11,
+      "palace": "坤",
+      "palace_wuxing": "土",
+      "note": "三世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "坤",
+            "stem": "乙",
+            "branch": "巳",
+            "wuxing": "火",
+            "relative": "父母"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "子孫",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "binary": "111000",
+      "name": "否",
+      "seq": 12,
+      "palace": "乾",
+      "palace_wuxing": "金",
+      "note": "三世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "乾",
+            "stem": "甲",
+            "branch": "子",
+            "wuxing": "水",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "binary": "111101",
+      "name": "同人",
+      "seq": 13,
+      "palace": "離",
+      "palace_wuxing": "火",
+      "note": "歸魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "己",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "己",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "binary": "101111",
+      "name": "大有",
+      "seq": 14,
+      "palace": "乾",
+      "palace_wuxing": "金",
+      "note": "歸魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "己",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "己",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "binary": "000100",
+      "name": "謙",
+      "seq": 15,
+      "palace": "兌",
+      "palace_wuxing": "金",
+      "note": "五世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "兌",
+            "stem": "丁",
+            "branch": "卯",
+            "wuxing": "木",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "子孫",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "binary": "001000",
+      "name": "豫",
+      "seq": 16,
+      "palace": "震",
+      "palace_wuxing": "木",
+      "note": "一世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "震",
+            "stem": "庚",
+            "branch": "子",
+            "wuxing": "水",
+            "relative": "父母"
+          }
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "子孫",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "binary": "011001",
+      "name": "隨",
+      "seq": 17,
+      "palace": "震",
+      "palace_wuxing": "木",
+      "note": "歸魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "震",
+            "stem": "庚",
+            "branch": "午",
+            "wuxing": "火",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "binary": "100110",
+      "name": "蠱",
+      "seq": 18,
+      "palace": "巽",
+      "palace_wuxing": "木",
+      "note": "歸魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "巽",
+            "stem": "辛",
+            "branch": "巳",
+            "wuxing": "火",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "binary": "000011",
+      "name": "臨",
+      "seq": 19,
+      "palace": "坤",
+      "palace_wuxing": "土",
+      "note": "二世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "binary": "110000",
+      "name": "觀",
+      "seq": 20,
+      "palace": "乾",
+      "palace_wuxing": "金",
+      "note": "四世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "乾",
+            "stem": "甲",
+            "branch": "子",
+            "wuxing": "水",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "乾",
+            "stem": "壬",
+            "branch": "申",
+            "wuxing": "金",
+            "relative": "兄弟"
+          }
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "binary": "101001",
+      "name": "噬嗑",
+      "seq": 21,
+      "palace": "巽",
+      "palace_wuxing": "木",
+      "note": "五世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "己",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "己",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "binary": "100101",
+      "name": "賁",
+      "seq": 22,
+      "palace": "艮",
+      "palace_wuxing": "土",
+      "note": "一世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "己",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "艮",
+            "stem": "丙",
+            "branch": "午",
+            "wuxing": "火",
+            "relative": "父母"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "己",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "艮",
+            "stem": "丙",
+            "branch": "申",
+            "wuxing": "金",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "binary": "100000",
+      "name": "剝",
+      "seq": 23,
+      "palace": "乾",
+      "palace_wuxing": "金",
+      "note": "五世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "子孫",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "乾",
+            "stem": "壬",
+            "branch": "申",
+            "wuxing": "金",
+            "relative": "兄弟"
+          }
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "binary": "000001",
+      "name": "復",
+      "seq": 24,
+      "palace": "坤",
+      "palace_wuxing": "土",
+      "note": "一世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "坤",
+            "stem": "乙",
+            "branch": "巳",
+            "wuxing": "火",
+            "relative": "父母"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "binary": "111001",
+      "name": "無妄",
+      "seq": 25,
+      "palace": "巽",
+      "palace_wuxing": "木",
+      "note": "四世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "子孫",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "binary": "100111",
+      "name": "大畜",
+      "seq": 26,
+      "palace": "艮",
+      "palace_wuxing": "土",
+      "note": "二世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "艮",
+            "stem": "丙",
+            "branch": "午",
+            "wuxing": "火",
+            "relative": "父母"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "艮",
+            "stem": "丙",
+            "branch": "申",
+            "wuxing": "金",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "binary": "100001",
+      "name": "頤",
+      "seq": 27,
+      "palace": "巽",
+      "palace_wuxing": "木",
+      "note": "遊魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "巽",
+            "stem": "辛",
+            "branch": "酉",
+            "wuxing": "金",
+            "relative": "官鬼"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "巽",
+            "stem": "辛",
+            "branch": "巳",
+            "wuxing": "火",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "binary": "011110",
+      "name": "大過",
+      "seq": 28,
+      "palace": "震",
+      "palace_wuxing": "木",
+      "note": "遊魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "震",
+            "stem": "庚",
+            "branch": "寅",
+            "wuxing": "木",
+            "relative": "兄弟"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "震",
+            "stem": "庚",
+            "branch": "午",
+            "wuxing": "火",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "binary": "010010",
+      "name": "坎",
+      "seq": 29,
+      "palace": "坎",
+      "palace_wuxing": "水",
+      "note": "六世卦 (本宮)",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "binary": "101101",
+      "name": "離",
+      "seq": 30,
+      "palace": "離",
+      "palace_wuxing": "火",
+      "note": "六世卦 (本宮)",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "己",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "己",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "己",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "己",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "binary": "011100",
+      "name": "咸",
+      "seq": 31,
+      "palace": "兌",
+      "palace_wuxing": "金",
+      "note": "三世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "兌",
+            "stem": "丁",
+            "branch": "卯",
+            "wuxing": "木",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "binary": "001110",
+      "name": "恆",
+      "seq": 32,
+      "palace": "震",
+      "palace_wuxing": "木",
+      "note": "三世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "震",
+            "stem": "庚",
+            "branch": "寅",
+            "wuxing": "木",
+            "relative": "兄弟"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "binary": "111100",
+      "name": "遯",
+      "seq": 33,
+      "palace": "乾",
+      "palace_wuxing": "金",
+      "note": "二世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "乾",
+            "stem": "甲",
+            "branch": "子",
+            "wuxing": "水",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "乾",
+            "stem": "甲",
+            "branch": "寅",
+            "wuxing": "木",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "binary": "001111",
+      "name": "大壯",
+      "seq": 34,
+      "palace": "坤",
+      "palace_wuxing": "土",
+      "note": "四世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "binary": "101000",
+      "name": "晉",
+      "seq": 35,
+      "palace": "乾",
+      "palace_wuxing": "金",
+      "note": "遊魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "乾",
+            "stem": "甲",
+            "branch": "子",
+            "wuxing": "水",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "己",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "己",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "binary": "000101",
+      "name": "明夷",
+      "seq": 36,
+      "palace": "坎",
+      "palace_wuxing": "水",
+      "note": "遊魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "子孫",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "己",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "己",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "坎",
+            "stem": "戊",
+            "branch": "午",
+            "wuxing": "火",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "binary": "110101",
+      "name": "家人",
+      "seq": 37,
+      "palace": "巽",
+      "palace_wuxing": "木",
+      "note": "二世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "己",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "己",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "巽",
+            "stem": "辛",
+            "branch": "酉",
+            "wuxing": "金",
+            "relative": "官鬼"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "子孫",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "binary": "101011",
+      "name": "睽",
+      "seq": 38,
+      "palace": "艮",
+      "palace_wuxing": "土",
+      "note": "四世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "己",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "子孫",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "己",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "艮",
+            "stem": "丙",
+            "branch": "子",
+            "wuxing": "水",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "binary": "010100",
+      "name": "蹇",
+      "seq": 39,
+      "palace": "兌",
+      "palace_wuxing": "金",
+      "note": "四世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "兌",
+            "stem": "丁",
+            "branch": "卯",
+            "wuxing": "木",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "binary": "001010",
+      "name": "解",
+      "seq": 40,
+      "palace": "震",
+      "palace_wuxing": "木",
+      "note": "二世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "震",
+            "stem": "庚",
+            "branch": "子",
+            "wuxing": "水",
+            "relative": "父母"
+          }
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "binary": "100011",
+      "name": "損",
+      "seq": 41,
+      "palace": "艮",
+      "palace_wuxing": "土",
+      "note": "三世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "艮",
+            "stem": "丙",
+            "branch": "申",
+            "wuxing": "金",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "binary": "110001",
+      "name": "益",
+      "seq": 42,
+      "palace": "巽",
+      "palace_wuxing": "木",
+      "note": "三世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "巽",
+            "stem": "辛",
+            "branch": "酉",
+            "wuxing": "金",
+            "relative": "官鬼"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "binary": "011111",
+      "name": "夬",
+      "seq": 43,
+      "palace": "坤",
+      "palace_wuxing": "土",
+      "note": "五世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "坤",
+            "stem": "乙",
+            "branch": "巳",
+            "wuxing": "火",
+            "relative": "父母"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "甲",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "子孫",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "binary": "111110",
+      "name": "姤",
+      "seq": 44,
+      "palace": "乾",
+      "palace_wuxing": "金",
+      "note": "一世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "乾",
+            "stem": "甲",
+            "branch": "寅",
+            "wuxing": "木",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "壬",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "binary": "011000",
+      "name": "萃",
+      "seq": 45,
+      "palace": "兌",
+      "palace_wuxing": "金",
+      "note": "二世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "乙",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "binary": "000110",
+      "name": "升",
+      "seq": 46,
+      "palace": "震",
+      "palace_wuxing": "木",
+      "note": "四世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "震",
+            "stem": "庚",
+            "branch": "寅",
+            "wuxing": "木",
+            "relative": "兄弟"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "震",
+            "stem": "庚",
+            "branch": "午",
+            "wuxing": "火",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "癸",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "binary": "011010",
+      "name": "困",
+      "seq": 47,
+      "palace": "兌",
+      "palace_wuxing": "金",
+      "note": "一世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "子孫",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "binary": "010110",
+      "name": "井",
+      "seq": 48,
+      "palace": "震",
+      "palace_wuxing": "木",
+      "note": "五世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "震",
+            "stem": "庚",
+            "branch": "寅",
+            "wuxing": "木",
+            "relative": "兄弟"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "震",
+            "stem": "庚",
+            "branch": "午",
+            "wuxing": "火",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "binary": "011101",
+      "name": "革",
+      "seq": 49,
+      "palace": "坎",
+      "palace_wuxing": "水",
+      "note": "四世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "子孫",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "己",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "己",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "坎",
+            "stem": "戊",
+            "branch": "午",
+            "wuxing": "火",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "binary": "101110",
+      "name": "鼎",
+      "seq": 50,
+      "palace": "離",
+      "palace_wuxing": "火",
+      "note": "二世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "離",
+            "stem": "己",
+            "branch": "卯",
+            "wuxing": "木",
+            "relative": "父母"
+          }
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "己",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "己",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "binary": "001001",
+      "name": "震",
+      "seq": 51,
+      "palace": "震",
+      "palace_wuxing": "木",
+      "note": "六世卦 (本宮)",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "binary": "100100",
+      "name": "艮",
+      "seq": 52,
+      "palace": "艮",
+      "palace_wuxing": "土",
+      "note": "六世卦 (本宮)",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "子孫",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "binary": "110100",
+      "name": "漸",
+      "seq": 53,
+      "palace": "艮",
+      "palace_wuxing": "土",
+      "note": "歸魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "子孫",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "艮",
+            "stem": "丙",
+            "branch": "子",
+            "wuxing": "水",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "binary": "001011",
+      "name": "歸妹",
+      "seq": 54,
+      "palace": "兌",
+      "palace_wuxing": "金",
+      "note": "歸魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "兌",
+            "stem": "丁",
+            "branch": "亥",
+            "wuxing": "水",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "binary": "001101",
+      "name": "豐",
+      "seq": 55,
+      "palace": "坎",
+      "palace_wuxing": "水",
+      "note": "五世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "己",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "己",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "父母",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "binary": "101100",
+      "name": "旅",
+      "seq": 56,
+      "palace": "離",
+      "palace_wuxing": "火",
+      "note": "一世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "離",
+            "stem": "己",
+            "branch": "卯",
+            "wuxing": "木",
+            "relative": "父母"
+          }
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "離",
+            "stem": "己",
+            "branch": "亥",
+            "wuxing": "水",
+            "relative": "官鬼"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "己",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "妻財",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "己",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "binary": "110110",
+      "name": "巽",
+      "seq": 57,
+      "palace": "巽",
+      "palace_wuxing": "木",
+      "note": "六世卦 (本宮)",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "官鬼",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "binary": "011011",
+      "name": "兌",
+      "seq": 58,
+      "palace": "兌",
+      "palace_wuxing": "金",
+      "note": "六世卦 (本宮)",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "世",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "binary": "110010",
+      "name": "渙",
+      "seq": 59,
+      "palace": "離",
+      "palace_wuxing": "火",
+      "note": "五世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "離",
+            "stem": "己",
+            "branch": "亥",
+            "wuxing": "水",
+            "relative": "官鬼"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "離",
+            "stem": "己",
+            "branch": "酉",
+            "wuxing": "金",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "binary": "010011",
+      "name": "節",
+      "seq": 60,
+      "palace": "坎",
+      "palace_wuxing": "水",
+      "note": "一世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "妻財",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "binary": "110011",
+      "name": "中孚",
+      "seq": 61,
+      "palace": "艮",
+      "palace_wuxing": "土",
+      "note": "遊魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "丁",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "丁",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "艮",
+            "stem": "丙",
+            "branch": "申",
+            "wuxing": "金",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "辛",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "艮",
+            "stem": "丙",
+            "branch": "子",
+            "wuxing": "水",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "辛",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "binary": "001100",
+      "name": "小過",
+      "seq": 62,
+      "palace": "兌",
+      "palace_wuxing": "金",
+      "note": "遊魂卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "應",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "丙",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "兌",
+            "stem": "丁",
+            "branch": "卯",
+            "wuxing": "木",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "丙",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "庚",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "官鬼",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "兌",
+            "stem": "丁",
+            "branch": "亥",
+            "wuxing": "水",
+            "relative": "子孫"
+          }
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "兄弟",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "庚",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "binary": "010101",
+      "name": "既濟",
+      "seq": 63,
+      "palace": "坎",
+      "palace_wuxing": "水",
+      "note": "三世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "九初",
+          "label_display": "初九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "卯",
+          "wuxing": "木",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "六二",
+          "label_display": "六二",
+          "type": "yin",
+          "stem": "己",
+          "branch": "丑",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "九三",
+          "label_display": "九三",
+          "type": "yang",
+          "stem": "己",
+          "branch": "亥",
+          "wuxing": "水",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "坎",
+            "stem": "戊",
+            "branch": "午",
+            "wuxing": "火",
+            "relative": "妻財"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "六四",
+          "label_display": "六四",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "申",
+          "wuxing": "金",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "九五",
+          "label_display": "九五",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "戌",
+          "wuxing": "土",
+          "relative": "官鬼",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "六上",
+          "label_display": "上六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "子",
+          "wuxing": "水",
+          "relative": "兄弟",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "binary": "101010",
+      "name": "未濟",
+      "seq": 64,
+      "palace": "離",
+      "palace_wuxing": "火",
+      "note": "三世卦",
+      "lines": [
+        {
+          "pos": 1,
+          "label": "六初",
+          "label_display": "初六",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "寅",
+          "wuxing": "木",
+          "relative": "父母",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 2,
+          "label": "九二",
+          "label_display": "九二",
+          "type": "yang",
+          "stem": "戊",
+          "branch": "辰",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 3,
+          "label": "六三",
+          "label_display": "六三",
+          "type": "yin",
+          "stem": "戊",
+          "branch": "午",
+          "wuxing": "火",
+          "relative": "兄弟",
+          "role": "世",
+          "hidden_spirit": {
+            "name": "伏神",
+            "line_from_base": "離",
+            "stem": "己",
+            "branch": "亥",
+            "wuxing": "水",
+            "relative": "官鬼"
+          }
+        },
+        {
+          "pos": 4,
+          "label": "九四",
+          "label_display": "九四",
+          "type": "yang",
+          "stem": "己",
+          "branch": "酉",
+          "wuxing": "金",
+          "relative": "妻財",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 5,
+          "label": "六五",
+          "label_display": "六五",
+          "type": "yin",
+          "stem": "己",
+          "branch": "未",
+          "wuxing": "土",
+          "relative": "子孫",
+          "role": "",
+          "hidden_spirit": null
+        },
+        {
+          "pos": 6,
+          "label": "九上",
+          "label_display": "上九",
+          "type": "yang",
+          "stem": "己",
+          "branch": "巳",
+          "wuxing": "火",
+          "relative": "兄弟",
+          "role": "應",
+          "hidden_spirit": null
+        }
+      ]
+    }
+  ]
+}
