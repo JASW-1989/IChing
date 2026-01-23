@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>數位易經排盤系統 (Professional Edition v2.2)</title>
+    <!-- 引入專業天文曆法庫 (處理節氣與干支) -->
+    <script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.6.12/lunar.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #c0392b; /* Yang Red */
+            --secondary-color: #2980b9; /* Yin Blue */
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --ti-color: #8e44ad; /* 體卦顏色 */
+            --yong-color: #d35400; /* 用卦顏色 */
+        }
+
+        body { font-family: "Noto Serif TC", "Noto Sans TC", serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 1100px; margin: 0 auto; padding-bottom: 50px; }
+
+        /* --- Header & Status --- */
+        header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--primary-color); padding-bottom: 20px; }
+        h1 { margin: 0; color: var(--primary-color); letter-spacing: 2px; }
+        .subtitle { font-size: 14px; color: #666; }
+        #system-status { margin-top: 10px; font-size: 13px; font-weight: bold; color: #e74c3c; }
+        #system-status.ready { color: #27ae60; }
+        
+        #loading-bar-container { width: 300px; height: 4px; background: #ddd; margin: 10px auto; border-radius: 2px; overflow: hidden; display: none; }
+        #loading-bar { width: 0%; height: 100%; background: var(--primary-color); transition: width 0.3s; }
+
+        /* --- Components --- */
+        .card { background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 25px; margin-bottom: 20px; transition: transform 0.2s; }
+        .card h2 { margin-top: 0; font-size: 18px; border-left: 4px solid var(--primary-color); padding-left: 10px; color: var(--primary-color); display: flex; align-items: center; justify-content: space-between; }
+        
+        .info-icon {
+            display: inline-block; width: 20px; height: 20px; background: #95a5a6; color: white; border-radius: 50%;
+            text-align: center; line-height: 20px; font-size: 12px; cursor: pointer; position: relative; margin-left: 8px;
+        }
+        .info-icon:hover { background: var(--secondary-color); }
+        
+        .tooltip-content {
+            display: none; position: absolute; top: 30px; right: 0; width: 300px; background: #fff; border: 1px solid #ddd;
+            padding: 15px; border-radius: 6px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 100; font-size: 13px; color: #555; text-align: left;
+        }
+        .tooltip-content.show { display: block; }
+        .tooltip-content h4 { margin: 0 0 8px 0; color: var(--primary-color); border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .tooltip-content ul { padding-left: 20px; margin: 0; }
+        .tooltip-content li { margin-bottom: 5px; }
+
+        /* --- Form Elements --- */
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+        input[type="text"], input[type="number"], input[type="datetime-local"], select {
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;
+        }
+        .help-text { font-size: 12px; color: #888; margin-top: 4px; }
+
+        /* Specific Inputs for Methods */
+        .method-input { display: none; margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px; border: 1px dashed #ddd; }
+        .method-input.active { display: block; }
+        
+        .manual-lines-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; text-align: center; }
+        .manual-lines-grid select { font-size: 12px; padding: 5px; }
+        .manual-label { font-size: 12px; color: #666; margin-bottom: 3px; }
+
+        .btn-primary {
+            background: var(--primary-color); color: white; border: none; padding: 12px 30px; font-size: 16px; border-radius: 30px;
+            cursor: pointer; width: 100%; display: block; transition: 0.3s;
+        }
+        .btn-primary:hover { background: #34495e; transform: translateY(-2px); }
+        .btn-primary:disabled { background: #bdc3c7; cursor: not-allowed; transform: none; }
+
+        /* --- File Upload Area --- */
+        #upload-zone { border: 2px dashed #bdc3c7; padding: 30px; text-align: center; border-radius: 8px; cursor: pointer; background: #fafafa; }
+        #upload-zone:hover { border-color: var(--secondary-color); background: #f0f7ff; }
+        #upload-zone p { pointer-events: none; color: #7f8c8d; }
+
+        /* --- Result Section --- */
+        #result-section { display: none; }
+        .result-meta { display: flex; justify-content: space-between; flex-wrap: wrap; background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; }
+        .meta-item { margin-right: 15px; }
+        .meta-label { color: #888; font-size: 12px; }
+        .meta-val { font-weight: bold; color: #2c3e50; }
+
+        .hex-container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        /* Adjusted width for 3 hexagrams */
+        .hex-box { flex: 1; min-width: 280px; border: 1px solid #eee; padding: 15px; border-radius: 8px; background: white; }
+        .hex-box.mutual { background: #fdfefe; border-color: #ecf0f1; transform: scale(0.95); opacity: 0.9; } /* Style for Mutual Hex */
+        .hex-title { text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        
+        .line-row { display: flex; align-items: center; padding: 6px 0; border-bottom: 1px dashed #f0f0f0; position: relative; }
+        .line-row:last-child { border-bottom: none; }
+        .line-row.moving { background: #fffde7; }
+        
+        .l-left { width: 80px; font-size: 12px; text-align: left; color: #555; }
+        .l-center { flex-grow: 1; text-align: center; font-family: monospace; font-size: 20px; line-height: 1; cursor: default; }
+        .l-right { width: 60px; font-size: 12px; text-align: right; color: #666; }
+        
+        .yang { color: var(--accent-color); }
+        .yin { color: var(--secondary-color); }
+        
+        .fushen-tag { display: block; font-size: 10px; color: #d35400; margin-top: 2px; }
+        .beast-tag { font-weight: bold; font-size: 11px; color: #27ae60; }
+        .void-tag { background: #95a5a6; color: white; padding: 1px 3px; border-radius: 2px; font-size: 10px; margin-left: 3px; }
+        .clash-tag { color: red; font-weight: bold; margin-left: 3px; font-size: 10px; }
+        
+        /* New Tags for Mei Hua */
+        .ti-tag { background: var(--ti-color); color: white; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-right: 5px; }
+        .yong-tag { background: var(--yong-color); color: white; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-right: 5px; }
+        .meihua-section-label { 
+            position: absolute; left: -50px; width: 40px; text-align: right; font-size: 12px; font-weight: bold; color: #666;
+            top: 50%; transform: translateY(-50%);
+        }
+
+        /* Manual Upload Fallback */
+        #manual-upload { display: none; margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; text-align: center; }
+        #manual-upload p { font-size: 13px; color: #7f8c8d; line-height: 1.5; }
+        #manual-file-btn { display: inline-block; background: #95a5a6; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 14px; margin-top: 10px; }
+        #manual-file-btn:hover { background: #7f8c8d; }
+
+        footer { text-align: center; margin-top: 50px; color: #999; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>數位易經排盤系統</h1>
+        <div class="subtitle">真太陽時干支｜梅花體用｜六爻神煞｜AI 輔助</div>
+        <div id="system-status">正在連線至雲端資料庫...</div>
+        <div id="loading-bar-container"><div id="loading-bar"></div></div>
+    </header>
+
+    <!-- 1. System Loader (Auto Fetch + Manual Fallback) -->
+    <div id="loader-card" style="text-align: center;">
+        <!-- This area shows manual upload if fetch fails -->
+        <div id="manual-upload">
+            <p>⚠️ 雲端連線失敗 (可能因跨域限制或無網路)。<br>請手動選取 <code>iching_*.json</code> 等三個檔案：</p>
+            <label id="manual-file-btn">
+                📂 點此選取檔案
+                <input type="file" id="fileInput" multiple accept=".json" onchange="loadFiles(event)" style="display:none">
+            </label>
+        </div>
+    </div>
+
+    <!-- 2. User Input -->
+    <div id="input-card" class="card" style="display:none; opacity: 0.5; pointer-events: none;">
+        <h2>
+            誠心起卦
+            <span class="info-icon" onclick="toggleTooltip(event)">?
+                <div class="tooltip-content" id="guide-tooltip">
+                    <h4>提問指南</h4>
+                    <ul>
+                        <li><strong>具體單一</strong>：一卦問一事，避免多重選擇。</li>
+                        <li><strong>時間範圍</strong>：設定明確的時間點。</li>
+                        <li><strong>包含背景</strong>：請將重要的人、事、時、地背景描述在問題中。</li>
+                        <li><strong>適合問</strong>：決策結果、趨勢、吉凶、現況。</li>
+                    </ul>
+                    <div style="margin-top:10px; font-size:11px; color:#888;">心誠則靈，輸入越詳細，解析越精確。</div>
+                </div>
+            </span>
+        </h2>
+        
+        <div class="form-group">
+            <label>占卜主題 (Question)</label>
+            <input type="text" id="q-topic" placeholder="例如：這項投資未來半年的獲利機會如何？（可包含地點等背景）">
+        </div>
+
+        <div class="form-group">
+            <label>占卜時間 (Time)</label>
+            <input type="datetime-local" id="q-time">
+            <div class="help-text">系統採用 <strong>24節氣真太陽時</strong> 計算干支 (立春換年/節氣換月)。</div>
+        </div>
+
+        <div class="form-group">
+            <label>起卦方式 (Method)</label>
+            <select id="q-method" onchange="toggleMethodInputs()">
+                <option value="auto">電腦自動起卦 (大衍之數模擬)</option>
+                <option value="coins">電腦模擬金錢卦 (文王課 - 三枚銅錢)</option>
+                <option value="number">數字起卦 (梅花易數 - 自動定體用)</option>
+                <option value="manual">手動指定 (自行擲幣/米卦)</option>
+            </select>
+        </div>
+
+        <!-- Method A: Auto (Da Yan) -->
+        <div id="method-auto" class="method-input active">
+            <div class="help-text">
+                <strong>古法揲蓍模擬：</strong>模擬 49 策，經 18 變求卦。<br>
+                特色：不易老（變爻少），機率為 9(老陽3/16), 6(老陰1/16)。適合問長遠、宏觀之事。
+            </div>
+        </div>
+
+        <!-- Method B: Coins (NEW) -->
+        <div id="method-coins" class="method-input">
+            <div class="help-text">
+                <strong>金錢卦模擬：</strong>模擬投擲三枚銅錢，共擲六次。<br>
+                特色：變爻機率均等 (老陽1/8, 老陰1/8)。六爻預測最主流方法，適合問財運、流年、具體吉凶。
+            </div>
+        </div>
+
+        <!-- Method C: Number (Mei Hua) -->
+        <div id="method-number" class="method-input">
+            <label style="font-size:13px;">請輸入三組數字 (範圍不限)</label>
+            <div style="display:flex; gap:10px;">
+                <input type="number" id="num1" placeholder="上卦數">
+                <input type="number" id="num2" placeholder="下卦數">
+                <input type="number" id="num3" placeholder="變爻數">
+            </div>
+            <div class="help-text">原理：(數1÷8餘數=上卦), (數2÷8餘數=下卦), (數3÷6餘數=動爻)。<br><strong>注意：</strong>數字起卦重「體用生剋」，系統將自動標示體卦與用卦。</div>
+        </div>
+
+        <!-- Method D: Manual -->
+        <div id="method-manual" class="method-input">
+            <label style="font-size:13px;">請依序輸入初爻至上爻的結果</label>
+            <div class="manual-lines-grid">
+                <div><div class="manual-label">初爻</div><select id="line1"><option value="8">少陰 (8)</option><option value="7">少陽 (7)</option><option value="6">老陰 (6) X</option><option value="9">老陽 (9) O</option></select></div>
+                <div><div class="manual-label">二爻</div><select id="line2"><option value="8">少陰 (8)</option><option value="7">少陽 (7)</option><option value="6">老陰 (6) X</option><option value="9">老陽 (9) O</option></select></div>
+                <div><div class="manual-label">三爻</div><select id="line3"><option value="8">少陰 (8)</option><option value="7">少陽 (7)</option><option value="6">老陰 (6) X</option><option value="9">老陽 (9) O</option></select></div>
+                <div><div class="manual-label">四爻</div><select id="line4"><option value="8">少陰 (8)</option><option value="7">少陽 (7)</option><option value="6">老陰 (6) X</option><option value="9">老陽 (9) O</option></select></div>
+                <div><div class="manual-label">五爻</div><select id="line5"><option value="8">少陰 (8)</option><option value="7">少陽 (7)</option><option value="6">老陰 (6) X</option><option value="9">老陽 (9) O</option></select></div>
+                <div><div class="manual-label">上爻</div><select id="line6"><option value="8">少陰 (8)</option><option value="7">少陽 (7)</option><option value="6">老陰 (6) X</option><option value="9">老陽 (9) O</option></select></div>
+            </div>
+            <div class="help-text">6=老陰(變), 7=少陽(不變), 8=少陰(不變), 9=老陽(變)。</div>
+        </div>
+
+        <button class="btn-primary" style="margin-top:20px;" onclick="castHexagram()">開始排盤</button>
+    </div>
+
+    <!-- 3. Result Display -->
+    <div id="result-section">
+        <div class="result-meta">
+            <div><span class="meta-label">主題：</span><span class="meta-val" id="res-topic">-</span></div>
+            <div><span class="meta-label">西曆：</span><span class="meta-val" id="res-time">-</span></div>
+            <div><span class="meta-label">四柱：</span><span class="meta-val" id="res-gz">-</span></div>
+            <div><span class="meta-label">節氣月令：</span><span class="meta-val" id="res-season">-</span></div>
+            <div><span class="meta-label">旬空：</span><span class="meta-val" id="res-void">-</span></div>
+        </div>
+
+        <div class="hex-container">
+            <!-- 本卦 -->
+            <div class="hex-box">
+                <div class="hex-title" id="orig-title">本卦</div>
+                <div id="orig-lines" style="display: flex; flex-direction: column-reverse;"></div>
+            </div>
+
+            <!-- 互卦 -->
+            <div class="hex-box mutual">
+                <div class="hex-title" id="mutual-title" style="color:#7f8c8d;">互卦 (過程)</div>
+                <div id="mutual-lines" style="display: flex; flex-direction: column-reverse;"></div>
+            </div>
+            
+            <!-- 之卦 -->
+            <div class="hex-box">
+                <div class="hex-title" id="target-title">之卦</div>
+                <div id="target-lines" style="display: flex; flex-direction: column-reverse;"></div>
+            </div>
+        </div>
+        
+        <div class="card" style="margin-top:20px;">
+            <h2>神煞提示</h2>
+            <div id="shensha-info" style="font-size:14px;"></div>
+        </div>
+
+        <div class="card" style="margin-top:20px; border-left: 4px solid #8e44ad;">
+            <h2>AI 解卦專用提示詞 (AI Prompt)</h2>
+            <div style="font-size:13px; color:#666; margin-bottom:10px;">
+                請複製下方的文字，發送給 AI 模型 (如 ChatGPT, Claude, Gemini)，即可獲得專業的六爻/梅花解卦報告。
+            </div>
+            <textarea id="ai-prompt-area" style="width:100%; height:200px; font-family:monospace; padding:10px; border:1px solid #ddd; border-radius:4px; font-size:12px; resize:vertical;" readonly></textarea>
+            <button class="btn-primary" style="margin-top:10px; background:#8e44ad;" onclick="copyPrompt()">📋 複製提示詞</button>
+        </div>
+
+    </div>
+
+    <footer>
+        Digital I-Ching Engine © 2026 | Professional Edition v2.2
+    </footer>
+</div>
+
+<script>
+// Data Store
+const DB = {
+    static: null, matrix: null, logic: null, lookup: {}
+};
+
+// URLs for JSON files
+const JSON_URLS = [
+    "https://jasw-1989.github.io/IChing/iching_database_full.json",
+    "https://jasw-1989.github.io/IChing/iching_dynamic_matrix.json",
+    "https://jasw-1989.github.io/IChing/iching_interact_logic.json"
+];
+
+// Auto-Load on Startup
+window.onload = async function() {
+    document.getElementById('loading-bar-container').style.display = 'block';
+    
+    try {
+        await Promise.all([
+            fetchJSON(JSON_URLS[0], 'static'),
+            fetchJSON(JSON_URLS[1], 'matrix'),
+            fetchJSON(JSON_URLS[2], 'logic')
+        ]);
+        
+        initApp();
+        
+    } catch (error) {
+        console.warn("Fetch Error (Cloud):", error);
+        document.getElementById('system-status').innerText = "雲端連線失敗，請手動載入資料。";
+        document.getElementById('system-status').style.color = "#e74c3c";
+        document.getElementById('loading-bar-container').style.display = 'none';
+        
+        // Show Manual Upload as Fallback
+        document.getElementById('loader-card').style.display = 'block';
+        document.getElementById('manual-upload').style.display = 'block';
+    }
+};
+
+async function fetchJSON(url, type) {
+    updateProgress();
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const json = await response.json();
+    processLoadedData(json, type);
+    updateProgress();
+}
+
+function processLoadedData(json, type) {
+    if (type === 'static' || (json.metadata && json.metadata.system && json.metadata.system.includes("Digital I-Ching Engine"))) {
+        DB.static = Array.isArray(json) ? json : json.hexagrams;
+        if (json.hexagrams) json.hexagrams.forEach(h => DB.lookup[h.id] = h);
+    } else if (type === 'matrix' || (json.metadata && json.metadata.name === "I-Ching Dynamic Relatives Matrix")) {
+        DB.matrix = json.matrix;
+    } else if (type === 'logic' || (json.metadata && json.metadata.name === "I-Ching Interaction Logic Layer")) {
+        DB.logic = json;
+    }
+}
+
+let progress = 0;
+function updateProgress() {
+    progress += 16;
+    if (progress > 100) progress = 100;
+    document.getElementById('loading-bar').style.width = progress + '%';
+}
+
+function loadFiles(event) {
+    const files = event.target.files;
+    let loadedCount = 0;
+    Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const json = JSON.parse(e.target.result);
+                let type = '';
+                if (json.metadata && json.metadata.system && json.metadata.system.includes("Digital I-Ching Engine")) type = 'static';
+                else if (json.metadata && json.metadata.name === "I-Ching Dynamic Relatives Matrix") type = 'matrix';
+                else if (json.metadata && json.metadata.name === "I-Ching Interaction Logic Layer") type = 'logic';
+                
+                processLoadedData(json, type);
+                loadedCount++;
+                if (DB.static && DB.matrix && DB.logic) initApp();
+            } catch (err) { console.error(err); }
+        };
+        reader.readAsText(file);
+    });
+}
+
+function initApp() {
+    document.getElementById('system-status').innerText = "系統就緒 (System Ready)";
+    document.getElementById('system-status').className = "ready";
+    document.getElementById('loading-bar-container').style.display = 'none';
+    document.getElementById('loader-card').style.display = 'none';
+    
+    const inputCard = document.getElementById('input-card');
+    inputCard.style.display = 'block';
+    inputCard.style.opacity = '1';
+    inputCard.style.pointerEvents = 'auto';
+    
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    document.getElementById('q-time').value = now.toISOString().slice(0,16);
+}
+
+function toggleTooltip(e) { e.stopPropagation(); document.getElementById('guide-tooltip').classList.toggle('show'); }
+document.addEventListener('click', () => { document.getElementById('guide-tooltip').classList.remove('show'); });
+
+function toggleMethodInputs() {
+    document.querySelectorAll('.method-input').forEach(el => el.classList.remove('active'));
+    const method = document.getElementById('q-method').value;
+    document.getElementById('method-' + method).classList.add('active');
+}
+
+// ----------------------------------------------------
+// Core Fix: Astronomical Calendar (GanZhi)
+// Using lunar-javascript library
+// ----------------------------------------------------
+const ZHI_WUXING_MAP = {
+    "子": "水", "丑": "土", "寅": "木", "卯": "木", "辰": "土", "巳": "火",
+    "午": "火", "未": "土", "申": "金", "酉": "金", "戌": "土", "亥": "水"
+};
+
+function getGanZhi(dateStr) {
+    // Convert input time to Date object
+    const d = new Date(dateStr);
+    
+    // Create Solar object from the input date
+    const solar = Solar.fromYmdHms(d.getFullYear(), d.getMonth() + 1, d.getDate(), d.getHours(), d.getMinutes(), 0);
+    
+    // Convert to Lunar (which handles GanZhi logic based on JieQi internally for BaZi)
+    const lunar = solar.getLunar();
+    const baZi = lunar.getEightChar();
+
+    // JieQi Logic: Lunar library handles the "Month" change at the exact Solar Term (JieQi)
+    // We get the Stem/Branch directly from the library
+    
+    const mZhi = baZi.getMonthZhi();
+    const dZhi = baZi.getDayZhi();
+
+    return {
+        year: baZi.getYear(),
+        month: baZi.getMonth(),
+        day: baZi.getDay(),
+        time: baZi.getTime(),
+        
+        // Detailed Components
+        yearStem: baZi.getYearGan(),
+        yearBranch: baZi.getYearZhi(),
+        monthStem: baZi.getMonthGan(),
+        monthBranch: mZhi, // This is now correct (e.g., Yin, Mao) based on Solar Terms
+        dayStem: baZi.getDayGan(),
+        dayBranch: dZhi,
+        
+        // Elements (WuXing)
+        monthWuxing: ZHI_WUXING_MAP[mZhi], // e.g., "Wood"
+        dayWuxing: ZHI_WUXING_MAP[dZhi]    // e.g., "Fire"
+    };
+}
+
+function getVoid(dayStem, dayBranch) {
+    const gz = dayStem + dayBranch;
+    return DB.logic.sixty_jia_zi_voids[gz] || [];
+}
+
+function getMutualHexId(origLines) {
+    const bits = origLines.map(val => (val === 7 || val === 9) ? 1 : 0);
+    const lowerVal = (bits[3] << 2) | (bits[2] << 1) | bits[1];
+    const upperVal = (bits[4] << 2) | (bits[3] << 1) | bits[2];
+    return (upperVal << 3) | lowerVal;
+}
+
+// ----------------------------------------------------
+// Generators
+// ----------------------------------------------------
+function generateLinesAuto() {
+    let lines = [];
+    for(let i=0; i<6; i++) {
+        // Da Yan Method Probability
+        const r = Math.random() * 16;
+        let val = (r < 1) ? 6 : (r < 6) ? 7 : (r < 13) ? 8 : 9;
+        lines.push(val);
+    }
+    return lines;
+}
+
+function generateLinesCoins() {
+    let lines = [];
+    for(let i=0; i<6; i++) {
+        // Coin Method: 3 Coins
+        // Head (Yang/Back) = 1, Tail (Yin/Text) = 0
+        let heads = 0;
+        for(let c=0; c<3; c++) {
+            if (Math.random() > 0.5) heads++;
+        }
+        
+        // 3 Heads -> Old Yang (9) - 1/8
+        // 0 Heads -> Old Yin (6) - 1/8
+        // 1 Head (2 Tails) -> Shao Yang (7) - 3/8
+        // 2 Heads (1 Tail) -> Shao Yin (8) - 3/8
+        
+        let val;
+        if (heads === 3) val = 9;
+        else if (heads === 0) val = 6;
+        else if (heads === 1) val = 7;
+        else if (heads === 2) val = 8;
+        
+        lines.push(val);
+    }
+    return lines;
+}
+
+function generateLinesNumber() {
+    let n1 = parseInt(document.getElementById('num1').value) || 0;
+    let n2 = parseInt(document.getElementById('num2').value) || 0;
+    let n3 = parseInt(document.getElementById('num3').value) || 0;
+    
+    if (n1 === 0 || n2 === 0 || n3 === 0) {
+        alert("請輸入有效的數字！");
+        return null;
+    }
+    const map = [0, 7, 3, 5, 1, 6, 2, 4, 0];
+    let upperVal = map[n1 % 8 === 0 ? 8 : n1 % 8];
+    let lowerVal = map[n2 % 8 === 0 ? 8 : n2 % 8];
+    let lines = [];
+    for(let i=0; i<3; i++) lines.push( (lowerVal >> i) & 1 ? 7 : 8 );
+    for(let i=0; i<3; i++) lines.push( (upperVal >> i) & 1 ? 7 : 8 );
+    let movingPos = n3 % 6 === 0 ? 6 : n3 % 6; 
+    let idx = movingPos - 1;
+    lines[idx] = lines[idx] === 7 ? 9 : 6;
+    return lines;
+}
+
+function generateLinesManual() {
+    let lines = [];
+    for(let i=1; i<=6; i++) {
+        let val = parseInt(document.getElementById('line' + i).value);
+        lines.push(val);
+    }
+    return lines;
+}
+
+// ----------------------------------------------------
+// Main Cast & Render
+// ----------------------------------------------------
+function castHexagram() {
+    const method = document.getElementById('q-method').value;
+    let castLines = [];
+    
+    if (method === 'auto') castLines = generateLinesAuto();
+    else if (method === 'coins') castLines = generateLinesCoins();
+    else if (method === 'number') castLines = generateLinesNumber();
+    else if (method === 'manual') castLines = generateLinesManual();
+    
+    if (!castLines) return; 
+
+    const topic = document.getElementById('q-topic').value || "無題";
+    const timeStr = document.getElementById('q-time').value;
+    
+    // New GanZhi Calculation
+    const gz = getGanZhi(timeStr);
+    const voidBranches = getVoid(gz.dayStem, gz.dayBranch);
+    const sixBeasts = DB.logic.six_beasts_rules[gz.dayStem];
+    
+    let origId = 0, targetId = 0;
+    castLines.forEach((val, i) => {
+        let isYang = (val === 7 || val === 9) ? 1 : 0;
+        let targetIsYang = (val === 9) ? 0 : (val === 6) ? 1 : isYang;
+        origId |= (isYang << i);
+        targetId |= (targetIsYang << i);
+    });
+
+    const mutualId = getMutualHexId(castLines);
+
+    renderResultUI(topic, timeStr, gz, voidBranches);
+    
+    // Check for Ti/Yong (Mei Hua method)
+    let tiYongMap = null;
+    if (method === 'number') {
+        // Find moving line index (0-5)
+        let moveIdx = castLines.findIndex(v => v === 6 || v === 9);
+        if (moveIdx !== -1) {
+            // Logic: 
+            // If move line is in Upper (idx 3,4,5) -> Upper is Yong, Lower is Ti
+            // If move line is in Lower (idx 0,1,2) -> Lower is Yong, Upper is Ti
+            if (moveIdx >= 3) tiYongMap = { upper: '用', lower: '體' };
+            else tiYongMap = { upper: '體', lower: '用' };
+        }
+    }
+
+    renderOriginalHex(origId, castLines, sixBeasts, voidBranches, gz, tiYongMap);
+    renderMutualHex(mutualId); 
+    renderTargetHex(targetId, origId); 
+    generateAIPrompt(topic, gz, voidBranches, origId, mutualId, targetId, castLines, sixBeasts, tiYongMap);
+
+    document.getElementById('result-section').style.display = 'block';
+    document.getElementById('result-section').scrollIntoView({behavior: 'smooth'});
+}
+
+function renderResultUI(topic, time, gz, voids) {
+    document.getElementById('res-topic').innerText = topic;
+    document.getElementById('res-time').innerText = time.replace("T", " ");
+    document.getElementById('res-gz').innerText = `${gz.year}年 ${gz.month}月 ${gz.day}日`;
+    // Explicitly show season/month branch
+    document.getElementById('res-season').innerText = `${gz.monthBranch}月 (${gz.monthWuxing}旺)`;
+    document.getElementById('res-void').innerText = voids.join("、");
+    
+    const stars = DB.logic.shen_sha;
+    let horse = stars.traveling_horse[gz.dayBranch] || "-";
+    let flower = stars.peach_blossom[gz.dayBranch] || "-";
+    let noble = (stars.noble_man[gz.dayStem] || []).join("/");
+    document.getElementById('shensha-info').innerHTML = `
+        <span class="beast-tag">驛馬</span>: ${horse} | 
+        <span class="beast-tag">桃花</span>: ${flower} | 
+        <span class="beast-tag">貴人</span>: ${noble}
+    `;
+}
+
+function renderOriginalHex(hexId, castLines, beasts, voids, gz, tiYongMap) {
+    const hex = DB.lookup[hexId];
+    document.getElementById('orig-title').innerText = `本卦：${hex.name} (${hex.palace}宮${hex.palace_wuxing})`;
+    const container = document.getElementById('orig-lines');
+    container.innerHTML = "";
+    
+    hex.lines.forEach((line, idx) => {
+        const castVal = castLines[idx];
+        const isMoving = (castVal === 6 || castVal === 9);
+        let symbol = (line.type === 'yang') ? '▅▅▅▅▅' : '▅▅　▅▅';
+        if (isMoving) symbol += ' ●';
+        
+        let tags = "";
+        if (voids.includes(line.branch)) tags += `<span class="void-tag">空</span>`;
+        if (DB.logic.branch_interactions[gz.dayBranch].clash === line.branch) tags += `<span class="clash-tag">日破</span>`;
+        
+        // Ti/Yong display logic
+        let meiHuaTag = "";
+        if (tiYongMap) {
+            // Upper trigram is idx 3,4,5. Lower is 0,1,2.
+            // We only want to label it once per trigram, say at the top line of the trigram?
+            // Or label every line? Labeling the Trigram is better.
+            // Let's put a label on Line 6 (top of Upper) and Line 3 (top of Lower).
+            if (idx === 5) { // Top line of Upper
+                const type = tiYongMap.upper;
+                const cls = type === '體' ? 'ti-tag' : 'yong-tag';
+                meiHuaTag = `<span class="${cls}">[${type}]</span>`;
+            } else if (idx === 2) { // Top line of Lower
+                const type = tiYongMap.lower;
+                const cls = type === '體' ? 'ti-tag' : 'yong-tag';
+                meiHuaTag = `<span class="${cls}">[${type}]</span>`;
+            }
+        }
+        
+        let fushenDisplay = line.hidden_spirit ? `<span class="fushen-tag">伏 ${line.hidden_spirit.relative}${line.hidden_spirit.branch}${line.hidden_spirit.wuxing}</span>` : "";
+        
+        container.innerHTML += `
+            <div class="line-row ${isMoving ? 'moving' : ''}">
+                <div class="l-left">
+                    <div>${meiHuaTag}${line.relative}</div>
+                    <div style="font-size:10px">${line.branch}${line.wuxing}${tags}</div>
+                    ${fushenDisplay}
+                </div>
+                <div class="l-center ${line.type}">${symbol}</div>
+                <div class="l-right">
+                    <div>${line.role || '&nbsp;'}</div>
+                    <div class="beast-tag">${beasts[idx]}</div>
+                </div>
+            </div>`;
+    });
+}
+
+function renderMutualHex(hexId) {
+    const hex = DB.lookup[hexId];
+    document.getElementById('mutual-title').innerText = `互卦：${hex.name}`;
+    const container = document.getElementById('mutual-lines');
+    container.innerHTML = "";
+    hex.lines.forEach((line) => {
+        let symbol = (line.type === 'yang') ? '▅▅▅▅▅' : '▅▅　▅▅';
+        container.innerHTML += `
+            <div class="line-row">
+                <div class="l-left" style="opacity:0.5; font-size:10px;">${line.branch}${line.wuxing}</div>
+                <div class="l-center ${line.type}" style="font-size:18px;">${symbol}</div>
+                <div class="l-right"></div>
+            </div>`;
+    });
+}
+
+function renderTargetHex(targetId, origId) {
+    const origHex = DB.lookup[origId]; 
+    const targetHexData = DB.matrix[targetId]; 
+    const relatives = targetHexData.relatives_matrix[origHex.palace_wuxing];
+    const staticTarget = DB.lookup[targetId];
+    document.getElementById('target-title').innerText = `之卦：${staticTarget.name}`;
+    const container = document.getElementById('target-lines');
+    container.innerHTML = "";
+    staticTarget.lines.forEach((line, idx) => {
+        let symbol = (line.type === 'yang') ? '▅▅▅▅▅' : '▅▅　▅▅';
+        container.innerHTML += `
+            <div class="line-row">
+                <div class="l-left">
+                    <div style="color:#d35400">${relatives[idx]}</div>
+                    <div style="font-size:10px">${line.branch}${line.wuxing}</div>
+                </div>
+                <div class="l-center ${line.type}">${symbol}</div>
+                <div class="l-right"></div>
+            </div>`;
+    });
+}
+
+// ----------------------------------------------------
+// AI Prompt Generation (Fixed Logic)
+// ----------------------------------------------------
+function generateAIPrompt(topic, gz, voids, origId, mutualId, targetId, castLines, beasts, tiYongMap) {
+    const orig = DB.lookup[origId];
+    const mutual = DB.lookup[mutualId];
+    const target = DB.lookup[targetId];
+    const targetRelData = DB.matrix[targetId].relatives_matrix[orig.palace_wuxing];
+    
+    const stars = DB.logic.shen_sha;
+    const horse = stars.traveling_horse[gz.dayBranch] || "無";
+    const flower = stars.peach_blossom[gz.dayBranch] || "無";
+    const noble = (stars.noble_man[gz.dayStem] || []).join("/");
+
+    // Calculate Month/Day Interactions explicitly for the AI
+    const dayClash = DB.logic.branch_interactions[gz.dayBranch].clash;
+    const monthClash = DB.logic.branch_interactions[gz.monthBranch].clash;
+    
+    let movingLinesDesc = [];
+    let lineDetails = [];
+    
+    orig.lines.forEach((l, i) => {
+        const val = castLines[i];
+        const isMoving = (val === 6 || val === 9);
+        const moveStr = isMoving ? " [動]" : "";
+        const targetLine = target.lines[i];
+        const targetRel = targetRelData[i];
+        
+        let status = [];
+        if (voids.includes(l.branch)) status.push("旬空");
+        if (l.branch === dayClash) status.push("日破");
+        if (l.branch === monthClash) status.push("月破");
+        if (l.branch === gz.monthBranch) status.push("臨月建(旺)"); 
+        if (l.branch === gz.dayBranch) status.push("臨日辰(旺)");
+        
+        // Add Ti/Yong text to the line detail if applicable
+        let tiYongStr = "";
+        if (tiYongMap) {
+            if (i >= 3 && tiYongMap.upper === '體') tiYongStr = "[體卦] ";
+            else if (i >= 3 && tiYongMap.upper === '用') tiYongStr = "[用卦] ";
+            else if (i < 3 && tiYongMap.lower === '體') tiYongStr = "[體卦] ";
+            else if (i < 3 && tiYongMap.lower === '用') tiYongStr = "[用卦] ";
+        }
+        
+        const statusStr = status.length > 0 ? `(${status.join(",")})` : "";
+        let fushenStr = l.hidden_spirit ? ` (伏神: ${l.hidden_spirit.relative} ${l.hidden_spirit.branch}${l.hidden_spirit.wuxing})` : "";
+
+        let lineDesc = `第${i+1}爻: ${tiYongStr}${beasts[i]} | ${l.relative} | ${l.branch}${l.wuxing} | ${l.role}${fushenStr} ${statusStr}${moveStr}`;
+        
+        if (isMoving) {
+            lineDesc += ` -> 變出: ${targetRel} ${targetLine.branch}${targetLine.wuxing}`;
+            movingLinesDesc.push(`- 第${i+1}爻發動 (${l.relative}變${targetRel})：由 ${l.branch}${l.wuxing} 變 ${targetLine.branch}${targetLine.wuxing}`);
+        }
+        lineDetails.push(lineDesc);
+    });
+
+    let methodSpecificPrompt = "";
+    if (tiYongMap) {
+        methodSpecificPrompt = `【梅花易數斷法參考】：
+- 體卦 (${tiYongMap.upper === '體' ? '上卦' : '下卦'}): 代表求測者自身或主體。
+- 用卦 (${tiYongMap.upper === '用' ? '上卦' : '下卦'}): 代表所測之事或對方。
+- 請重點分析「體用生剋」：用生體大吉，體生用洩氣，用剋體大凶，體剋用小吉，比和為吉。
+- 結合互卦看過程，結合變卦看結果。`;
+    }
+
+    const prompt = `
+請扮演一位擁有40年經驗的易經大師，精通「京房六爻」與「梅花易數」。針對以下卦象進行嚴謹的斷卦分析。
+
+【占卜主題】：${topic}
+
+【天時背景 (已校正節氣)】：
+- 四柱：${gz.year}年 ${gz.month}月 ${gz.day}日
+- 月建：${gz.monthBranch}月 (五行${gz.monthWuxing}旺) -> 沖(月破): ${monthClash}
+- 日辰：${gz.dayStem}${gz.dayBranch} (五行${gz.dayWuxing}旺) -> 沖(日破): ${dayClash}
+- 旬空：${voids.join("")}
+- 神煞：驛馬${horse} | 桃花${flower} | 貴人${noble}
+
+【卦象結構】：
+1. 本卦 (現狀)：${orig.name} (${orig.palace}宮${orig.palace_wuxing})
+2. 互卦 (過程)：${mutual.name}
+3. 之卦 (結果)：${target.name}
+
+${methodSpecificPrompt}
+
+【排盤詳情 (由下至上)】：
+${lineDetails.reverse().join("\n")}
+
+【動爻分析】：
+${movingLinesDesc.length > 0 ? movingLinesDesc.join("\n") : "無動爻 (靜卦)"}
+
+【解卦標準程序 (SOP)】：
+1. **定準用神**：${tiYongMap ? "確認「體卦」與「用卦」" : "依據主題選取「用神」(如問財看妻財)"}，並務必檢核其在${gz.monthBranch}月${gz.dayBranch}日的旺衰（如月破、日合、長生、帝旺、死墓絕）。
+2. **核心斷語**：${tiYongMap ? "依據「體用生剋」" : "依據「世應」與「動爻」對用神的生剋"}，判定吉凶趨勢。
+3. **動變分析**：若有動爻，重點分析其變卦後的「回頭生/剋」或「化空/化墓/化進退」。
+4. **應期與建議**：推算應驗時間（月/日），並給出具體建議。
+`.trim();
+
+    document.getElementById('ai-prompt-area').value = prompt;
+}
+
+function copyPrompt() {
+    const copyText = document.getElementById("ai-prompt-area");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); 
+    document.execCommand("copy");
+    alert("提示詞已複製！");
+}
+</script>
+
+</body>
+</html>
