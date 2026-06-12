@@ -154,6 +154,8 @@
                 </div>
             </span>
         </h2>
+        <div id="runtime-audit-note" class="warning-note" style="display:none;"></div>
+        <button class="btn-secondary" onclick="downloadAuthorityReport()">下載系統校驗報告</button>
         <div class="form-group">
             <label>占卜主題 (Question)</label>
             <input type="text" id="q-topic" placeholder="例如：這項投資未來半年的獲利機會如何？">
@@ -218,7 +220,7 @@
             <input type="text" id="q-lines" placeholder="由下至上輸入 6 個值，例如：7,8,9,6,8,7" style="display:none; margin-top:8px;">
             <div class="help-text">自動起卦使用瀏覽器安全隨機數，並依蓍草法機率分布抽樣；若瀏覽器不支援，請改用手動輸入六爻。</div>
         </div>
-        <button class="btn-primary" onclick="castHexagram()">開始排盤</button>
+        <button id="cast-button" class="btn-primary" onclick="castHexagram()">開始排盤</button>
     </div>
 
     <div id="result-section">
@@ -245,6 +247,7 @@
             <button class="btn-primary" style="margin-top:10px; background:#16a085;" onclick="copyStructuredJson()">複製卦盤資料</button>
             <button class="btn-secondary" onclick="downloadStructuredJson()">下載本次卦盤 JSON</button>
             <button class="btn-secondary" onclick="downloadTextReport()">下載文字摘要</button>
+            <button class="btn-secondary" onclick="downloadAuthorityReport()">下載校驗報告</button>
         </div>
         <div class="card" style="margin-top:20px; border-left: 4px solid #8e44ad;">
             <h2>AI 解卦提示詞</h2>
@@ -258,7 +261,8 @@
 <script>
 // Data Store
 const DB = {
-    static: null, matrix: null, logic: null, lookup: {}, lastAnalysis: null, fileMeta: {}, loadMode: null, lastSelfTest: null
+    static: null, matrix: null, logic: null, lookup: {}, lastAnalysis: null, fileMeta: {}, loadMode: null, lastSelfTest: null,
+    castingBlocked: true, castingBlockReason: '系統尚未完成自我檢查。'
 };
 
 const HEAVENLY_STEMS = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
@@ -365,6 +369,11 @@ const CORE_DATA_FILES = {
     matrix: "iching_dynamic_matrix.json",
     logic: "iching_interact_logic_enhanced_v1_3.json"
 };
+const CORE_DATA_FILE_LOCKS = Object.freeze({
+    static: { filename:"iching_database_full.json", sha256:"c96fe3cb94544e2788fbc0740d59158119054c29d80d691845bf3491637d733e", description:"64卦納甲主資料" },
+    matrix: { filename:"iching_dynamic_matrix.json", sha256:"ca3af9406ae5ec9c8a3068ffeee070cf3e0fb6783a5fb71c539e473b0a1b52c6", description:"64卦 x 5宮五行動態六親矩陣" },
+    logic: { filename:"iching_interact_logic_enhanced_v1_3.json", sha256:"001350a02d7e5439d48765892f875b13138bfd96ea8e236b66c68a0d6c348342", description:"六爻互動規則 enhanced v1.3" }
+});
 
 function setLoaderDetail(message, isError = false) {
     const el = document.getElementById('loader-detail');
@@ -438,6 +447,7 @@ async function autoLoadCoreData() {
             DB.fileMeta[kind] = { ...loaded.meta, source:'same_folder_fetch' };
             registerCoreJson(kind, loaded.json);
         }
+        validateCoreDataFileIntegrity();
         validateLoadedCoreData();
         DB.loadMode = 'same_folder_fetch';
         setLoaderDetail('資料載入完成。');
@@ -760,13 +770,133 @@ async function copyTextAreaValue(textareaId, successMessage) {
 }
 function copyPrompt() { copyTextAreaValue('ai-prompt-area', '提示詞已複製！'); }
 function copyStructuredJson() { copyTextAreaValue('structured-json-area', '卦盤資料已複製！'); }
+function safeFilenamePart(value) {
+    return String(value || 'iching').trim().replace(/[\/:*?"<>|\s]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 48) || 'iching';
+}
+function downloadTextFile(filename, content, mime = 'text/plain;charset=utf-8') {
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+function downloadStructuredJson() {
+    const analysis = DB.lastAnalysis;
+    if (!analysis) { alert('尚無可下載的卦盤資料。'); return; }
+    const stamp = safeFilenamePart(analysis.time || new Date().toISOString());
+    const topic = safeFilenamePart(analysis.topic || 'iching');
+    downloadTextFile(`iching_${stamp}_${topic}.json`, JSON.stringify(analysis, null, 2), 'application/json;charset=utf-8');
+}
+function buildTextReport(analysis) {
+    if (!analysis) return '';
+    const moving = analysis.lines.filter(l => l.moving).map(l => {
+        const labels = [
+            l.change?.effect?.label,
+            l.change?.advance_retreat?.code !== 'none' ? l.change?.advance_retreat?.label : null,
+            ...(l.change?.extra_labels || [])
+        ].filter(Boolean).join('，');
+        return `第${l.pos}爻 ${l.original.relative}${l.original.branch}${l.original.wuxing} -> ${l.change.target_relative}${l.change.target_branch}${l.change.target_wuxing}（${labels || '動變'}）`;
+    }).join('\n') || '無動爻';
+    const lineRows = analysis.lines.map(l => {
+        const tags = l.tags.map(t => t.label).join('、') || '無';
+        const hidden = l.hidden_spirit_evaluation ? `；伏神=${l.hidden_spirit_evaluation.relative}${l.hidden_spirit_evaluation.branch}${l.hidden_spirit_evaluation.wuxing}/${l.hidden_spirit_evaluation.label}` : '';
+        return `第${l.pos}爻 ${l.original.relative}${l.original.branch}${l.original.wuxing}${l.original.role ? '（' + l.original.role + '）' : ''}：${l.strength.label}${l.strength.score}；標籤=${tags}${hidden}`;
+    }).join('\n');
+    return [
+        '數位易經排盤文字摘要',
+        `引擎版本：${analysis.engine_version}`,
+        `主題：${analysis.topic}`,
+        `時間：${analysis.time}（${analysis.calendar.timezone.name}）`,
+        `四柱：${analysis.calendar.full_pillars}`,
+        `月令：${analysis.calendar.month_order.branch}月（${analysis.calendar.month_order.wuxing}），節氣=${analysis.calendar.month_order.solar_term.name} ${analysis.calendar.month_order.solar_term.time}`,
+        `旬空：${analysis.calendar.void_branches.join('、') || '-'}`,
+        `本卦：${analysis.hexagrams.original.name}（${analysis.hexagrams.original.palace}宮${analysis.hexagrams.original.palace_wuxing}）`,
+        `互卦：${analysis.hexagrams.mutual.name}（輔助）`,
+        `之卦：${analysis.hexagrams.target.name}`,
+        `用神：${(analysis.yongshen.profile.primary || []).join('、') || '-'}；輔助=${(analysis.yongshen.profile.secondary || []).join('、') || '-'}`,
+        `評分聲明：${analysis.scoring_policy.note}`,
+        `權威性聲明：${analysis.authority?.claim_boundary || ENGINE_AUTHORITY_SOURCE_MANIFEST.claim_boundary}`,
+        '',
+        '【爻位】',
+        lineRows,
+        '',
+        '【動變】',
+        moving,
+        '',
+        '【品質校驗】',
+        JSON.stringify(analysis.quality_assurance, null, 2)
+    ].join('\n');
+}
+function buildAuthorityReport(analysis = DB.lastAnalysis) {
+    const calibration = DB.calibrationReport || runCalibrationSuite();
+    const report = {
+        title: '數位易經排盤系統校驗報告',
+        generated_at: new Date().toISOString(),
+        engine_version: ENGINE_VERSION,
+        authority_manifest: ENGINE_AUTHORITY_SOURCE_MANIFEST,
+        data_file_locks: CORE_DATA_FILE_LOCKS,
+        loaded_files: DB.fileMeta,
+        file_integrity: getFileIntegrityReport(),
+        calibration,
+        self_test: DB.lastSelfTest || null,
+        runtime_audit: DB.auditReport || null,
+        current_analysis_summary: analysis ? {
+            topic: analysis.topic,
+            time: analysis.time,
+            full_pillars: analysis.calendar.full_pillars,
+            month_order: analysis.calendar.month_order,
+            hexagrams: analysis.hexagrams,
+            quality_ok: analysis.quality_assurance?.ok
+        } : null,
+        limitations: ENGINE_AUTHORITY_SOURCE_MANIFEST.limitations
+    };
+    return JSON.stringify(report, null, 2);
+}
+function downloadTextReport() {
+    const analysis = DB.lastAnalysis;
+    if (!analysis) { alert('尚無可下載的文字摘要。'); return; }
+    const stamp = safeFilenamePart(analysis.time || new Date().toISOString());
+    const topic = safeFilenamePart(analysis.topic || 'iching');
+    downloadTextFile(`iching_${stamp}_${topic}.txt`, buildTextReport(analysis), 'text/plain;charset=utf-8');
+}
+function downloadAuthorityReport() {
+    const stamp = safeFilenamePart(new Date().toISOString());
+    downloadTextFile(`iching_authority_report_${stamp}.json`, buildAuthorityReport(DB.lastAnalysis), 'application/json;charset=utf-8');
+}
 
 
 /* === Code Audit and Structured Evaluation Layer === */
-const ENGINE_VERSION = 'v8.8-calibration-golden-tests';
+const ENGINE_VERSION = 'v9.0-authority-audit';
 const ENGINE_TZ_OFFSETS = { 'Asia/Taipei': 480 };
 const ENGINE_YONGSHEN_TOKENS = ['兄弟','子孫','妻財','官鬼','父母','世爻','應爻','動爻'];
 const ENGINE_SCORE_NOTE = 'score 為工程化輔助權重，僅用於排序與提示；傳統判斷仍以月日、用神、世應、動變與空破合沖刑害等客觀標籤為準。';
+
+const ENGINE_AUTHORITY_SOURCE_MANIFEST = Object.freeze({
+    authority_level: 'engineering_audited_not_full_almanac_authority',
+    claim_boundary: '本系統可聲明為具資料雜湊鎖定、節氣基準回歸測試與干支曆交叉樣本檢查的工程化排盤工具；不可聲明為完整權威萬年曆或術數判斷準確率保證。',
+    calendar_sources: [
+        { name:'Hong Kong Observatory 2026 24 Solar Terms', scope:'2026 二十四節氣 UTC+08 基準；用於節氣與月令節點誤差檢查。', role:'solar_term_benchmark' },
+        { name:'External almanac cross-check samples', scope:'1900、2000、2024、2026、2030 日柱/年柱/月柱抽樣基準。', role:'ganzhi_sample_benchmark' },
+        { name:'Internal structural invariants', scope:'64卦、納甲、六親、世應、伏神、動態矩陣、地支互動對稱。', role:'domain_data_integrity' }
+    ],
+    reproducibility: {
+        timezone: 'Asia/Taipei UTC+08',
+        supported_year_range: '1900-2100',
+        month_boundary: '月令以十二節為界，不以中氣為界。',
+        year_boundary: '年柱以立春為界。',
+        day_boundary_options: ['civil_midnight', 'zi_start_23', 'civil_only']
+    },
+    limitations: [
+        '節氣演算法為天文近似值，已用 HKO 2026 節氣表校驗，但尚未逐年比對 1900-2100 全區間正式萬年曆。',
+        '日柱 golden cases 是抽樣交叉檢查，不等於全日期權威資料庫。',
+        '六爻旺衰分數為工程化輔助權重，不是統計準確率或吉凶機率。',
+        '神煞、合化、暗動與化進退存在流派差異；系統輸出標籤與流派設定，不應宣稱唯一正統。'
+    ]
+});
 
 const ENGINE_HEURISTIC_WEIGHTS = Object.freeze({
     month_relation_scale: 2,
@@ -806,14 +936,32 @@ const ENGINE_SOLAR_TERM_GOLDEN_CASES_2026_HKO = Object.freeze([
     { name:'小雪', longitude:240, approxMonth:11, approxDay:22, expected_local:'2026-11-22T15:23' },
     { name:'冬至', longitude:270, approxMonth:12, approxDay:22, expected_local:'2026-12-22T04:50' }
 ]);
+const ENGINE_SOLAR_JIE_GOLDEN_CASES_2026_HKO = Object.freeze([
+    { name:'小寒', longitude:285, approxMonth:1, approxDay:5, expected_local:'2026-01-05T16:23', month_branch:'丑' },
+    { name:'立春', longitude:315, approxMonth:2, approxDay:4, expected_local:'2026-02-04T04:02', month_branch:'寅' },
+    { name:'驚蟄', longitude:345, approxMonth:3, approxDay:5, expected_local:'2026-03-05T21:59', month_branch:'卯' },
+    { name:'清明', longitude:15, approxMonth:4, approxDay:5, expected_local:'2026-04-05T02:40', month_branch:'辰' },
+    { name:'立夏', longitude:45, approxMonth:5, approxDay:5, expected_local:'2026-05-05T19:49', month_branch:'巳' },
+    { name:'芒種', longitude:75, approxMonth:6, approxDay:5, expected_local:'2026-06-05T23:48', month_branch:'午' },
+    { name:'小暑', longitude:105, approxMonth:7, approxDay:7, expected_local:'2026-07-07T09:57', month_branch:'未' },
+    { name:'立秋', longitude:135, approxMonth:8, approxDay:7, expected_local:'2026-08-07T19:43', month_branch:'申' },
+    { name:'白露', longitude:165, approxMonth:9, approxDay:7, expected_local:'2026-09-07T22:41', month_branch:'酉' },
+    { name:'寒露', longitude:195, approxMonth:10, approxDay:8, expected_local:'2026-10-08T14:29', month_branch:'戌' },
+    { name:'立冬', longitude:225, approxMonth:11, approxDay:7, expected_local:'2026-11-07T17:52', month_branch:'亥' },
+    { name:'大雪', longitude:255, approxMonth:12, approxDay:7, expected_local:'2026-12-07T10:53', month_branch:'子' }
+]);
 const ENGINE_CALIBRATION_POLICY = Object.freeze({
     day_pillar_baseline_verified: true,
     day_pillar_golden_case_count: ENGINE_DAY_PILLAR_GOLDEN_CASES.length,
-    solar_term_benchmark_source: 'Hong Kong Observatory Almanac 2026 major solar terms, UTC+08',
+    solar_term_benchmark_source: 'Hong Kong Observatory 2026 24 Solar Terms, UTC+08; underlying astronomical data stated by HKO as HM Nautical Almanac Office and US Naval Observatory.',
     solar_term_tolerance_minutes: 30,
+    solar_jie_golden_case_count: ENGINE_SOLAR_JIE_GOLDEN_CASES_2026_HKO.length,
+    solar_jie_benchmark_scope: '十二月令節點：小寒、立春、驚蟄、清明、立夏、芒種、小暑、立秋、白露、寒露、立冬、大雪。',
+    data_file_integrity: CORE_DATA_FILE_LOCKS,
+    authority_manifest: ENGINE_AUTHORITY_SOURCE_MANIFEST,
     hexagram_snapshot_expected_checksum: '55359a51',
     hexagram_snapshot_scope: '64卦 id/seq/name/binary/palace/palace_wuxing/note/六爻納甲六親世應伏神摘要',
-    caveat: '本機內建基準可檢出程式回歸；若要宣稱權威曆法級，仍應定期以正式萬年曆資料批次校驗。'
+    caveat: '本機內建基準可檢出程式回歸；節氣以天文近似演算法搭配 HKO 2026 節氣表校驗。若要宣稱完整權威萬年曆級，仍應定期以正式萬年曆資料批次校驗 1900-2100 全區間。'
 });
 
 function getSelectedTimezone() { return document.getElementById('q-timezone')?.value || 'Asia/Taipei'; }
@@ -1028,6 +1176,34 @@ function toggleManualLinesInput() {
     const input = document.getElementById('q-lines');
     if (input) input.style.display = method === 'manual' ? 'block' : 'none';
 }
+function setCastingBlocked(blocked, reason = '') {
+    DB.castingBlocked = blocked;
+    DB.castingBlockReason = reason || '';
+    const btn = document.getElementById('cast-button');
+    if (btn) {
+        btn.disabled = Boolean(blocked);
+        btn.title = blocked ? reason : '';
+    }
+}
+function renderRuntimeAuditNote(test) {
+    const note = document.getElementById('runtime-audit-note');
+    if (!note) return;
+    const failed = (test.checks || []).filter(c => !c.ok && c.severity === 'blocking');
+    const warnings = (test.checks || []).filter(c => !c.ok && c.severity !== 'blocking');
+    if (!failed.length && !warnings.length) {
+        note.style.display = 'block';
+        note.style.color = '#1e8449';
+        note.style.borderLeftColor = '#27ae60';
+        note.style.background = '#eafaf1';
+        note.textContent = '系統自我檢查通過；資料雜湊、64卦快照、日柱基準、2026 HKO 節氣/月令節點、月令切換邊界與六十甲子日序均已校驗。';
+        return;
+    }
+    note.style.display = 'block';
+    note.style.color = failed.length ? '#c0392b' : '#8a6d00';
+    note.style.borderLeftColor = failed.length ? '#c0392b' : '#f1c40f';
+    note.style.background = failed.length ? '#fdecea' : '#fff9e6';
+    note.innerHTML = `${failed.length ? '阻擋排盤：' + failed.map(c => `${c.name}(${escapeHTML(c.detail)})`).join('；') : '可排盤，但有警告：' + warnings.map(c => `${c.name}(${escapeHTML(c.detail)})`).join('；')}`;
+}
 function initApp() {
     document.getElementById('system-status').innerText = '系統就緒 (System Ready)';
     document.getElementById('system-status').className = 'ready';
@@ -1043,9 +1219,14 @@ function initApp() {
     populateMonthOverrideOptions();
     toggleManualLinesInput();
     const test = runSelfTest();
+    renderRuntimeAuditNote(test);
     if (!test.ok) {
-        updateStatus('系統資料檢查有異常');
+        updateStatus('系統資料檢查失敗，已阻擋排盤');
         document.getElementById('system-status').className = '';
+        setCastingBlocked(true, '系統自我檢查未通過，為避免輸出錯誤卦盤，已阻擋排盤。');
+    } else {
+        setCastingBlocked(false, '');
+        if (test.warning_count > 0) updateStatus('系統就緒（有非阻擋警告）');
     }
 }
 
@@ -1377,12 +1558,14 @@ function buildAnalysis(topic, timeStr, gz, voidBranches, origId, mutualId, targe
         world_response: worldResponse,
         combinations,
         shensha,
+        authority: { ...ENGINE_AUTHORITY_SOURCE_MANIFEST, calibration_ok:Boolean((DB.calibrationReport || {}).ok) },
         scoring_policy: { score_is_heuristic:true, note:ENGINE_SCORE_NOTE, weights:ENGINE_HEURISTIC_WEIGHTS },
         quality_assurance: DB.calibrationReport || runCalibrationSuite()
     };
 }
 
 function castHexagram() {
+    if (DB.castingBlocked) { alert(DB.castingBlockReason || '系統自我檢查未通過，暫停排盤。'); return; }
     const topic = document.getElementById('q-topic').value || '無題';
     const timeStr = document.getElementById('q-time').value;
     if (!timeStr) { alert('請先指定占卜時間'); return; }
@@ -1589,6 +1772,23 @@ function validateDynamicMatrix(errors) {
         }
     });
 }
+function getFileIntegrityReport() {
+    const cases = Object.entries(CORE_DATA_FILE_LOCKS).map(([kind, lock]) => {
+        const meta = DB.fileMeta[kind] || {};
+        const ok = meta.filename === lock.filename && meta.sha256 === lock.sha256;
+        return { kind, filename:lock.filename, description:lock.description, expected_sha256:lock.sha256, actual_sha256:meta.sha256 || null, bytes:meta.bytes || null, ok };
+    });
+    return { ok:cases.every(c => c.ok), cases, summary:`${cases.filter(c => c.ok).length}/${cases.length}` };
+}
+function validateCoreDataFileIntegrity() {
+    const report = getFileIntegrityReport();
+    DB.fileIntegrityReport = report;
+    if (!report.ok) {
+        const bad = report.cases.filter(c => !c.ok).map(c => `${c.filename}: expected ${c.expected_sha256}, actual ${c.actual_sha256 || 'missing'}`);
+        throw new Error(`核心 JSON 檔案雜湊不符，已阻擋載入：${bad.join('；')}`);
+    }
+    return report;
+}
 function validateLoadedCoreData() {
     if (!DB.static || !DB.matrix || !DB.logic) throw new Error('核心資料未完整載入。');
     const errors = [];
@@ -1624,7 +1824,7 @@ function validateLoadedCoreData() {
     if (errors.length) throw new Error(`資料檢查失敗：${errors.slice(0,12).join('；')}${errors.length > 12 ? `；另有 ${errors.length-12} 項` : ''}`);
     const hexGolden = runHexagramGoldenTests();
     if (!hexGolden.ok) throw new Error(`64卦 golden snapshot 不一致：${hexGolden.checksum} != ${hexGolden.expected_checksum}`);
-    DB.auditReport = { ok:true, checked_at:new Date().toISOString(), checks:['64卦id/seq','爻位/卦碼','納甲','六親','世應','伏神來源','動態矩陣逐格重算','地支互動對稱','enhanced logic v1.3','64卦 golden snapshot'], hexagram_golden_snapshot:hexGolden };
+    DB.auditReport = { ok:true, checked_at:new Date().toISOString(), checks:['核心 JSON sha256 雜湊鎖定','64卦id/seq','爻位/卦碼','納甲','六親','世應','伏神來源','動態矩陣逐格重算','地支互動對稱','enhanced logic v1.3','64卦 golden snapshot'], file_integrity:DB.fileIntegrityReport, hexagram_golden_snapshot:hexGolden };
 }
 
 function parseBenchmarkLocalInstant(dateTime, timezone = 'Asia/Taipei') {
@@ -1669,6 +1869,20 @@ function runSolarTermGoldenTests() {
     const maxAbsDiffMinutes = Math.max(...cases.map(c => Math.abs(c.diff_minutes)));
     return { ok:cases.every(c => c.ok), max_abs_diff_minutes:maxAbsDiffMinutes, tolerance_minutes:ENGINE_CALIBRATION_POLICY.solar_term_tolerance_minutes, cases };
 }
+function runSolarJieGoldenTests() {
+    const offset = ENGINE_TZ_OFFSETS['Asia/Taipei'] || 480;
+    const cases = ENGINE_SOLAR_JIE_GOLDEN_CASES_2026_HKO.map(c => {
+        const actualMs = findSolarTermInstantAudit(2026, c, offset);
+        const expectedMs = parseBenchmarkLocalInstant(c.expected_local, 'Asia/Taipei');
+        const diffMinutes = Math.round((actualMs - expectedMs) / 60000);
+        const monthCase = SOLAR_JIE_TERMS.find(t => t.name === c.name);
+        const branchOk = monthCase?.branch === c.month_branch;
+        const ok = Math.abs(diffMinutes) <= ENGINE_CALIBRATION_POLICY.solar_term_tolerance_minutes && branchOk;
+        return { ...c, actual_local:formatInstantInZone(actualMs, offset), expected_local:c.expected_local.replace('T',' '), diff_minutes:diffMinutes, configured_month_branch:monthCase?.branch || null, branch_ok:branchOk, ok };
+    });
+    const maxAbsDiffMinutes = Math.max(...cases.map(c => Math.abs(c.diff_minutes)));
+    return { ok:cases.every(c => c.ok), max_abs_diff_minutes:maxAbsDiffMinutes, tolerance_minutes:ENGINE_CALIBRATION_POLICY.solar_term_tolerance_minutes, cases };
+}
 function fnv1a32(text) {
     let h = 0x811c9dc5;
     for (let i = 0; i < text.length; i++) {
@@ -1694,17 +1908,87 @@ function runHexagramGoldenTests() {
     const checksumOk = checksum === ENGINE_CALIBRATION_POLICY.hexagram_snapshot_expected_checksum;
     return { ok:countOk && checksumOk, count:DB.static?.length || 0, checksum, expected_checksum:ENGINE_CALIBRATION_POLICY.hexagram_snapshot_expected_checksum, signature_length:signature.length, scope:ENGINE_CALIBRATION_POLICY.hexagram_snapshot_scope };
 }
+
+function previousYinMonthBranch(branch) {
+    const idx = YIN_MONTH_BRANCHES.indexOf(branch);
+    return idx >= 0 ? YIN_MONTH_BRANCHES[mod(idx - 1, 12)] : null;
+}
+function formatInstantForDateTimeInput(ms, offsetMinutes) {
+    return formatInstantInZone(ms, offsetMinutes).replace(' ', 'T');
+}
+function runMonthBoundaryConsistencyTests() {
+    return preserveCalendarControls(() => {
+        const offset = ENGINE_TZ_OFFSETS['Asia/Taipei'] || 480;
+        const cases = ENGINE_SOLAR_JIE_GOLDEN_CASES_2026_HKO.map(c => {
+            const actualMs = findSolarTermInstantAudit(2026, c, offset);
+            const beforeInput = formatInstantForDateTimeInput(actualMs - 60000, offset);
+            const afterInput = formatInstantForDateTimeInput(actualMs + 60000, offset);
+            const before = getGanZhi(beforeInput);
+            const after = getGanZhi(afterInput);
+            const expectedBefore = previousYinMonthBranch(c.month_branch);
+            const ok = before.monthBranch === expectedBefore && after.monthBranch === c.month_branch;
+            return {
+                name:c.name,
+                boundary_local:formatInstantInZone(actualMs, offset),
+                before_input:beforeInput,
+                after_input:afterInput,
+                expected_before_branch:expectedBefore,
+                actual_before_branch:before.monthBranch,
+                expected_after_branch:c.month_branch,
+                actual_after_branch:after.monthBranch,
+                ok
+            };
+        });
+        return { ok:cases.every(c => c.ok), summary:`${cases.filter(c => c.ok).length}/${cases.length}`, cases };
+    });
+}
+function runSexagenaryCycleInvariantTests() {
+    return preserveCalendarControls(() => {
+        const start = parseDateTimeFields('2024-01-01T12:00');
+        const cases = [];
+        for (let i = 0; i < 120; i++) {
+            const fields = addCivilDays(start, i);
+            const input = `${fields.year}-${String(fields.month).padStart(2,'0')}-${String(fields.day).padStart(2,'0')}T12:00`;
+            const gz = getGanZhi(input);
+            const expected = gzName(mod(0 + i, 10), mod(0 + i, 12));
+            cases.push({ input, expected_day:expected, actual_day:gz.day, ok:gz.day === expected });
+        }
+        return { ok:cases.every(c => c.ok), summary:`${cases.filter(c => c.ok).length}/${cases.length}`, base:'2024-01-01 甲子', cases };
+    });
+}
+
 function runCalibrationSuite() {
     const day = runDayPillarGoldenTests();
     const solar = runSolarTermGoldenTests();
+    const solarJie = runSolarJieGoldenTests();
+    const monthBoundary = runMonthBoundaryConsistencyTests();
+    const cycle = runSexagenaryCycleInvariantTests();
     const hex = runHexagramGoldenTests();
-    return { ok:day.ok && solar.ok && hex.ok, policy:ENGINE_CALIBRATION_POLICY, day_pillar:day, solar_terms:solar, hexagram_golden_snapshot:hex };
+    const files = getFileIntegrityReport();
+    return {
+        ok:day.ok && solar.ok && solarJie.ok && monthBoundary.ok && cycle.ok && hex.ok && files.ok,
+        policy:ENGINE_CALIBRATION_POLICY,
+        authority_manifest:ENGINE_AUTHORITY_SOURCE_MANIFEST,
+        file_integrity:files,
+        day_pillar:day,
+        solar_terms:solar,
+        solar_jie_terms:solarJie,
+        month_boundary_consistency:monthBoundary,
+        sexagenary_cycle_invariant:cycle,
+        hexagram_golden_snapshot:hex
+    };
 }
 
 function runSelfTest() {
-    const report = { ok:true, checks:[], audit:DB.auditReport || null };
-    const add = (name, ok, detail) => { report.checks.push({ name, ok, detail }); if (!ok) report.ok = false; };
+    const report = { ok:true, warning_count:0, checks:[], audit:DB.auditReport || null };
+    const add = (name, ok, detail, severity = 'blocking') => {
+        report.checks.push({ name, ok, detail, severity });
+        if (!ok && severity === 'blocking') report.ok = false;
+        if (!ok && severity !== 'blocking') report.warning_count += 1;
+    };
     try {
+        const files = getFileIntegrityReport();
+        add('核心 JSON 檔案雜湊', files.ok, files.summary);
         const tz = document.getElementById('q-timezone');
         const zr = document.getElementById('q-zi-rule');
         if (tz) tz.value = 'Asia/Taipei';
@@ -1747,13 +2031,17 @@ function runSelfTest() {
         DB.calibrationReport = calibration;
         add('日柱外部基準測試', calibration.day_pillar.ok, calibration.day_pillar.summary);
         add('節氣精度基準測試', calibration.solar_terms.ok, `max_abs_diff=${calibration.solar_terms.max_abs_diff_minutes}min / tolerance=${calibration.solar_terms.tolerance_minutes}min`);
+        add('月令節點基準測試', calibration.solar_jie_terms.ok, `max_abs_diff=${calibration.solar_jie_terms.max_abs_diff_minutes}min / tolerance=${calibration.solar_jie_terms.tolerance_minutes}min`);
+        add('月令邊界一致性測試', calibration.month_boundary_consistency.ok, calibration.month_boundary_consistency.summary);
+        add('六十甲子日序不變量測試', calibration.sexagenary_cycle_invariant.ok, calibration.sexagenary_cycle_invariant.summary);
         add('64卦 golden snapshot', calibration.hexagram_golden_snapshot.ok, `${calibration.hexagram_golden_snapshot.checksum}`);
-        add('Web Crypto 可用性', Boolean(window.crypto && crypto.getRandomValues), window.crypto && crypto.getRandomValues ? 'crypto.getRandomValues available' : 'auto casting disabled; manual mode required');
+        add('Web Crypto 可用性', Boolean(window.crypto && crypto.getRandomValues), window.crypto && crypto.getRandomValues ? 'crypto.getRandomValues available' : 'auto casting disabled; manual mode required', 'warning');
     } catch (err) { add('自我測試例外', false, err.message); }
     const el = document.getElementById('self-test-output');
     if (el) {
-        el.innerHTML = `自我測試：${report.ok ? '通過' : '有警告'}；${report.checks.map(c => `${c.name}=${c.ok ? 'OK' : 'FAIL'}(${c.detail})`).join('；')}`;
-        el.style.color = report.ok ? '#27ae60' : '#c0392b';
+        el.innerHTML = `自我測試：${report.ok ? (report.warning_count ? '通過但有警告' : '通過') : '阻擋性失敗'}；${report.checks.map(c => `${c.name}=${c.ok ? 'OK' : 'FAIL'}${c.severity === 'warning' ? '[WARN]' : ''}(${c.detail})`).join('；')}`;
+        el.style.display = 'block';
+        el.style.color = report.ok ? (report.warning_count ? '#b9770e' : '#27ae60') : '#c0392b';
     }
     DB.selfTest = report;
     DB.lastSelfTest = report;
