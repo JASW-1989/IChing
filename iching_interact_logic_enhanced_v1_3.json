@@ -1,0 +1,1895 @@
+{
+  "metadata": {
+    "name": "I-Ching Interaction Logic Layer",
+    "description": "Rules for Six-Yao/I-Ching time entities, branch interactions, combinations, life stages, movement-change effects, and yongshen categories.",
+    "version": "1.3",
+    "generated_at": "2026-01-23T01:46:23.536Z",
+    "enhanced_at": "2026-06-11T15:29:21.333203+00:00",
+    "features_added": [
+      "wuxing_relations",
+      "six_combinations_with_elements",
+      "three_harmony_groups",
+      "grave_storehouses",
+      "full_twelve_life_stages",
+      "month_break_rules",
+      "covert_moving_rules",
+      "change_effect_rules",
+      "advance_retreat_rules",
+      "yongshen_categories",
+      "evaluation_recipes"
+    ],
+    "legacy_life_stages_start": {
+      "金": "巳",
+      "木": "亥",
+      "水": "申",
+      "火": "寅",
+      "土": "寅"
+    },
+    "enhanced_v1_3_at": "2026-06-11T16:10:00+00:00",
+    "features_added_v1_3": [
+      "expanded_yongshen_categories",
+      "school_variant_metadata",
+      "target_line_relevance_policy",
+      "shensha_basis_metadata"
+    ]
+  },
+  "six_beasts_rules": {
+    "甲": [
+      "青龍",
+      "朱雀",
+      "勾陳",
+      "螣蛇",
+      "白虎",
+      "玄武"
+    ],
+    "乙": [
+      "青龍",
+      "朱雀",
+      "勾陳",
+      "螣蛇",
+      "白虎",
+      "玄武"
+    ],
+    "丙": [
+      "朱雀",
+      "勾陳",
+      "螣蛇",
+      "白虎",
+      "玄武",
+      "青龍"
+    ],
+    "丁": [
+      "朱雀",
+      "勾陳",
+      "螣蛇",
+      "白虎",
+      "玄武",
+      "青龍"
+    ],
+    "戊": [
+      "勾陳",
+      "螣蛇",
+      "白虎",
+      "玄武",
+      "青龍",
+      "朱雀"
+    ],
+    "己": [
+      "勾陳",
+      "螣蛇",
+      "白虎",
+      "玄武",
+      "青龍",
+      "朱雀"
+    ],
+    "庚": [
+      "螣蛇",
+      "白虎",
+      "玄武",
+      "青龍",
+      "朱雀",
+      "勾陳"
+    ],
+    "辛": [
+      "螣蛇",
+      "白虎",
+      "玄武",
+      "青龍",
+      "朱雀",
+      "勾陳"
+    ],
+    "壬": [
+      "白虎",
+      "玄武",
+      "青龍",
+      "朱雀",
+      "勾陳",
+      "螣蛇"
+    ],
+    "癸": [
+      "白虎",
+      "玄武",
+      "青龍",
+      "朱雀",
+      "勾陳",
+      "螣蛇"
+    ]
+  },
+  "branch_interactions": {
+    "子": {
+      "clash": "午",
+      "combine": "丑",
+      "harm": "未",
+      "penalty": [
+        "卯"
+      ]
+    },
+    "丑": {
+      "clash": "未",
+      "combine": "子",
+      "harm": "午",
+      "penalty": [
+        "戌",
+        "未"
+      ]
+    },
+    "寅": {
+      "clash": "申",
+      "combine": "亥",
+      "harm": "巳",
+      "penalty": [
+        "巳",
+        "申"
+      ]
+    },
+    "卯": {
+      "clash": "酉",
+      "combine": "戌",
+      "harm": "辰",
+      "penalty": [
+        "子"
+      ]
+    },
+    "辰": {
+      "clash": "戌",
+      "combine": "酉",
+      "harm": "卯",
+      "penalty": [
+        "辰"
+      ]
+    },
+    "巳": {
+      "clash": "亥",
+      "combine": "申",
+      "harm": "寅",
+      "penalty": [
+        "寅",
+        "申"
+      ]
+    },
+    "午": {
+      "clash": "子",
+      "combine": "未",
+      "harm": "丑",
+      "penalty": [
+        "午"
+      ]
+    },
+    "未": {
+      "clash": "丑",
+      "combine": "午",
+      "harm": "子",
+      "penalty": [
+        "丑",
+        "戌"
+      ]
+    },
+    "申": {
+      "clash": "寅",
+      "combine": "巳",
+      "harm": "亥",
+      "penalty": [
+        "寅",
+        "巳"
+      ]
+    },
+    "酉": {
+      "clash": "卯",
+      "combine": "辰",
+      "harm": "戌",
+      "penalty": [
+        "酉"
+      ]
+    },
+    "戌": {
+      "clash": "辰",
+      "combine": "卯",
+      "harm": "酉",
+      "penalty": [
+        "丑",
+        "未"
+      ]
+    },
+    "亥": {
+      "clash": "巳",
+      "combine": "寅",
+      "harm": "申",
+      "penalty": [
+        "亥"
+      ]
+    }
+  },
+  "shen_sha": {
+    "traveling_horse": {
+      "申": "寅",
+      "子": "寅",
+      "辰": "寅",
+      "寅": "申",
+      "午": "申",
+      "戌": "申",
+      "亥": "巳",
+      "卯": "巳",
+      "未": "巳",
+      "巳": "亥",
+      "酉": "亥",
+      "丑": "亥"
+    },
+    "peach_blossom": {
+      "申": "酉",
+      "子": "酉",
+      "辰": "酉",
+      "寅": "卯",
+      "午": "卯",
+      "戌": "卯",
+      "亥": "子",
+      "卯": "子",
+      "未": "子",
+      "巳": "午",
+      "酉": "午",
+      "丑": "午"
+    },
+    "noble_man": {
+      "甲": [
+        "丑",
+        "未"
+      ],
+      "戊": [
+        "丑",
+        "未"
+      ],
+      "庚": [
+        "丑",
+        "未"
+      ],
+      "乙": [
+        "子",
+        "申"
+      ],
+      "己": [
+        "子",
+        "申"
+      ],
+      "丙": [
+        "亥",
+        "酉"
+      ],
+      "丁": [
+        "亥",
+        "酉"
+      ],
+      "壬": [
+        "巳",
+        "卯"
+      ],
+      "癸": [
+        "巳",
+        "卯"
+      ],
+      "辛": [
+        "午",
+        "寅"
+      ]
+    },
+    "prosperity": {
+      "甲": "寅",
+      "乙": "卯",
+      "丙": "巳",
+      "丁": "午",
+      "戊": "巳",
+      "己": "午",
+      "庚": "申",
+      "辛": "酉",
+      "壬": "亥",
+      "癸": "子"
+    },
+    "sheep_blade": {
+      "甲": "卯",
+      "乙": "辰",
+      "丙": "午",
+      "丁": "未",
+      "戊": "午",
+      "己": "未",
+      "庚": "酉",
+      "辛": "戌",
+      "壬": "子",
+      "癸": "丑"
+    }
+  },
+  "life_stages_start": {
+    "木": "亥",
+    "火": "寅",
+    "金": "巳",
+    "水": "申",
+    "土": "申"
+  },
+  "zhi_order": [
+    "子",
+    "丑",
+    "寅",
+    "卯",
+    "辰",
+    "巳",
+    "午",
+    "未",
+    "申",
+    "酉",
+    "戌",
+    "亥"
+  ],
+  "sixty_jia_zi_voids": {
+    "甲子": [
+      "戌",
+      "亥"
+    ],
+    "乙丑": [
+      "戌",
+      "亥"
+    ],
+    "丙寅": [
+      "戌",
+      "亥"
+    ],
+    "丁卯": [
+      "戌",
+      "亥"
+    ],
+    "戊辰": [
+      "戌",
+      "亥"
+    ],
+    "己巳": [
+      "戌",
+      "亥"
+    ],
+    "庚午": [
+      "戌",
+      "亥"
+    ],
+    "辛未": [
+      "戌",
+      "亥"
+    ],
+    "壬申": [
+      "戌",
+      "亥"
+    ],
+    "癸酉": [
+      "戌",
+      "亥"
+    ],
+    "甲戌": [
+      "申",
+      "酉"
+    ],
+    "乙亥": [
+      "申",
+      "酉"
+    ],
+    "丙子": [
+      "申",
+      "酉"
+    ],
+    "丁丑": [
+      "申",
+      "酉"
+    ],
+    "戊寅": [
+      "申",
+      "酉"
+    ],
+    "己卯": [
+      "申",
+      "酉"
+    ],
+    "庚辰": [
+      "申",
+      "酉"
+    ],
+    "辛巳": [
+      "申",
+      "酉"
+    ],
+    "壬午": [
+      "申",
+      "酉"
+    ],
+    "癸未": [
+      "申",
+      "酉"
+    ],
+    "甲申": [
+      "午",
+      "未"
+    ],
+    "乙酉": [
+      "午",
+      "未"
+    ],
+    "丙戌": [
+      "午",
+      "未"
+    ],
+    "丁亥": [
+      "午",
+      "未"
+    ],
+    "戊子": [
+      "午",
+      "未"
+    ],
+    "己丑": [
+      "午",
+      "未"
+    ],
+    "庚寅": [
+      "午",
+      "未"
+    ],
+    "辛卯": [
+      "午",
+      "未"
+    ],
+    "壬辰": [
+      "午",
+      "未"
+    ],
+    "癸巳": [
+      "午",
+      "未"
+    ],
+    "甲午": [
+      "辰",
+      "巳"
+    ],
+    "乙未": [
+      "辰",
+      "巳"
+    ],
+    "丙申": [
+      "辰",
+      "巳"
+    ],
+    "丁酉": [
+      "辰",
+      "巳"
+    ],
+    "戊戌": [
+      "辰",
+      "巳"
+    ],
+    "己亥": [
+      "辰",
+      "巳"
+    ],
+    "庚子": [
+      "辰",
+      "巳"
+    ],
+    "辛丑": [
+      "辰",
+      "巳"
+    ],
+    "壬寅": [
+      "辰",
+      "巳"
+    ],
+    "癸卯": [
+      "辰",
+      "巳"
+    ],
+    "甲辰": [
+      "寅",
+      "卯"
+    ],
+    "乙巳": [
+      "寅",
+      "卯"
+    ],
+    "丙午": [
+      "寅",
+      "卯"
+    ],
+    "丁未": [
+      "寅",
+      "卯"
+    ],
+    "戊申": [
+      "寅",
+      "卯"
+    ],
+    "己酉": [
+      "寅",
+      "卯"
+    ],
+    "庚戌": [
+      "寅",
+      "卯"
+    ],
+    "辛亥": [
+      "寅",
+      "卯"
+    ],
+    "壬子": [
+      "寅",
+      "卯"
+    ],
+    "癸丑": [
+      "寅",
+      "卯"
+    ],
+    "甲寅": [
+      "子",
+      "丑"
+    ],
+    "乙卯": [
+      "子",
+      "丑"
+    ],
+    "丙辰": [
+      "子",
+      "丑"
+    ],
+    "丁巳": [
+      "子",
+      "丑"
+    ],
+    "戊午": [
+      "子",
+      "丑"
+    ],
+    "己未": [
+      "子",
+      "丑"
+    ],
+    "庚申": [
+      "子",
+      "丑"
+    ],
+    "辛酉": [
+      "子",
+      "丑"
+    ],
+    "壬戌": [
+      "子",
+      "丑"
+    ],
+    "癸亥": [
+      "子",
+      "丑"
+    ]
+  },
+  "wuxing_relations": {
+    "order_generating": [
+      "木",
+      "火",
+      "土",
+      "金",
+      "水"
+    ],
+    "generates": {
+      "木": "火",
+      "火": "土",
+      "土": "金",
+      "金": "水",
+      "水": "木"
+    },
+    "generated_by": {
+      "木": "水",
+      "火": "木",
+      "土": "火",
+      "金": "土",
+      "水": "金"
+    },
+    "controls": {
+      "木": "土",
+      "土": "水",
+      "水": "火",
+      "火": "金",
+      "金": "木"
+    },
+    "controlled_by": {
+      "木": "金",
+      "土": "木",
+      "水": "土",
+      "火": "水",
+      "金": "火"
+    },
+    "relation_labels": {
+      "same": "比和",
+      "from_generates_to": "我生/泄",
+      "to_generates_from": "生我/受生",
+      "from_controls_to": "我剋/耗",
+      "to_controls_from": "剋我/受剋"
+    }
+  },
+  "branch_combinations": {
+    "six_combinations": {
+      "子丑": {
+        "branches": [
+          "子",
+          "丑"
+        ],
+        "transforms_to": "土"
+      },
+      "寅亥": {
+        "branches": [
+          "寅",
+          "亥"
+        ],
+        "transforms_to": "木"
+      },
+      "卯戌": {
+        "branches": [
+          "卯",
+          "戌"
+        ],
+        "transforms_to": "火"
+      },
+      "辰酉": {
+        "branches": [
+          "辰",
+          "酉"
+        ],
+        "transforms_to": "金"
+      },
+      "巳申": {
+        "branches": [
+          "巳",
+          "申"
+        ],
+        "transforms_to": "水"
+      },
+      "午未": {
+        "branches": [
+          "午",
+          "未"
+        ],
+        "transforms_to": "土"
+      }
+    },
+    "three_harmony_groups": {
+      "水局": {
+        "branches": [
+          "申",
+          "子",
+          "辰"
+        ],
+        "element": "水",
+        "birth": "申",
+        "peak": "子",
+        "grave": "辰",
+        "roles": {
+          "申": "長生",
+          "子": "帝旺",
+          "辰": "墓庫"
+        }
+      },
+      "木局": {
+        "branches": [
+          "亥",
+          "卯",
+          "未"
+        ],
+        "element": "木",
+        "birth": "亥",
+        "peak": "卯",
+        "grave": "未",
+        "roles": {
+          "亥": "長生",
+          "卯": "帝旺",
+          "未": "墓庫"
+        }
+      },
+      "火局": {
+        "branches": [
+          "寅",
+          "午",
+          "戌"
+        ],
+        "element": "火",
+        "birth": "寅",
+        "peak": "午",
+        "grave": "戌",
+        "roles": {
+          "寅": "長生",
+          "午": "帝旺",
+          "戌": "墓庫"
+        }
+      },
+      "金局": {
+        "branches": [
+          "巳",
+          "酉",
+          "丑"
+        ],
+        "element": "金",
+        "birth": "巳",
+        "peak": "酉",
+        "grave": "丑",
+        "roles": {
+          "巳": "長生",
+          "酉": "帝旺",
+          "丑": "墓庫"
+        }
+      }
+    },
+    "half_three_harmony": {
+      "申子": {
+        "branches": [
+          "申",
+          "子"
+        ],
+        "element": "水",
+        "type": "生旺半合",
+        "group": "水局"
+      },
+      "子辰": {
+        "branches": [
+          "子",
+          "辰"
+        ],
+        "element": "水",
+        "type": "旺墓半合",
+        "group": "水局"
+      },
+      "申辰": {
+        "branches": [
+          "申",
+          "辰"
+        ],
+        "element": "水",
+        "type": "生墓拱合",
+        "group": "水局",
+        "note": "缺中神，力量弱於生旺、旺墓半合"
+      },
+      "亥卯": {
+        "branches": [
+          "亥",
+          "卯"
+        ],
+        "element": "木",
+        "type": "生旺半合",
+        "group": "木局"
+      },
+      "卯未": {
+        "branches": [
+          "卯",
+          "未"
+        ],
+        "element": "木",
+        "type": "旺墓半合",
+        "group": "木局"
+      },
+      "亥未": {
+        "branches": [
+          "亥",
+          "未"
+        ],
+        "element": "木",
+        "type": "生墓拱合",
+        "group": "木局",
+        "note": "缺中神，力量弱於生旺、旺墓半合"
+      },
+      "寅午": {
+        "branches": [
+          "寅",
+          "午"
+        ],
+        "element": "火",
+        "type": "生旺半合",
+        "group": "火局"
+      },
+      "午戌": {
+        "branches": [
+          "午",
+          "戌"
+        ],
+        "element": "火",
+        "type": "旺墓半合",
+        "group": "火局"
+      },
+      "寅戌": {
+        "branches": [
+          "寅",
+          "戌"
+        ],
+        "element": "火",
+        "type": "生墓拱合",
+        "group": "火局",
+        "note": "缺中神，力量弱於生旺、旺墓半合"
+      },
+      "巳酉": {
+        "branches": [
+          "巳",
+          "酉"
+        ],
+        "element": "金",
+        "type": "生旺半合",
+        "group": "金局"
+      },
+      "酉丑": {
+        "branches": [
+          "酉",
+          "丑"
+        ],
+        "element": "金",
+        "type": "旺墓半合",
+        "group": "金局"
+      },
+      "巳丑": {
+        "branches": [
+          "巳",
+          "丑"
+        ],
+        "element": "金",
+        "type": "生墓拱合",
+        "group": "金局",
+        "note": "缺中神，力量弱於生旺、旺墓半合"
+      }
+    }
+  },
+  "grave_storehouses": {
+    "four_graves": [
+      "辰",
+      "戌",
+      "丑",
+      "未"
+    ],
+    "by_wuxing": {
+      "木": "未",
+      "火": "戌",
+      "金": "丑",
+      "水": "辰",
+      "土": "辰"
+    },
+    "by_branch": {
+      "辰": {
+        "stores": [
+          "水",
+          "土"
+        ],
+        "also": "水土墓庫"
+      },
+      "戌": {
+        "stores": [
+          "火"
+        ],
+        "also": "火墓庫"
+      },
+      "丑": {
+        "stores": [
+          "金"
+        ],
+        "also": "金墓庫"
+      },
+      "未": {
+        "stores": [
+          "木"
+        ],
+        "also": "木墓庫"
+      }
+    },
+    "usage_notes": [
+      "墓庫以用神或爻之五行判斷，不是只看地支本氣。",
+      "六爻常用水土同墓於辰；若採子平火土同宮，須另設流派參數。"
+    ]
+  },
+  "twelve_life_stages": {
+    "system": "六爻五行十二長生，不分陰陽；預設土隨水，水土同宮。",
+    "stage_order": [
+      "長生",
+      "沐浴",
+      "冠帶",
+      "臨官",
+      "帝旺",
+      "衰",
+      "病",
+      "死",
+      "墓",
+      "絕",
+      "胎",
+      "養"
+    ],
+    "start_by_wuxing": {
+      "木": "亥",
+      "火": "寅",
+      "金": "巳",
+      "水": "申",
+      "土": "申"
+    },
+    "by_wuxing": {
+      "木": {
+        "亥": "長生",
+        "子": "沐浴",
+        "丑": "冠帶",
+        "寅": "臨官",
+        "卯": "帝旺",
+        "辰": "衰",
+        "巳": "病",
+        "午": "死",
+        "未": "墓",
+        "申": "絕",
+        "酉": "胎",
+        "戌": "養"
+      },
+      "火": {
+        "寅": "長生",
+        "卯": "沐浴",
+        "辰": "冠帶",
+        "巳": "臨官",
+        "午": "帝旺",
+        "未": "衰",
+        "申": "病",
+        "酉": "死",
+        "戌": "墓",
+        "亥": "絕",
+        "子": "胎",
+        "丑": "養"
+      },
+      "金": {
+        "巳": "長生",
+        "午": "沐浴",
+        "未": "冠帶",
+        "申": "臨官",
+        "酉": "帝旺",
+        "戌": "衰",
+        "亥": "病",
+        "子": "死",
+        "丑": "墓",
+        "寅": "絕",
+        "卯": "胎",
+        "辰": "養"
+      },
+      "水": {
+        "申": "長生",
+        "酉": "沐浴",
+        "戌": "冠帶",
+        "亥": "臨官",
+        "子": "帝旺",
+        "丑": "衰",
+        "寅": "病",
+        "卯": "死",
+        "辰": "墓",
+        "巳": "絕",
+        "午": "胎",
+        "未": "養"
+      },
+      "土": {
+        "申": "長生",
+        "酉": "沐浴",
+        "戌": "冠帶",
+        "亥": "臨官",
+        "子": "帝旺",
+        "丑": "衰",
+        "寅": "病",
+        "卯": "死",
+        "辰": "墓",
+        "巳": "絕",
+        "午": "胎",
+        "未": "養"
+      }
+    },
+    "branch_by_stage": {
+      "木": {
+        "長生": "亥",
+        "沐浴": "子",
+        "冠帶": "丑",
+        "臨官": "寅",
+        "帝旺": "卯",
+        "衰": "辰",
+        "病": "巳",
+        "死": "午",
+        "墓": "未",
+        "絕": "申",
+        "胎": "酉",
+        "養": "戌"
+      },
+      "火": {
+        "長生": "寅",
+        "沐浴": "卯",
+        "冠帶": "辰",
+        "臨官": "巳",
+        "帝旺": "午",
+        "衰": "未",
+        "病": "申",
+        "死": "酉",
+        "墓": "戌",
+        "絕": "亥",
+        "胎": "子",
+        "養": "丑"
+      },
+      "金": {
+        "長生": "巳",
+        "沐浴": "午",
+        "冠帶": "未",
+        "臨官": "申",
+        "帝旺": "酉",
+        "衰": "戌",
+        "病": "亥",
+        "死": "子",
+        "墓": "丑",
+        "絕": "寅",
+        "胎": "卯",
+        "養": "辰"
+      },
+      "水": {
+        "長生": "申",
+        "沐浴": "酉",
+        "冠帶": "戌",
+        "臨官": "亥",
+        "帝旺": "子",
+        "衰": "丑",
+        "病": "寅",
+        "死": "卯",
+        "墓": "辰",
+        "絕": "巳",
+        "胎": "午",
+        "養": "未"
+      },
+      "土": {
+        "長生": "申",
+        "沐浴": "酉",
+        "冠帶": "戌",
+        "臨官": "亥",
+        "帝旺": "子",
+        "衰": "丑",
+        "病": "寅",
+        "死": "卯",
+        "墓": "辰",
+        "絕": "巳",
+        "胎": "午",
+        "養": "未"
+      }
+    },
+    "variant_notes": {
+      "liuyao_default": "土長生在申，水土同宮。",
+      "legacy_or_ziping_variant": "若採火土同宮/子平式，可另設土長生在寅；原檔曾列土寅，已保留於 metadata.legacy_life_stages_start。"
+    }
+  },
+  "month_break_rules": {
+    "definition": "月建所沖之爻為月破；月破多主失令、破散、難以成事，仍需看日辰、動變、用神旺衰是否救應。",
+    "by_month_branch": {
+      "子": "午",
+      "丑": "未",
+      "寅": "申",
+      "卯": "酉",
+      "辰": "戌",
+      "巳": "亥",
+      "午": "子",
+      "未": "丑",
+      "申": "寅",
+      "酉": "卯",
+      "戌": "辰",
+      "亥": "巳"
+    },
+    "tags": {
+      "month_break": "月破",
+      "month_clash": "月沖"
+    },
+    "evaluation_order_hint": [
+      "先定月令",
+      "再判月破",
+      "再看日辰、動爻、變爻能否生扶或合住"
+    ]
+  },
+  "covert_moving_rules": {
+    "name": "暗動",
+    "core_rule": "靜爻逢日辰沖，若本身旺相或得月日動爻生扶，作暗動；若休囚無救，多作日破而不作暗動。",
+    "required_conditions": [
+      "line_is_static == true",
+      "day_branch.clash == line.branch",
+      "line_strength in ['旺','相','得生扶','臨月建','得日生']"
+    ],
+    "negative_conditions": [
+      "line_is_moving == true",
+      "line_is_month_break_without_rescue == true",
+      "line_is_void_without_fill_or_clash_release == true",
+      "line_strength in ['休','囚','死'] and no_rescue == true"
+    ],
+    "output_tags": [
+      "暗動",
+      "日沖發動"
+    ],
+    "note": "暗動不能只由地支沖直接判定；必須與旺衰、旬空、月破、生扶合看。"
+  },
+  "change_effect_rules": {
+    "name": "動爻化出對本爻之回頭生剋",
+    "perspective": "以動爻本爻為受作用者，變爻為作用來源。",
+    "by_wuxing_relation": {
+      "changed_generates_original": {
+        "label": "回頭生",
+        "effect": "變爻生本爻，增力"
+      },
+      "changed_controls_original": {
+        "label": "回頭剋",
+        "effect": "變爻剋本爻，減力"
+      },
+      "same_element": {
+        "label": "化比和",
+        "effect": "同氣，視旺衰而定"
+      },
+      "original_generates_changed": {
+        "label": "化泄",
+        "effect": "本爻生變爻，泄氣"
+      },
+      "original_controls_changed": {
+        "label": "化耗/化財",
+        "effect": "本爻剋變爻，耗力；若變爻為財類另依用神判斷"
+      }
+    },
+    "algorithm": [
+      "if changed_wuxing == original_wuxing => 化比和",
+      "else if generates[changed_wuxing] == original_wuxing => 回頭生",
+      "else if controls[changed_wuxing] == original_wuxing => 回頭剋",
+      "else if generates[original_wuxing] == changed_wuxing => 化泄",
+      "else if controls[original_wuxing] == changed_wuxing => 化耗/化財"
+    ]
+  },
+  "advance_retreat_rules": {
+    "name": "化進神 / 化退神",
+    "default_mode": "strict_liuyao_pairs",
+    "strict_liuyao_pairs": {
+      "advance": {
+        "寅->卯": {
+          "from": "寅",
+          "to": "卯",
+          "element": "木"
+        },
+        "申->酉": {
+          "from": "申",
+          "to": "酉",
+          "element": "金"
+        },
+        "丑->辰": {
+          "from": "丑",
+          "to": "辰",
+          "element": "土"
+        },
+        "未->戌": {
+          "from": "未",
+          "to": "戌",
+          "element": "土"
+        }
+      },
+      "retreat": {
+        "卯->寅": {
+          "from": "卯",
+          "to": "寅",
+          "element": "木"
+        },
+        "酉->申": {
+          "from": "酉",
+          "to": "申",
+          "element": "金"
+        },
+        "辰->丑": {
+          "from": "辰",
+          "to": "丑",
+          "element": "土"
+        },
+        "戌->未": {
+          "from": "戌",
+          "to": "未",
+          "element": "土"
+        }
+      }
+    },
+    "output_labels": {
+      "advance": "化進",
+      "retreat": "化退",
+      "none": "非化進退"
+    },
+    "notes": [
+      "嚴格六爻法只列實際納甲動變常見之進退對。",
+      "火、水之同五行前後支在一般 64 卦動變對位中通常不作化進退，避免誤判。",
+      "化進化退只表示本位爻增衰趨勢，不直接等同全卦吉凶。"
+    ]
+  },
+  "yongshen_categories": {
+    "schema": {
+      "primary": "主要用神",
+      "secondary": "輔助參看",
+      "avoid_or_counterpart": "常見忌仇或對立面",
+      "examples": "問題例",
+      "v1_3_note": "v1.3 adds finer question categories for receivables, transactions, job search, health diagnosis/treatment, lawsuit posture, relationship status, partnerships, lost item location, and property purchase."
+    },
+    "categories": {
+      "finance_general": {
+        "label": "一般財務/金錢",
+        "primary": [
+          "妻財"
+        ],
+        "secondary": [
+          "子孫",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟"
+        ],
+        "examples": [
+          "收入",
+          "付款",
+          "獲利",
+          "資金是否到位"
+        ]
+      },
+      "investment_speculation": {
+        "label": "投資/交易/投機",
+        "primary": [
+          "妻財"
+        ],
+        "secondary": [
+          "子孫",
+          "官鬼",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟"
+        ],
+        "examples": [
+          "股票",
+          "基金",
+          "加密資產",
+          "短線交易"
+        ],
+        "note": "官鬼可作風險、壓力、制度性限制；兄弟多主分財、競爭、成本。"
+      },
+      "career_position": {
+        "label": "工作職位/升遷/官職",
+        "primary": [
+          "官鬼"
+        ],
+        "secondary": [
+          "父母",
+          "世爻",
+          "應爻"
+        ],
+        "avoid_or_counterpart": [
+          "子孫"
+        ],
+        "examples": [
+          "升遷",
+          "錄取",
+          "主管評價",
+          "職位能否取得"
+        ]
+      },
+      "job_income": {
+        "label": "工作收入/薪資",
+        "primary": [
+          "妻財"
+        ],
+        "secondary": [
+          "官鬼",
+          "父母"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟"
+        ],
+        "examples": [
+          "加薪",
+          "獎金",
+          "薪資談判"
+        ]
+      },
+      "exam_academic": {
+        "label": "考試/學業/證照",
+        "primary": [
+          "父母"
+        ],
+        "secondary": [
+          "官鬼",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "妻財"
+        ],
+        "examples": [
+          "考試結果",
+          "榜單",
+          "證照",
+          "文憑"
+        ]
+      },
+      "contract_document": {
+        "label": "合約/文件/申請",
+        "primary": [
+          "父母"
+        ],
+        "secondary": [
+          "官鬼",
+          "應爻"
+        ],
+        "avoid_or_counterpart": [
+          "妻財"
+        ],
+        "examples": [
+          "合約",
+          "文件",
+          "申請書",
+          "證明"
+        ]
+      },
+      "lawsuit_dispute": {
+        "label": "官司/爭議/申訴",
+        "primary": [
+          "官鬼"
+        ],
+        "secondary": [
+          "父母",
+          "世爻",
+          "應爻"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟",
+          "子孫"
+        ],
+        "examples": [
+          "訴訟",
+          "罰單",
+          "調解",
+          "申訴"
+        ]
+      },
+      "health_illness": {
+        "label": "疾病/身體狀況",
+        "primary": [
+          "官鬼"
+        ],
+        "secondary": [
+          "子孫",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "父母"
+        ],
+        "examples": [
+          "病因",
+          "症狀",
+          "恢復速度"
+        ],
+        "note": "官鬼多作病象，子孫多作醫藥、解厄、恢復力。"
+      },
+      "relationship_general": {
+        "label": "一般感情/關係",
+        "primary": [
+          "應爻",
+          "世爻"
+        ],
+        "secondary": [
+          "妻財",
+          "官鬼"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟",
+          "子孫"
+        ],
+        "examples": [
+          "對方態度",
+          "關係走向",
+          "復合"
+        ]
+      },
+      "relationship_male_asks_female": {
+        "label": "男問女/妻/女友",
+        "primary": [
+          "妻財"
+        ],
+        "secondary": [
+          "應爻",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟"
+        ],
+        "examples": [
+          "女方",
+          "妻子",
+          "女友",
+          "婚戀對象"
+        ]
+      },
+      "relationship_female_asks_male": {
+        "label": "女問男/夫/男友",
+        "primary": [
+          "官鬼"
+        ],
+        "secondary": [
+          "應爻",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "子孫"
+        ],
+        "examples": [
+          "男方",
+          "丈夫",
+          "男友",
+          "婚戀對象"
+        ]
+      },
+      "child_pregnancy": {
+        "label": "子女/懷孕/成果",
+        "primary": [
+          "子孫"
+        ],
+        "secondary": [
+          "父母",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "官鬼"
+        ],
+        "examples": [
+          "子女",
+          "懷孕",
+          "作品成果",
+          "解除風險"
+        ]
+      },
+      "partner_competitor": {
+        "label": "同輩/朋友/競爭者/合夥人",
+        "primary": [
+          "兄弟"
+        ],
+        "secondary": [
+          "應爻",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "官鬼"
+        ],
+        "examples": [
+          "合夥人",
+          "朋友",
+          "競爭對手",
+          "分潤者"
+        ]
+      },
+      "property_house_vehicle": {
+        "label": "房屋/土地/車輛/資產載體",
+        "primary": [
+          "父母"
+        ],
+        "secondary": [
+          "妻財",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟"
+        ],
+        "examples": [
+          "房產",
+          "租約",
+          "車輛",
+          "土地文件"
+        ]
+      },
+      "travel_movement": {
+        "label": "出行/搬遷/移動",
+        "primary": [
+          "世爻",
+          "應爻"
+        ],
+        "secondary": [
+          "驛馬",
+          "父母",
+          "官鬼"
+        ],
+        "avoid_or_counterpart": [
+          "日破/月破之爻"
+        ],
+        "examples": [
+          "旅行",
+          "搬家",
+          "遠行",
+          "出差"
+        ]
+      },
+      "lost_item": {
+        "label": "失物",
+        "primary": [
+          "妻財"
+        ],
+        "secondary": [
+          "應爻",
+          "父母"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟"
+        ],
+        "examples": [
+          "遺失物",
+          "找回物品",
+          "被拿走的東西"
+        ]
+      },
+      "general_trend": {
+        "label": "一般趨勢/未明確分類",
+        "primary": [
+          "世爻",
+          "應爻"
+        ],
+        "secondary": [
+          "動爻",
+          "用神由問題語義另定"
+        ],
+        "avoid_or_counterpart": [],
+        "examples": [
+          "事情會如何發展",
+          "整體吉凶"
+        ]
+      },
+      "finance_receivable": {
+        "label": "收款/債務/欠款",
+        "primary": [
+          "妻財"
+        ],
+        "secondary": [
+          "應爻",
+          "父母",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟"
+        ],
+        "examples": [
+          "對方是否會付款",
+          "這筆欠款能否收回"
+        ],
+        "note": "妻財為款項，應爻看對方，父母看契約憑證。"
+      },
+      "sale_purchase": {
+        "label": "買賣/交易成交",
+        "primary": [
+          "妻財"
+        ],
+        "secondary": [
+          "應爻",
+          "父母",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟",
+          "官鬼"
+        ],
+        "examples": [
+          "這筆交易能否成交",
+          "買賣價格是否合理"
+        ],
+        "note": "妻財看利益與價格，父母看契約文件，應爻看交易對象。"
+      },
+      "job_search": {
+        "label": "求職/面試/錄取",
+        "primary": [
+          "官鬼"
+        ],
+        "secondary": [
+          "父母",
+          "應爻",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "子孫"
+        ],
+        "examples": [
+          "面試是否錄取",
+          "這份工作是否適合"
+        ],
+        "note": "官鬼看職位與任用，父母看履歷、通知、制度。"
+      },
+      "project_outcome": {
+        "label": "專案/作品/成果",
+        "primary": [
+          "子孫"
+        ],
+        "secondary": [
+          "父母",
+          "世爻",
+          "官鬼"
+        ],
+        "avoid_or_counterpart": [
+          "父母過旺",
+          "官鬼過旺"
+        ],
+        "examples": [
+          "專案能否完成",
+          "作品是否能有成果"
+        ],
+        "note": "子孫看產出與成果，父母看文件規格，官鬼看壓力責任。"
+      },
+      "health_diagnosis_report": {
+        "label": "健康檢查/診斷報告",
+        "primary": [
+          "父母"
+        ],
+        "secondary": [
+          "官鬼",
+          "子孫",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "官鬼"
+        ],
+        "examples": [
+          "檢查報告是否有問題",
+          "診斷結果如何"
+        ],
+        "note": "父母看報告與檢驗資料，官鬼看病象，子孫看解厄恢復。"
+      },
+      "health_treatment_recovery": {
+        "label": "治療/恢復/解厄",
+        "primary": [
+          "子孫"
+        ],
+        "secondary": [
+          "官鬼",
+          "世爻",
+          "父母"
+        ],
+        "avoid_or_counterpart": [
+          "官鬼"
+        ],
+        "examples": [
+          "治療是否有效",
+          "身體能否恢復"
+        ],
+        "note": "子孫為醫藥與解厄，官鬼為病象，世爻看本人承受狀態。"
+      },
+      "lawsuit_plaintiff_claim": {
+        "label": "官司/申訴：我方主張",
+        "primary": [
+          "官鬼"
+        ],
+        "secondary": [
+          "父母",
+          "世爻",
+          "應爻"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟",
+          "子孫"
+        ],
+        "examples": [
+          "申訴是否成功",
+          "我方主張是否被接受"
+        ],
+        "note": "官鬼看司法壓力與裁決，父母看證據文書，世應分我方與對方。"
+      },
+      "relationship_reconciliation": {
+        "label": "感情復合/修復關係",
+        "primary": [
+          "應爻",
+          "世爻"
+        ],
+        "secondary": [
+          "妻財",
+          "官鬼",
+          "動爻"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟",
+          "子孫"
+        ],
+        "examples": [
+          "能否復合",
+          "關係能否修復"
+        ],
+        "note": "先看世應生剋與距離，再依性別/角色參看妻財官鬼。"
+      },
+      "relationship_existing": {
+        "label": "既有關係/伴侶互動",
+        "primary": [
+          "世爻",
+          "應爻"
+        ],
+        "secondary": [
+          "妻財",
+          "官鬼"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟",
+          "子孫"
+        ],
+        "examples": [
+          "目前關係狀態",
+          "對方是否真心"
+        ],
+        "note": "既有關係優先看世應互動，不宜單看妻財或官鬼。"
+      },
+      "business_partnership": {
+        "label": "合夥/合作/商業夥伴",
+        "primary": [
+          "應爻"
+        ],
+        "secondary": [
+          "兄弟",
+          "妻財",
+          "父母",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "官鬼"
+        ],
+        "examples": [
+          "合作是否可行",
+          "合夥人是否可靠"
+        ],
+        "note": "應爻看合作對象，兄弟看合夥競爭，妻財看利益，父母看契約。"
+      },
+      "lost_item_location": {
+        "label": "失物位置/找尋",
+        "primary": [
+          "妻財"
+        ],
+        "secondary": [
+          "應爻",
+          "父母",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟",
+          "空破之爻"
+        ],
+        "examples": [
+          "遺失物能否找回",
+          "東西在何處"
+        ],
+        "note": "妻財看物件，父母看容器、票據、包裝，應爻看外部處所。"
+      },
+      "property_purchase": {
+        "label": "購屋/租屋/不動產交易",
+        "primary": [
+          "父母"
+        ],
+        "secondary": [
+          "妻財",
+          "應爻",
+          "世爻"
+        ],
+        "avoid_or_counterpart": [
+          "兄弟",
+          "官鬼"
+        ],
+        "examples": [
+          "房子是否適合",
+          "購屋能否成交"
+        ],
+        "note": "父母看房屋土地與契約，妻財看價格資金，應爻看賣方或屋況對境。"
+      }
+    },
+    "relative_support_map": {
+      "妻財": {
+        "source": "子孫",
+        "counter": "兄弟",
+        "enemy_source": "父母",
+        "leaks_to": "官鬼"
+      },
+      "官鬼": {
+        "source": "妻財",
+        "counter": "子孫",
+        "enemy_source": "兄弟",
+        "leaks_to": "父母"
+      },
+      "父母": {
+        "source": "官鬼",
+        "counter": "妻財",
+        "enemy_source": "子孫",
+        "leaks_to": "兄弟"
+      },
+      "兄弟": {
+        "source": "父母",
+        "counter": "官鬼",
+        "enemy_source": "妻財",
+        "leaks_to": "子孫"
+      },
+      "子孫": {
+        "source": "兄弟",
+        "counter": "父母",
+        "enemy_source": "官鬼",
+        "leaks_to": "妻財"
+      }
+    },
+    "selection_policy": [
+      "先依問題類型選 primary 用神。",
+      "若問題涉及對方，應爻需同步判斷；涉及自身，世爻需同步判斷。",
+      "若 primary 不現，查伏神；若伏神亦受制，才判為用神不顯或難成。",
+      "不得只靠卦名或互卦決定用神。"
+    ]
+  },
+  "evaluation_recipes": {
+    "line_status_order": [
+      "identify_yongshen",
+      "mark_world_response",
+      "mark_month_build_and_month_break",
+      "mark_day_relation_clash_combine_harm_penalty",
+      "mark_void",
+      "mark_moving_and_changed_line",
+      "mark_back_generation_or_control",
+      "mark_advance_retreat",
+      "mark_life_stage_against_day_or_changed_branch",
+      "mark_hidden_spirit",
+      "aggregate_strength"
+    ],
+    "minimum_context_required": [
+      "month_branch",
+      "day_stem",
+      "day_branch",
+      "void_branches",
+      "original_hexagram",
+      "target_hexagram",
+      "cast_lines"
+    ],
+    "strength_hint": {
+      "strong_tags": [
+        "臨月建",
+        "得月生",
+        "得日生",
+        "長生",
+        "帝旺",
+        "回頭生",
+        "化進",
+        "動而得生"
+      ],
+      "weak_tags": [
+        "月破",
+        "日破",
+        "旬空",
+        "墓",
+        "絕",
+        "死",
+        "回頭剋",
+        "化退",
+        "受月剋",
+        "受日剋"
+      ]
+    }
+  },
+  "school_variants": {
+    "soil_life_stage": {
+      "default": "water_soil_same",
+      "options": {
+        "water_soil_same": "土十二長生採水土同宮，土長生申。",
+        "fire_soil_same": "土十二長生採火土同宮，土長生寅。"
+      }
+    },
+    "advance_retreat": {
+      "default": "strict_liuyao",
+      "options": {
+        "strict_liuyao": "僅採常見六爻嚴格對位。",
+        "expanded_same_element": "擴展同五行前後支，標記為 experimental，不作主判。"
+      }
+    }
+  },
+  "target_line_relevance_policy": {
+    "default": "moving_only",
+    "description": "之卦完整顯示，但非動爻之變卦爻只作背景；主判只採動爻變出。"
+  },
+  "shen_sha_basis": {
+    "traveling_horse": "day_branch",
+    "peach_blossom": "day_branch",
+    "noble_man": "day_stem",
+    "prosperity": "day_stem",
+    "sheep_blade": "day_stem"
+  }
+}

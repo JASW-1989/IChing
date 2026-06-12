@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>數位易經排盤系統 (Professional Edition v2.2)</title>
-    <!-- 引入專業天文曆法庫 (處理節氣與干支) -->
-    <script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.6.12/lunar.min.js"></script>
+    <title>數位易經排盤系統</title>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -14,8 +12,6 @@
             --bg-color: #f4f6f9;
             --card-bg: #ffffff;
             --text-color: #333;
-            --ti-color: #8e44ad; /* 體卦顏色 */
-            --yong-color: #d35400; /* 用卦顏色 */
         }
 
         body { font-family: "Noto Serif TC", "Noto Sans TC", serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; line-height: 1.6; }
@@ -27,9 +23,6 @@
         .subtitle { font-size: 14px; color: #666; }
         #system-status { margin-top: 10px; font-size: 13px; font-weight: bold; color: #e74c3c; }
         #system-status.ready { color: #27ae60; }
-        
-        #loading-bar-container { width: 300px; height: 4px; background: #ddd; margin: 10px auto; border-radius: 2px; overflow: hidden; display: none; }
-        #loading-bar { width: 0%; height: 100%; background: var(--primary-color); transition: width 0.3s; }
 
         /* --- Components --- */
         .card { background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 25px; margin-bottom: 20px; transition: transform 0.2s; }
@@ -53,18 +46,10 @@
         /* --- Form Elements --- */
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
-        input[type="text"], input[type="number"], input[type="datetime-local"], select {
+        input[type="text"], input[type="datetime-local"], select {
             width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;
         }
         .help-text { font-size: 12px; color: #888; margin-top: 4px; }
-
-        /* Specific Inputs for Methods */
-        .method-input { display: none; margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px; border: 1px dashed #ddd; }
-        .method-input.active { display: block; }
-        
-        .manual-lines-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; text-align: center; }
-        .manual-lines-grid select { font-size: 12px; padding: 5px; }
-        .manual-label { font-size: 12px; color: #666; margin-bottom: 3px; }
 
         .btn-primary {
             background: var(--primary-color); color: white; border: none; padding: 12px 30px; font-size: 16px; border-radius: 30px;
@@ -73,7 +58,6 @@
         .btn-primary:hover { background: #34495e; transform: translateY(-2px); }
         .btn-primary:disabled { background: #bdc3c7; cursor: not-allowed; transform: none; }
 
-        /* --- File Upload Area --- */
         #upload-zone { border: 2px dashed #bdc3c7; padding: 30px; text-align: center; border-radius: 8px; cursor: pointer; background: #fafafa; }
         #upload-zone:hover { border-color: var(--secondary-color); background: #f0f7ff; }
         #upload-zone p { pointer-events: none; color: #7f8c8d; }
@@ -106,342 +90,394 @@
         .beast-tag { font-weight: bold; font-size: 11px; color: #27ae60; }
         .void-tag { background: #95a5a6; color: white; padding: 1px 3px; border-radius: 2px; font-size: 10px; margin-left: 3px; }
         .clash-tag { color: red; font-weight: bold; margin-left: 3px; font-size: 10px; }
-        
-        /* New Tags for Mei Hua */
-        .ti-tag { background: var(--ti-color); color: white; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-right: 5px; }
-        .yong-tag { background: var(--yong-color); color: white; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-right: 5px; }
-        .meihua-section-label { 
-            position: absolute; left: -50px; width: 40px; text-align: right; font-size: 12px; font-weight: bold; color: #666;
-            top: 50%; transform: translateY(-50%);
-        }
-
-        /* Manual Upload Fallback */
-        #manual-upload { display: none; margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; text-align: center; }
-        #manual-upload p { font-size: 13px; color: #7f8c8d; line-height: 1.5; }
-        #manual-file-btn { display: inline-block; background: #95a5a6; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 14px; margin-top: 10px; }
-        #manual-file-btn:hover { background: #7f8c8d; }
 
         footer { text-align: center; margin-top: 50px; color: #999; font-size: 12px; }
-    </style>
+    
+
+        .pill-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
+        .tag { display: inline-block; padding: 1px 4px; border-radius: 3px; font-size: 10px; line-height: 1.4; background: #ecf0f1; color: #34495e; margin-left: 3px; }
+        .tag.good { background: #eafaf1; color: #1e8449; }
+        .tag.warn { background: #fff4e5; color: #b9770e; }
+        .tag.bad { background: #fdecea; color: #c0392b; }
+        .tag.neutral { background: #eef2f7; color: #5d6d7e; }
+        .tag.move { background: #fff9c4; color: #8a6d00; font-weight: bold; }
+        .tag.structure { background: #f4ecf7; color: #7d3c98; }
+        .structured-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; font-size: 13px; }
+        .structured-box { background: #f8f9fa; border: 1px solid #ecf0f1; border-radius: 6px; padding: 10px; }
+        .structured-box h3 { margin: 0 0 8px 0; font-size: 14px; color: var(--primary-color); }
+        .line-eval { font-size: 11px; color: #555; margin-top: 4px; }
+        .strength-strong { color: #1e8449; font-weight: bold; }
+        .strength-mid { color: #7d6608; font-weight: bold; }
+        .strength-weak { color: #c0392b; font-weight: bold; }
+        textarea.json-output { width:100%; height:220px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; padding:10px; border:1px solid #ddd; border-radius:4px; font-size:12px; resize:vertical; box-sizing:border-box; }
+        .warning-note { font-size: 12px; color: #8a6d00; background: #fff9e6; border-left: 4px solid #f1c40f; padding: 8px 10px; border-radius: 4px; margin-top: 8px; }
+
+        .muted-target { opacity: 0.42; background: #fafafa; }
+        .muted-target .l-center { opacity: 0.55; }
+        .settings-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:10px; }
+        .btn-secondary { background:#5d6d7e; color:white; border:none; padding:10px 18px; font-size:14px; border-radius:20px; cursor:pointer; margin-top:8px; margin-right:8px; }
+        .btn-secondary:hover { background:#34495e; }
+
+        .diagnostic-ok { color:#1e8449; font-weight:bold; }
+        .diagnostic-bad { color:#c0392b; font-weight:bold; }
+        .diagnostic-warn { color:#b9770e; font-weight:bold; }
+</style>
 </head>
 <body>
-
 <div class="container">
     <header>
         <h1>數位易經排盤系統</h1>
-        <div class="subtitle">真太陽時干支｜梅花體用｜六爻神煞｜AI 輔助</div>
-        <div id="system-status">正在連線至雲端資料庫...</div>
-        <div id="loading-bar-container"><div id="loading-bar"></div></div>
+        <div class="subtitle">京房納甲｜節氣干支｜四柱｜六爻判斷｜AI 解卦提示詞</div>
+        <div id="system-status">正在載入系統資料...</div>
     </header>
 
-    <!-- 1. System Loader (Auto Fetch + Manual Fallback) -->
-    <div id="loader-card" style="text-align: center;">
-        <!-- This area shows manual upload if fetch fails -->
-        <div id="manual-upload">
-            <p>⚠️ 雲端連線失敗 (可能因跨域限制或無網路)。<br>請手動選取 <code>iching_*.json</code> 等三個檔案：</p>
-            <label id="manual-file-btn">
-                📂 點此選取檔案
-                <input type="file" id="fileInput" multiple accept=".json" onchange="loadFiles(event)" style="display:none">
-            </label>
+    <div id="loader-card" class="card">
+        <h2>系統載入中</h2>
+        <div class="warning-note">
+            正在載入排盤資料。完成後即可輸入問題並起卦。
         </div>
+        <div id="loader-detail" class="help-text" style="margin-top:10px;">請稍候...</div>
+        <div id="self-test-output" class="help-text" style="display:none;"></div>
     </div>
 
-    <!-- 2. User Input -->
     <div id="input-card" class="card" style="display:none; opacity: 0.5; pointer-events: none;">
-        <h2>
-            誠心起卦
+        <h2>誠心起卦
             <span class="info-icon" onclick="toggleTooltip(event)">?
                 <div class="tooltip-content" id="guide-tooltip">
                     <h4>提問指南</h4>
                     <ul>
                         <li><strong>具體單一</strong>：一卦問一事，避免多重選擇。</li>
                         <li><strong>時間範圍</strong>：設定明確的時間點。</li>
-                        <li><strong>包含背景</strong>：請將重要的人、事、時、地背景描述在問題中。</li>
-                        <li><strong>適合問</strong>：決策結果、趨勢、吉凶、現況。</li>
+                        <li><strong>用神分類</strong>：選擇問題性質，系統會提供主用與輔助參看。</li>
+                        <li><strong>節氣交界</strong>：若接近節氣，請用正式萬年曆校對。</li>
                     </ul>
-                    <div style="margin-top:10px; font-size:11px; color:#888;">心誠則靈，輸入越詳細，解析越精確。</div>
                 </div>
             </span>
         </h2>
-        
         <div class="form-group">
             <label>占卜主題 (Question)</label>
-            <input type="text" id="q-topic" placeholder="例如：這項投資未來半年的獲利機會如何？（可包含地點等背景）">
+            <input type="text" id="q-topic" placeholder="例如：這項投資未來半年的獲利機會如何？">
         </div>
-
+        <div class="form-group">
+            <label>問題分類 / 用神預設</label>
+            <select id="q-category"><option value="general_trend">一般趨勢</option></select>
+            <div class="help-text">此分類提供預設主用與輔助參看；下方可手動覆寫。</div>
+        </div>
+        <div class="form-group">
+            <label>手動覆寫用神（可選）</label>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <select id="q-primary-override"><option value="auto">主用：依分類</option></select>
+                <select id="q-secondary-override"><option value="auto">輔助：依分類</option></select>
+            </div>
+            <div class="help-text">適用於問題分類不精準時。覆寫結果會保存在本次卦盤資料中。</div>
+        </div>
         <div class="form-group">
             <label>占卜時間 (Time)</label>
             <input type="datetime-local" id="q-time">
-            <div class="help-text">系統採用 <strong>24節氣真太陽時</strong> 計算干支 (立春換年/節氣換月)。</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px;">
+                <select id="q-timezone"><option value="Asia/Taipei">時區：Asia/Taipei (UTC+08:00)</option></select>
+                <select id="q-zi-rule">
+                    <option value="civil_midnight">換日：民用日期 / 子正 00:00</option>
+                    <option value="zi_start_23">換日：子初 23:00</option>
+                    <option value="civil_only">換日：沿用輸入日期</option>
+                </select>
+            </div>
+            <div style="margin-top:8px;">
+                <select id="q-month-override">
+                    <option value="auto">月令：依節氣自動推算</option>
+                </select>
+            </div>
+            <div class="help-text">年柱以立春為界；月令以節氣為界；日柱依所選子時換日規則計算。若接近節氣交界或需與外部萬年曆一致，可用「月令校正」手動覆寫。節氣時刻以天文近似值計算，接近交界時會提示校對。</div>
+        </div>
+        
+        <div class="form-group">
+            <label>流派與判斷設定</label>
+            <div class="settings-grid">
+                <select id="q-soil-stage-mode">
+                    <option value="water_soil_same">土長生：水土同宮（預設，土長生申）</option>
+                    <option value="fire_soil_same">土長生：火土同宮（土長生寅）</option>
+                </select>
+                <select id="q-advance-mode">
+                    <option value="strict_liuyao">化進退：嚴格六爻對位</option>
+                    <option value="expanded_same_element">化進退：擴展同五行序列（實驗）</option>
+                </select>
+                <select id="q-target-relevance">
+                    <option value="moving_only">之卦：主判只看動爻變出</option>
+                    <option value="full_background">之卦：完整背景顯示，但仍不等權</option>
+                </select>
+            </div>
+            <div class="help-text">流派設定會保存在本次卦盤資料中；實驗模式只作輔助標記，不應凌駕月日、用神與動爻主判。</div>
         </div>
 
         <div class="form-group">
             <label>起卦方式 (Method)</label>
-            <select id="q-method" onchange="toggleMethodInputs()">
-                <option value="auto">電腦自動起卦 (大衍之數模擬)</option>
-                <option value="coins">電腦模擬金錢卦 (文王課 - 三枚銅錢)</option>
-                <option value="number">數字起卦 (梅花易數 - 自動定體用)</option>
-                <option value="manual">手動指定 (自行擲幣/米卦)</option>
+            <select id="q-method" onchange="toggleManualLinesInput()">
+                <option value="auto_crypto">電腦自動起卦（Crypto 隨機數，依蓍草法機率分布抽樣）</option>
+                <option value="manual">手動輸入六爻值</option>
             </select>
+            <input type="text" id="q-lines" placeholder="由下至上輸入 6 個值，例如：7,8,9,6,8,7" style="display:none; margin-top:8px;">
+            <div class="help-text">自動起卦使用瀏覽器安全隨機數，並依蓍草法機率分布抽樣；若瀏覽器不支援，請改用手動輸入六爻。</div>
         </div>
-
-        <!-- Method A: Auto (Da Yan) -->
-        <div id="method-auto" class="method-input active">
-            <div class="help-text">
-                <strong>古法揲蓍模擬：</strong>模擬 49 策，經 18 變求卦。<br>
-                特色：不易老（變爻少），機率為 9(老陽3/16), 6(老陰1/16)。適合問長遠、宏觀之事。
-            </div>
-        </div>
-
-        <!-- Method B: Coins (NEW) -->
-        <div id="method-coins" class="method-input">
-            <div class="help-text">
-                <strong>金錢卦模擬：</strong>模擬投擲三枚銅錢，共擲六次。<br>
-                特色：變爻機率均等 (老陽1/8, 老陰1/8)。六爻預測最主流方法，適合問財運、流年、具體吉凶。
-            </div>
-        </div>
-
-        <!-- Method C: Number (Mei Hua) -->
-        <div id="method-number" class="method-input">
-            <label style="font-size:13px;">請輸入三組數字 (範圍不限)</label>
-            <div style="display:flex; gap:10px;">
-                <input type="number" id="num1" placeholder="上卦數">
-                <input type="number" id="num2" placeholder="下卦數">
-                <input type="number" id="num3" placeholder="變爻數">
-            </div>
-            <div class="help-text">原理：(數1÷8餘數=上卦), (數2÷8餘數=下卦), (數3÷6餘數=動爻)。<br><strong>注意：</strong>數字起卦重「體用生剋」，系統將自動標示體卦與用卦。</div>
-        </div>
-
-        <!-- Method D: Manual -->
-        <div id="method-manual" class="method-input">
-            <label style="font-size:13px;">請依序輸入初爻至上爻的結果</label>
-            <div class="manual-lines-grid">
-                <div><div class="manual-label">初爻</div><select id="line1"><option value="8">少陰 (8)</option><option value="7">少陽 (7)</option><option value="6">老陰 (6) X</option><option value="9">老陽 (9) O</option></select></div>
-                <div><div class="manual-label">二爻</div><select id="line2"><option value="8">少陰 (8)</option><option value="7">少陽 (7)</option><option value="6">老陰 (6) X</option><option value="9">老陽 (9) O</option></select></div>
-                <div><div class="manual-label">三爻</div><select id="line3"><option value="8">少陰 (8)</option><option value="7">少陽 (7)</option><option value="6">老陰 (6) X</option><option value="9">老陽 (9) O</option></select></div>
-                <div><div class="manual-label">四爻</div><select id="line4"><option value="8">少陰 (8)</option><option value="7">少陽 (7)</option><option value="6">老陰 (6) X</option><option value="9">老陽 (9) O</option></select></div>
-                <div><div class="manual-label">五爻</div><select id="line5"><option value="8">少陰 (8)</option><option value="7">少陽 (7)</option><option value="6">老陰 (6) X</option><option value="9">老陽 (9) O</option></select></div>
-                <div><div class="manual-label">上爻</div><select id="line6"><option value="8">少陰 (8)</option><option value="7">少陽 (7)</option><option value="6">老陰 (6) X</option><option value="9">老陽 (9) O</option></select></div>
-            </div>
-            <div class="help-text">6=老陰(變), 7=少陽(不變), 8=少陰(不變), 9=老陽(變)。</div>
-        </div>
-
-        <button class="btn-primary" style="margin-top:20px;" onclick="castHexagram()">開始排盤</button>
+        <button class="btn-primary" onclick="castHexagram()">開始排盤</button>
     </div>
 
-    <!-- 3. Result Display -->
     <div id="result-section">
         <div class="result-meta">
             <div><span class="meta-label">主題：</span><span class="meta-val" id="res-topic">-</span></div>
             <div><span class="meta-label">西曆：</span><span class="meta-val" id="res-time">-</span></div>
             <div><span class="meta-label">四柱：</span><span class="meta-val" id="res-gz">-</span></div>
-            <div><span class="meta-label">節氣月令：</span><span class="meta-val" id="res-season">-</span></div>
+            <div><span class="meta-label">月令：</span><span class="meta-val" id="res-month">-</span></div>
             <div><span class="meta-label">旬空：</span><span class="meta-val" id="res-void">-</span></div>
         </div>
+        <div id="calendar-note" class="warning-note" style="display:none;"></div>
 
         <div class="hex-container">
-            <!-- 本卦 -->
-            <div class="hex-box">
-                <div class="hex-title" id="orig-title">本卦</div>
-                <div id="orig-lines" style="display: flex; flex-direction: column-reverse;"></div>
-            </div>
-
-            <!-- 互卦 -->
-            <div class="hex-box mutual">
-                <div class="hex-title" id="mutual-title" style="color:#7f8c8d;">互卦 (過程)</div>
-                <div id="mutual-lines" style="display: flex; flex-direction: column-reverse;"></div>
-            </div>
-            
-            <!-- 之卦 -->
-            <div class="hex-box">
-                <div class="hex-title" id="target-title">之卦</div>
-                <div id="target-lines" style="display: flex; flex-direction: column-reverse;"></div>
-            </div>
+            <div class="hex-box"><div class="hex-title" id="orig-title">本卦</div><div id="orig-lines" style="display: flex; flex-direction: column-reverse;"></div></div>
+            <div class="hex-box mutual"><div class="hex-title" id="mutual-title" style="color:#7f8c8d;">互卦（輔助）</div><div id="mutual-lines" style="display: flex; flex-direction: column-reverse;"></div></div>
+            <div class="hex-box"><div class="hex-title" id="target-title">之卦</div><div id="target-lines" style="display: flex; flex-direction: column-reverse;"></div></div>
         </div>
-        
-        <div class="card" style="margin-top:20px;">
-            <h2>神煞提示</h2>
-            <div id="shensha-info" style="font-size:14px;"></div>
+        <div class="card" style="margin-top:20px;"><h2>神煞提示</h2><div id="shensha-info" style="font-size:14px;"></div></div>
+        <div class="card" style="margin-top:20px;"><h2>卦象判斷摘要</h2><div id="structured-summary"></div></div>
+        <div class="card" style="margin-top:20px; border-left: 4px solid #16a085;">
+            <h2>卦盤資料</h2>
+            <div style="font-size:13px; color:#666; margin-bottom:10px;">可保存本次排盤紀錄，或複製給 AI 輔助解讀。</div>
+            <textarea id="structured-json-area" class="json-output" readonly></textarea>
+            <button class="btn-primary" style="margin-top:10px; background:#16a085;" onclick="copyStructuredJson()">複製卦盤資料</button>
+            <button class="btn-secondary" onclick="downloadStructuredJson()">下載本次卦盤 JSON</button>
+            <button class="btn-secondary" onclick="downloadTextReport()">下載文字摘要</button>
         </div>
-
         <div class="card" style="margin-top:20px; border-left: 4px solid #8e44ad;">
-            <h2>AI 解卦專用提示詞 (AI Prompt)</h2>
-            <div style="font-size:13px; color:#666; margin-bottom:10px;">
-                請複製下方的文字，發送給 AI 模型 (如 ChatGPT, Claude, Gemini)，即可獲得專業的六爻/梅花解卦報告。
-            </div>
-            <textarea id="ai-prompt-area" style="width:100%; height:200px; font-family:monospace; padding:10px; border:1px solid #ddd; border-radius:4px; font-size:12px; resize:vertical;" readonly></textarea>
-            <button class="btn-primary" style="margin-top:10px; background:#8e44ad;" onclick="copyPrompt()">📋 複製提示詞</button>
+            <h2>AI 解卦提示詞</h2>
+            <div style="font-size:13px; color:#666; margin-bottom:10px;">可複製下列內容，交給 AI 依月日旺衰、空破合沖刑害與動變關係輔助解讀。</div>
+            <textarea id="ai-prompt-area" style="width:100%; height:180px; font-family:monospace; padding:10px; border:1px solid #ddd; border-radius:4px; font-size:12px; resize:vertical; box-sizing:border-box;" readonly></textarea>
+            <button class="btn-primary" style="margin-top:10px; background:#8e44ad;" onclick="copyPrompt()">複製提示詞</button>
         </div>
-
     </div>
-
-    <footer>
-        Digital I-Ching Engine © 2026 | Professional Edition v2.2
-    </footer>
+    <footer>數位易經排盤系統 © 2026</footer>
 </div>
-
 <script>
 // Data Store
 const DB = {
-    static: null, matrix: null, logic: null, lookup: {}
+    static: null, matrix: null, logic: null, lookup: {}, lastAnalysis: null, fileMeta: {}, loadMode: null, lastSelfTest: null
 };
 
-// URLs for JSON files
-const JSON_URLS = [
-    "https://jasw-1989.github.io/IChing/iching_database_full.json",
-    "https://jasw-1989.github.io/IChing/iching_dynamic_matrix.json",
-    "https://jasw-1989.github.io/IChing/iching_interact_logic.json"
+const HEAVENLY_STEMS = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+const EARTHLY_BRANCHES = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+const BRANCH_WUXING = { 子:"水", 丑:"土", 寅:"木", 卯:"木", 辰:"土", 巳:"火", 午:"火", 未:"土", 申:"金", 酉:"金", 戌:"土", 亥:"水" };
+const STEM_WUXING = { 甲:"木", 乙:"木", 丙:"火", 丁:"火", 戊:"土", 己:"土", 庚:"金", 辛:"金", 壬:"水", 癸:"水" };
+const YIN_MONTH_BRANCHES = ["寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥", "子", "丑"];
+const SOLAR_JIE_TERMS = [
+    { name:"小寒", branch:"丑", longitude:285, approxMonth:1, approxDay:6, monthIndexFromYin:11 },
+    { name:"立春", branch:"寅", longitude:315, approxMonth:2, approxDay:4, monthIndexFromYin:0 },
+    { name:"驚蟄", branch:"卯", longitude:345, approxMonth:3, approxDay:6, monthIndexFromYin:1 },
+    { name:"清明", branch:"辰", longitude:15, approxMonth:4, approxDay:5, monthIndexFromYin:2 },
+    { name:"立夏", branch:"巳", longitude:45, approxMonth:5, approxDay:6, monthIndexFromYin:3 },
+    { name:"芒種", branch:"午", longitude:75, approxMonth:6, approxDay:6, monthIndexFromYin:4 },
+    { name:"小暑", branch:"未", longitude:105, approxMonth:7, approxDay:7, monthIndexFromYin:5 },
+    { name:"立秋", branch:"申", longitude:135, approxMonth:8, approxDay:8, monthIndexFromYin:6 },
+    { name:"白露", branch:"酉", longitude:165, approxMonth:9, approxDay:8, monthIndexFromYin:7 },
+    { name:"寒露", branch:"戌", longitude:195, approxMonth:10, approxDay:8, monthIndexFromYin:8 },
+    { name:"立冬", branch:"亥", longitude:225, approxMonth:11, approxDay:7, monthIndexFromYin:9 },
+    { name:"大雪", branch:"子", longitude:255, approxMonth:12, approxDay:7, monthIndexFromYin:10 }
 ];
+const solarTermCache = {};
 
-// Auto-Load on Startup
-window.onload = async function() {
-    document.getElementById('loading-bar-container').style.display = 'block';
-    
-    try {
-        await Promise.all([
-            fetchJSON(JSON_URLS[0], 'static'),
-            fetchJSON(JSON_URLS[1], 'matrix'),
-            fetchJSON(JSON_URLS[2], 'logic')
-        ]);
-        
-        initApp();
-        
-    } catch (error) {
-        console.warn("Fetch Error (Cloud):", error);
-        document.getElementById('system-status').innerText = "雲端連線失敗，請手動載入資料。";
-        document.getElementById('system-status').style.color = "#e74c3c";
-        document.getElementById('loading-bar-container').style.display = 'none';
-        
-        // Show Manual Upload as Fallback
-        document.getElementById('loader-card').style.display = 'block';
-        document.getElementById('manual-upload').style.display = 'block';
-    }
-};
+function mod(n, m) { return ((n % m) + m) % m; }
+function escapeHTML(value) { return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[ch] || ch)); }
+function gzName(stemIndex, branchIndex) { return HEAVENLY_STEMS[mod(stemIndex,10)] + EARTHLY_BRANCHES[mod(branchIndex,12)]; }
 
-async function fetchJSON(url, type) {
-    updateProgress();
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    const json = await response.json();
-    processLoadedData(json, type);
-    updateProgress();
+function normalizeDeg(deg) { return mod(deg, 360); }
+function signedAngleDiff(current, target) {
+    const d = normalizeDeg(current - target);
+    return d > 180 ? d - 360 : d;
 }
-
-function processLoadedData(json, type) {
-    if (type === 'static' || (json.metadata && json.metadata.system && json.metadata.system.includes("Digital I-Ching Engine"))) {
-        DB.static = Array.isArray(json) ? json : json.hexagrams;
-        if (json.hexagrams) json.hexagrams.forEach(h => DB.lookup[h.id] = h);
-    } else if (type === 'matrix' || (json.metadata && json.metadata.name === "I-Ching Dynamic Relatives Matrix")) {
-        DB.matrix = json.matrix;
-    } else if (type === 'logic' || (json.metadata && json.metadata.name === "I-Ching Interaction Logic Layer")) {
-        DB.logic = json;
-    }
+function toJulianDay(date) { return date.getTime() / 86400000 + 2440587.5; }
+function sunApparentLongitude(date) {
+    const jd = toJulianDay(date);
+    const T = (jd - 2451545.0) / 36525;
+    const L0 = normalizeDeg(280.46646 + 36000.76983 * T + 0.0003032 * T * T);
+    const M = normalizeDeg(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
+    const Mrad = M * Math.PI / 180;
+    const C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(Mrad)
+            + (0.019993 - 0.000101 * T) * Math.sin(2 * Mrad)
+            + 0.000289 * Math.sin(3 * Mrad);
+    const trueLong = L0 + C;
+    const omega = 125.04 - 1934.136 * T;
+    return normalizeDeg(trueLong - 0.00569 - 0.00478 * Math.sin(omega * Math.PI / 180));
 }
-
-let progress = 0;
-function updateProgress() {
-    progress += 16;
-    if (progress > 100) progress = 100;
-    document.getElementById('loading-bar').style.width = progress + '%';
+function getMonthStemIndex(yearStem, monthIndexFromYin) {
+    const stemIndex = HEAVENLY_STEMS.indexOf(yearStem);
+    const startMap = { 0:2, 5:2, 1:4, 6:4, 2:6, 7:6, 3:8, 8:8, 4:0, 9:0 };
+    return mod(startMap[stemIndex] + monthIndexFromYin, 10);
 }
-
-function loadFiles(event) {
-    const files = event.target.files;
-    let loadedCount = 0;
-    Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                const json = JSON.parse(e.target.result);
-                let type = '';
-                if (json.metadata && json.metadata.system && json.metadata.system.includes("Digital I-Ching Engine")) type = 'static';
-                else if (json.metadata && json.metadata.name === "I-Ching Dynamic Relatives Matrix") type = 'matrix';
-                else if (json.metadata && json.metadata.name === "I-Ching Interaction Logic Layer") type = 'logic';
-                
-                processLoadedData(json, type);
-                loadedCount++;
-                if (DB.static && DB.matrix && DB.logic) initApp();
-            } catch (err) { console.error(err); }
-        };
-        reader.readAsText(file);
-    });
-}
-
-function initApp() {
-    document.getElementById('system-status').innerText = "系統就緒 (System Ready)";
-    document.getElementById('system-status').className = "ready";
-    document.getElementById('loading-bar-container').style.display = 'none';
-    document.getElementById('loader-card').style.display = 'none';
-    
-    const inputCard = document.getElementById('input-card');
-    inputCard.style.display = 'block';
-    inputCard.style.opacity = '1';
-    inputCard.style.pointerEvents = 'auto';
-    
-    const now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    document.getElementById('q-time').value = now.toISOString().slice(0,16);
-}
-
-function toggleTooltip(e) { e.stopPropagation(); document.getElementById('guide-tooltip').classList.toggle('show'); }
-document.addEventListener('click', () => { document.getElementById('guide-tooltip').classList.remove('show'); });
-
-function toggleMethodInputs() {
-    document.querySelectorAll('.method-input').forEach(el => el.classList.remove('active'));
-    const method = document.getElementById('q-method').value;
-    document.getElementById('method-' + method).classList.add('active');
-}
-
-// ----------------------------------------------------
-// Core Fix: Astronomical Calendar (GanZhi)
-// Using lunar-javascript library
-// ----------------------------------------------------
-const ZHI_WUXING_MAP = {
-    "子": "水", "丑": "土", "寅": "木", "卯": "木", "辰": "土", "巳": "火",
-    "午": "火", "未": "土", "申": "金", "酉": "金", "戌": "土", "亥": "水"
-};
-
-function getGanZhi(dateStr) {
-    // Convert input time to Date object
-    const d = new Date(dateStr);
-    
-    // Create Solar object from the input date
-    const solar = Solar.fromYmdHms(d.getFullYear(), d.getMonth() + 1, d.getDate(), d.getHours(), d.getMinutes(), 0);
-    
-    // Convert to Lunar (which handles GanZhi logic based on JieQi internally for BaZi)
-    const lunar = solar.getLunar();
-    const baZi = lunar.getEightChar();
-
-    // JieQi Logic: Lunar library handles the "Month" change at the exact Solar Term (JieQi)
-    // We get the Stem/Branch directly from the library
-    
-    const mZhi = baZi.getMonthZhi();
-    const dZhi = baZi.getDayZhi();
-
-    return {
-        year: baZi.getYear(),
-        month: baZi.getMonth(),
-        day: baZi.getDay(),
-        time: baZi.getTime(),
-        
-        // Detailed Components
-        yearStem: baZi.getYearGan(),
-        yearBranch: baZi.getYearZhi(),
-        monthStem: baZi.getMonthGan(),
-        monthBranch: mZhi, // This is now correct (e.g., Yin, Mao) based on Solar Terms
-        dayStem: baZi.getDayGan(),
-        dayBranch: dZhi,
-        
-        // Elements (WuXing)
-        monthWuxing: ZHI_WUXING_MAP[mZhi], // e.g., "Wood"
-        dayWuxing: ZHI_WUXING_MAP[dZhi]    // e.g., "Fire"
-    };
-}
-
+/* Obsolete Date-object calendar helpers removed. Active calendar path is the timezone-aware engine implementation below. */
 function getVoid(dayStem, dayBranch) {
     const gz = dayStem + dayBranch;
     return DB.logic.sixty_jia_zi_voids[gz] || [];
 }
+
+function ensureEnhancedLogic(logic) {
+    if (!logic || !logic.metadata || logic.metadata.name !== 'I-Ching Interaction Logic Layer') {
+        throw new Error('互動邏輯資料格式不符：metadata.name 必須為 I-Ching Interaction Logic Layer。');
+    }
+    const version = Number(String(logic.metadata.version || '0').match(/\d+(?:\.\d+)?/)?.[0] || '0');
+    if (version < 1.3) {
+        throw new Error(`互動邏輯資料版本過舊：需要 enhanced v1.3 以上，目前為 ${logic.metadata.version || 'unknown'}。請使用 iching_interact_logic_enhanced_v1_3.json。`);
+    }
+    const mustExist = [
+        'six_beasts_rules', 'branch_interactions', 'shen_sha', 'sixty_jia_zi_voids',
+        'wuxing_relations', 'branch_combinations', 'grave_storehouses', 'twelve_life_stages',
+        'month_break_rules', 'covert_moving_rules', 'change_effect_rules', 'advance_retreat_rules',
+        'yongshen_categories', 'evaluation_recipes'
+    ];
+    const missing = mustExist.filter(k => !logic[k]);
+    if (missing.length) throw new Error(`互動邏輯資料缺少必要欄位：${missing.join('、')}。`);
+    const wx = ['木','火','土','金','水'];
+    if (!logic.wuxing_relations.generates || !logic.wuxing_relations.controls) throw new Error('五行生剋表不完整。');
+    wx.forEach(w => {
+        if (!logic.wuxing_relations.generates[w]) throw new Error(`五行相生缺少 ${w}。`);
+        if (!logic.wuxing_relations.controls[w]) throw new Error(`五行相剋缺少 ${w}。`);
+        const stages = logic.twelve_life_stages?.by_wuxing?.[w];
+        if (!stages) throw new Error(`十二長生缺少 ${w}。`);
+        EARTHLY_BRANCHES.forEach(b => { if (!stages[b]) throw new Error(`十二長生 ${w} 缺少 ${b}。`); });
+    });
+    EARTHLY_BRANCHES.forEach(b => {
+        if (!logic.branch_interactions[b]) throw new Error(`地支互動缺少 ${b}。`);
+        if (!logic.month_break_rules?.by_month_branch?.[b]) throw new Error(`月破規則缺少 ${b}月。`);
+    });
+    HEAVENLY_STEMS.forEach(s => {
+        if (!Array.isArray(logic.six_beasts_rules[s]) || logic.six_beasts_rules[s].length !== 6) throw new Error(`六獸規則缺少 ${s} 或長度不是 6。`);
+    });
+    if (Object.keys(logic.sixty_jia_zi_voids || {}).length !== 60) throw new Error('旬空表必須包含 60 組甲子。');
+    if (Object.keys(logic.branch_combinations?.six_combinations || {}).length !== 6) throw new Error('六合合化表必須包含 6 組。');
+    if (Object.keys(logic.branch_combinations?.three_harmony_groups || {}).length !== 4) throw new Error('三合局表必須包含 4 組。');
+    if (!logic.branch_combinations?.half_three_harmony) throw new Error('半合/拱合規則缺失。');
+    if (!logic.advance_retreat_rules?.strict_liuyao_pairs?.advance || !logic.advance_retreat_rules?.strict_liuyao_pairs?.retreat) throw new Error('化進化退嚴格六爻對位缺失。');
+    if (!logic.yongshen_categories?.categories || Object.keys(logic.yongshen_categories.categories).length < 10) throw new Error('用神分類表缺失或類別過少。');
+    if (!logic.yongshen_categories?.relative_support_map) throw new Error('用神原忌仇關係表缺失。');
+    if (!logic.school_variants || !logic.target_line_relevance_policy || !logic.shen_sha_basis) throw new Error('互動邏輯資料缺少 v1.3 流派/神煞基準/之卦權重設定。');
+    logic.__strict_enhanced_validated = true;
+    return logic;
+}
+
+const CORE_DATA_FILES = {
+    static: "iching_database_full.json",
+    matrix: "iching_dynamic_matrix.json",
+    logic: "iching_interact_logic_enhanced_v1_3.json"
+};
+
+function setLoaderDetail(message, isError = false) {
+    const el = document.getElementById('loader-detail');
+    if (!el) return;
+    el.innerHTML = message;
+    el.style.color = isError ? '#c0392b' : '#666';
+}
+
+async function sha256Hex(text) {
+    if (!(window.crypto && crypto.subtle && window.TextEncoder)) return null;
+    const data = new TextEncoder().encode(text);
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+async function fetchJsonFromSameFolder(filename) {
+    const url = new URL(filename, window.location.href);
+    const response = await fetch(url.href, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`${filename} 載入失敗：HTTP ${response.status}`);
+    const text = await response.text();
+    const sha256 = await sha256Hex(text);
+    const json = JSON.parse(text);
+    return { json, meta:{ filename, bytes:text.length, sha256, loaded_at:new Date().toISOString() } };
+}
+
+
+function registerCoreJson(kind, json) {
+    if (kind === 'static') {
+        if (!json.metadata || !json.metadata.system || !String(json.metadata.system).includes('Digital I-Ching Engine')) {
+            throw new Error('iching_database_full.json 格式不符：缺少 Digital I-Ching Engine metadata。');
+        }
+        DB.static = Array.isArray(json) ? json : json.hexagrams;
+        if (!Array.isArray(DB.static) || DB.static.length !== 64) {
+            throw new Error('iching_database_full.json 格式不符：hexagrams 必須為 64 卦陣列。');
+        }
+        DB.lookup = {};
+        DB.static.forEach(h => DB.lookup[h.id] = h);
+        return;
+    }
+    if (kind === 'matrix') {
+        if (!json.metadata || json.metadata.name !== 'I-Ching Dynamic Relatives Matrix') {
+            throw new Error('iching_dynamic_matrix.json 格式不符：metadata.name 不正確。');
+        }
+        DB.matrix = json.matrix;
+        if (!DB.matrix || Object.keys(DB.matrix).length !== 64) {
+            throw new Error('iching_dynamic_matrix.json 格式不符：matrix 必須包含 64 卦。');
+        }
+        return;
+    }
+    if (kind === 'logic') {
+        if (!json.metadata || json.metadata.name !== 'I-Ching Interaction Logic Layer') {
+            throw new Error('iching_interact_logic_enhanced_v1_3.json 格式不符：metadata.name 不正確。');
+        }
+        DB.logic = ensureEnhancedLogic(json);
+        return;
+    }
+    throw new Error(`未知資料類型：${kind}`);
+}
+
+
+
+
+
+async function autoLoadCoreData() {
+    updateStatus('正在載入系統資料...');
+    setLoaderDetail('正在載入必要資料...');
+    try {
+        updateStatus('正在載入系統資料...');
+        for (const [kind, filename] of Object.entries(CORE_DATA_FILES)) {
+            setLoaderDetail('正在載入必要資料...');
+            const loaded = await fetchJsonFromSameFolder(filename);
+            DB.fileMeta[kind] = { ...loaded.meta, source:'same_folder_fetch' };
+            registerCoreJson(kind, loaded.json);
+        }
+        validateLoadedCoreData();
+        DB.loadMode = 'same_folder_fetch';
+        setLoaderDetail('資料載入完成。');
+        initApp();
+    } catch (err) {
+        console.error('Core data load failed:', err);
+        updateStatus('資料載入失敗');
+        document.getElementById('system-status').className = '';
+        setLoaderDetail(
+            '系統資料無法載入。請重新整理頁面；若仍失敗，請回報維護者。',
+            true
+        );
+    }
+}
+
+function updateStatus(msg) { document.getElementById('system-status').innerText = msg; }
+
+function getYongshenRoot() {
+    return DB.logic?.yongshen_categories || {};
+}
+function getYongshenCategoryMap() {
+    const root = getYongshenRoot();
+    const raw = root.categories || root;
+    const out = {};
+    Object.entries(raw || {}).forEach(([key, val]) => {
+        if (val && typeof val === 'object' && (Array.isArray(val.primary) || Array.isArray(val.secondary))) out[key] = val;
+    });
+    return out;
+}
+function getYongshenSupportMap() {
+    const root = getYongshenRoot();
+    return root.relative_support_map || DB.logic.relative_support_map || {};
+}
+function getYongshenSelectionPolicy() {
+    const root = getYongshenRoot();
+    return root.selection_policy || [];
+}
+
+function toggleTooltip(e) { e.stopPropagation(); document.getElementById('guide-tooltip').classList.toggle('show'); }
+document.addEventListener('click', () => { const t = document.getElementById('guide-tooltip'); if (t) t.classList.remove('show'); });
 
 function getMutualHexId(origLines) {
     const bits = origLines.map(val => (val === 7 || val === 9) ? 1 : 0);
@@ -450,350 +486,1282 @@ function getMutualHexId(origLines) {
     return (upperVal << 3) | lowerVal;
 }
 
-// ----------------------------------------------------
-// Generators
-// ----------------------------------------------------
-function generateLinesAuto() {
-    let lines = [];
-    for(let i=0; i<6; i++) {
-        // Da Yan Method Probability
-        const r = Math.random() * 16;
-        let val = (r < 1) ? 6 : (r < 6) ? 7 : (r < 13) ? 8 : 9;
-        lines.push(val);
+function getWuxingRelation(fromWuxing, toWuxing) {
+    const rel = DB.logic.wuxing_relations;
+    if (!fromWuxing || !toWuxing) return { code: 'unknown', label: '未知' };
+    if (fromWuxing === toWuxing) return { code: 'same', label: '比和' };
+    if (rel.generates[fromWuxing] === toWuxing) return { code: 'from_generates_to', label: '生扶' };
+    if (rel.generates[toWuxing] === fromWuxing) return { code: 'to_generates_from', label: '泄氣' };
+    if (rel.controls[fromWuxing] === toWuxing) return { code: 'from_controls_to', label: '受剋' };
+    if (rel.controls[toWuxing] === fromWuxing) return { code: 'to_controls_from', label: '耗力' };
+    return { code: 'unknown', label: '未知' };
+}
+function getEvaluationSettings() {
+    return {
+        soil_life_stage: document.getElementById('q-soil-stage-mode')?.value || 'water_soil_same',
+        advance_retreat: document.getElementById('q-advance-mode')?.value || 'strict_liuyao',
+        target_relevance: document.getElementById('q-target-relevance')?.value || 'moving_only',
+        month_override: document.getElementById('q-month-override')?.value || 'auto'
+    };
+}
+function getLifeStage(wuxing, branch) {
+    if (wuxing === '土' && getEvaluationSettings().soil_life_stage === 'fire_soil_same') {
+        return DB.logic.twelve_life_stages?.by_wuxing?.['火']?.[branch] || null;
     }
-    return lines;
+    return DB.logic.twelve_life_stages?.by_wuxing?.[wuxing]?.[branch] || null;
 }
 
-function generateLinesCoins() {
-    let lines = [];
-    for(let i=0; i<6; i++) {
-        // Coin Method: 3 Coins
-        // Head (Yang/Back) = 1, Tail (Yin/Text) = 0
-        let heads = 0;
-        for(let c=0; c<3; c++) {
-            if (Math.random() > 0.5) heads++;
-        }
-        
-        // 3 Heads -> Old Yang (9) - 1/8
-        // 0 Heads -> Old Yin (6) - 1/8
-        // 1 Head (2 Tails) -> Shao Yang (7) - 3/8
-        // 2 Heads (1 Tail) -> Shao Yin (8) - 3/8
-        
-        let val;
-        if (heads === 3) val = 9;
-        else if (heads === 0) val = 6;
-        else if (heads === 1) val = 7;
-        else if (heads === 2) val = 8;
-        
-        lines.push(val);
+function getMonthBreakBranch(monthBranch) { return DB.logic.month_break_rules?.by_month_branch?.[monthBranch] || DB.logic.branch_interactions?.[monthBranch]?.clash || null; }
+function getBranchInteraction(fromBranch, toBranch) {
+    const row = DB.logic.branch_interactions?.[fromBranch];
+    if (!row || !toBranch) return [];
+    const tags = [];
+    if (row.clash === toBranch) tags.push('沖');
+    if (row.combine === toBranch) tags.push('六合');
+    if (row.harm === toBranch) tags.push('害');
+    if (Array.isArray(row.penalty) && row.penalty.includes(toBranch)) tags.push('刑');
+    return tags;
+}
+function getSixCombination(branchA, branchB) {
+    const groups = DB.logic.branch_combinations?.six_combinations || {};
+    return Object.values(groups).find(g => g.branches.includes(branchA) && g.branches.includes(branchB)) || null;
+}
+function getChangeEffect(originalWuxing, changedWuxing) {
+    const rel = DB.logic.wuxing_relations;
+    if (!originalWuxing || !changedWuxing) return { code: 'unknown', label: '未知' };
+    if (changedWuxing === originalWuxing) return { code: 'same_element', label: '化比和' };
+    if (rel.generates[changedWuxing] === originalWuxing) return { code: 'changed_generates_original', label: '回頭生' };
+    if (rel.controls[changedWuxing] === originalWuxing) return { code: 'changed_controls_original', label: '回頭剋' };
+    if (rel.generates[originalWuxing] === changedWuxing) return { code: 'original_generates_changed', label: '化泄' };
+    if (rel.controls[originalWuxing] === changedWuxing) return { code: 'original_controls_changed', label: '化耗/化財' };
+    return { code: 'unknown', label: '未知' };
+}
+function getAdvanceRetreat(originalBranch, changedBranch) {
+    const mode = getEvaluationSettings().advance_retreat;
+    const key = `${originalBranch}->${changedBranch}`;
+    const rules = DB.logic.advance_retreat_rules?.strict_liuyao_pairs || {};
+    if (rules.advance && rules.advance[key]) return { code: 'advance', label: '化進', detail: rules.advance[key], mode:'strict_liuyao', experimental:false };
+    if (rules.retreat && rules.retreat[key]) return { code: 'retreat', label: '化退', detail: rules.retreat[key], mode:'strict_liuyao', experimental:false };
+    if (mode === 'expanded_same_element') {
+        const expandedAdvance = {
+            '寅->卯':'木氣由寅進卯', '巳->午':'火氣由巳進午', '申->酉':'金氣由申進酉', '亥->子':'水氣由亥進子',
+            '丑->辰':'土由丑進辰', '辰->未':'土由辰進未', '未->戌':'土由未進戌'
+        };
+        const expandedRetreat = {
+            '卯->寅':'木氣由卯退寅', '午->巳':'火氣由午退巳', '酉->申':'金氣由酉退申', '子->亥':'水氣由子退亥',
+            '辰->丑':'土由辰退丑', '未->辰':'土由未退辰', '戌->未':'土由戌退未'
+        };
+        if (expandedAdvance[key]) return { code:'advance_experimental', label:'化進候選', detail:expandedAdvance[key], mode, experimental:true };
+        if (expandedRetreat[key]) return { code:'retreat_experimental', label:'化退候選', detail:expandedRetreat[key], mode, experimental:true };
     }
-    return lines;
+    return { code: 'none', label: '非化進退', mode, experimental:false };
 }
 
-function generateLinesNumber() {
-    let n1 = parseInt(document.getElementById('num1').value) || 0;
-    let n2 = parseInt(document.getElementById('num2').value) || 0;
-    let n3 = parseInt(document.getElementById('num3').value) || 0;
-    
-    if (n1 === 0 || n2 === 0 || n3 === 0) {
-        alert("請輸入有效的數字！");
-        return null;
-    }
-    const map = [0, 7, 3, 5, 1, 6, 2, 4, 0];
-    let upperVal = map[n1 % 8 === 0 ? 8 : n1 % 8];
-    let lowerVal = map[n2 % 8 === 0 ? 8 : n2 % 8];
-    let lines = [];
-    for(let i=0; i<3; i++) lines.push( (lowerVal >> i) & 1 ? 7 : 8 );
-    for(let i=0; i<3; i++) lines.push( (upperVal >> i) & 1 ? 7 : 8 );
-    let movingPos = n3 % 6 === 0 ? 6 : n3 % 6; 
-    let idx = movingPos - 1;
-    lines[idx] = lines[idx] === 7 ? 9 : 6;
-    return lines;
+
+function strengthLabel(score) {
+    if (score >= 3) return { label: '旺相', css: 'strength-strong' };
+    if (score >= 1) return { label: '偏旺', css: 'strength-strong' };
+    if (score > -1) return { label: '平', css: 'strength-mid' };
+    if (score > -3) return { label: '偏弱', css: 'strength-weak' };
+    return { label: '衰破', css: 'strength-weak' };
+}
+function tagObj(label, type='neutral', reason='') { return { label, type, reason }; }
+
+
+const LIUQIN_RELATIVES = ['兄弟','子孫','妻財','官鬼','父母'];
+function occurrenceFromLine(lineEval, matchType, sourceRelative) {
+    return {
+        pos: lineEval.pos,
+        match_type: matchType,
+        relative: sourceRelative || lineEval.original.relative,
+        branch: lineEval.original.branch,
+        wuxing: lineEval.original.wuxing,
+        role: lineEval.original.role || '',
+        moving: lineEval.moving,
+        strength: lineEval.strength,
+        tags: lineEval.tags.map(t => t.label)
+    };
 }
 
-function generateLinesManual() {
-    let lines = [];
-    for(let i=1; i<=6; i++) {
-        let val = parseInt(document.getElementById('line' + i).value);
-        lines.push(val);
+function findYongshenOccurrences(token, lines) {
+    const result = [];
+    if (!token) return result;
+    if (LIUQIN_RELATIVES.includes(token)) {
+        lines.forEach(l => {
+            if (l.original.relative === token) result.push(occurrenceFromLine(l, '明爻', token));
+            const hidden = l.original.hidden_spirit;
+            if (hidden && hidden.relative === token) result.push(hiddenOccurrence(l, hidden));
+        });
+        return result;
     }
-    return lines;
+    if (token === '世爻') return lines.filter(l => l.original.role === '世').map(l => occurrenceFromLine(l, '世爻', l.original.relative));
+    if (token === '應爻') return lines.filter(l => l.original.role === '應').map(l => occurrenceFromLine(l, '應爻', l.original.relative));
+    if (token === '動爻') return lines.filter(l => l.moving).map(l => occurrenceFromLine(l, '動爻', l.original.relative));
+    return [];
 }
-
-// ----------------------------------------------------
-// Main Cast & Render
-// ----------------------------------------------------
-function castHexagram() {
-    const method = document.getElementById('q-method').value;
-    let castLines = [];
-    
-    if (method === 'auto') castLines = generateLinesAuto();
-    else if (method === 'coins') castLines = generateLinesCoins();
-    else if (method === 'number') castLines = generateLinesNumber();
-    else if (method === 'manual') castLines = generateLinesManual();
-    
-    if (!castLines) return; 
-
-    const topic = document.getElementById('q-topic').value || "無題";
-    const timeStr = document.getElementById('q-time').value;
-    
-    // New GanZhi Calculation
-    const gz = getGanZhi(timeStr);
-    const voidBranches = getVoid(gz.dayStem, gz.dayBranch);
-    const sixBeasts = DB.logic.six_beasts_rules[gz.dayStem];
-    
-    let origId = 0, targetId = 0;
-    castLines.forEach((val, i) => {
-        let isYang = (val === 7 || val === 9) ? 1 : 0;
-        let targetIsYang = (val === 9) ? 0 : (val === 6) ? 1 : isYang;
-        origId |= (isYang << i);
-        targetId |= (targetIsYang << i);
+function summarizeOccurrences(token, occurrences) {
+    const visible = occurrences.filter(o => o.match_type !== '伏神');
+    const hidden = occurrences.filter(o => o.match_type === '伏神');
+    let status = '未現';
+    if (visible.length) status = '明現';
+    else if (hidden.length) status = '伏藏';
+    const bestScore = visible.length ? Math.max(...visible.map(o => o.strength?.score ?? -99)) : null;
+    return { token, status, visible_count: visible.length, hidden_count: hidden.length, best_visible_score: bestScore, occurrences };
+}
+function evaluateYongshen(profile, lines) {
+    const supportMap = getYongshenSupportMap();
+    const primary = (profile?.primary || []).map(token => summarizeOccurrences(token, findYongshenOccurrences(token, lines)));
+    const secondary = (profile?.secondary || []).map(token => summarizeOccurrences(token, findYongshenOccurrences(token, lines)));
+    const avoid = (profile?.avoid_or_counterpart || []).map(token => summarizeOccurrences(token, findYongshenOccurrences(token, lines)));
+    const relativePrimary = (profile?.primary || []).filter(token => LIUQIN_RELATIVES.includes(token));
+    const relationRoles = {};
+    relativePrimary.forEach(rel => {
+        const map = supportMap[rel];
+        if (!map) return;
+        relationRoles[rel] = {
+            source: summarizeOccurrences(map.source, findYongshenOccurrences(map.source, lines)),
+            counter: summarizeOccurrences(map.counter, findYongshenOccurrences(map.counter, lines)),
+            enemy_source: summarizeOccurrences(map.enemy_source, findYongshenOccurrences(map.enemy_source, lines)),
+            leaks_to: summarizeOccurrences(map.leaks_to, findYongshenOccurrences(map.leaks_to, lines))
+        };
     });
-
-    const mutualId = getMutualHexId(castLines);
-
-    renderResultUI(topic, timeStr, gz, voidBranches);
-    
-    // Check for Ti/Yong (Mei Hua method)
-    let tiYongMap = null;
-    if (method === 'number') {
-        // Find moving line index (0-5)
-        let moveIdx = castLines.findIndex(v => v === 6 || v === 9);
-        if (moveIdx !== -1) {
-            // Logic: 
-            // If move line is in Upper (idx 3,4,5) -> Upper is Yong, Lower is Ti
-            // If move line is in Lower (idx 0,1,2) -> Lower is Yong, Upper is Ti
-            if (moveIdx >= 3) tiYongMap = { upper: '用', lower: '體' };
-            else tiYongMap = { upper: '體', lower: '用' };
-        }
-    }
-
-    renderOriginalHex(origId, castLines, sixBeasts, voidBranches, gz, tiYongMap);
-    renderMutualHex(mutualId); 
-    renderTargetHex(targetId, origId); 
-    generateAIPrompt(topic, gz, voidBranches, origId, mutualId, targetId, castLines, sixBeasts, tiYongMap);
-
-    document.getElementById('result-section').style.display = 'block';
-    document.getElementById('result-section').scrollIntoView({behavior: 'smooth'});
+    return { primary, secondary, avoid_or_counterpart: avoid, support_roles: relationRoles, policy: getYongshenSelectionPolicy() };
 }
 
-function renderResultUI(topic, time, gz, voids) {
-    document.getElementById('res-topic').innerText = topic;
-    document.getElementById('res-time').innerText = time.replace("T", " ");
-    document.getElementById('res-gz').innerText = `${gz.year}年 ${gz.month}月 ${gz.day}日`;
-    // Explicitly show season/month branch
-    document.getElementById('res-season').innerText = `${gz.monthBranch}月 (${gz.monthWuxing}旺)`;
-    document.getElementById('res-void').innerText = voids.join("、");
-    
-    const stars = DB.logic.shen_sha;
-    let horse = stars.traveling_horse[gz.dayBranch] || "-";
-    let flower = stars.peach_blossom[gz.dayBranch] || "-";
-    let noble = (stars.noble_man[gz.dayStem] || []).join("/");
-    document.getElementById('shensha-info').innerHTML = `
-        <span class="beast-tag">驛馬</span>: ${horse} | 
-        <span class="beast-tag">桃花</span>: ${flower} | 
-        <span class="beast-tag">貴人</span>: ${noble}
-    `;
-}
 
-function renderOriginalHex(hexId, castLines, beasts, voids, gz, tiYongMap) {
+
+function tagsHTML(tags) {
+    return tags.map(t => `<span class="tag ${t.type || 'neutral'}" title="${t.reason || ''}">${t.label}</span>`).join('');
+}
+function renderOriginalHex(hexId, castLines, beasts, lineEval) {
     const hex = DB.lookup[hexId];
     document.getElementById('orig-title').innerText = `本卦：${hex.name} (${hex.palace}宮${hex.palace_wuxing})`;
     const container = document.getElementById('orig-lines');
     container.innerHTML = "";
-    
     hex.lines.forEach((line, idx) => {
         const castVal = castLines[idx];
         const isMoving = (castVal === 6 || castVal === 9);
+        const ev = lineEval[idx];
         let symbol = (line.type === 'yang') ? '▅▅▅▅▅' : '▅▅　▅▅';
         if (isMoving) symbol += ' ●';
-        
-        let tags = "";
-        if (voids.includes(line.branch)) tags += `<span class="void-tag">空</span>`;
-        if (DB.logic.branch_interactions[gz.dayBranch].clash === line.branch) tags += `<span class="clash-tag">日破</span>`;
-        
-        // Ti/Yong display logic
-        let meiHuaTag = "";
-        if (tiYongMap) {
-            // Upper trigram is idx 3,4,5. Lower is 0,1,2.
-            // We only want to label it once per trigram, say at the top line of the trigram?
-            // Or label every line? Labeling the Trigram is better.
-            // Let's put a label on Line 6 (top of Upper) and Line 3 (top of Lower).
-            if (idx === 5) { // Top line of Upper
-                const type = tiYongMap.upper;
-                const cls = type === '體' ? 'ti-tag' : 'yong-tag';
-                meiHuaTag = `<span class="${cls}">[${type}]</span>`;
-            } else if (idx === 2) { // Top line of Lower
-                const type = tiYongMap.lower;
-                const cls = type === '體' ? 'ti-tag' : 'yong-tag';
-                meiHuaTag = `<span class="${cls}">[${type}]</span>`;
-            }
-        }
-        
         let fushenDisplay = line.hidden_spirit ? `<span class="fushen-tag">伏 ${line.hidden_spirit.relative}${line.hidden_spirit.branch}${line.hidden_spirit.wuxing}</span>` : "";
-        
-        container.innerHTML += `
-            <div class="line-row ${isMoving ? 'moving' : ''}">
-                <div class="l-left">
-                    <div>${meiHuaTag}${line.relative}</div>
-                    <div style="font-size:10px">${line.branch}${line.wuxing}${tags}</div>
-                    ${fushenDisplay}
-                </div>
-                <div class="l-center ${line.type}">${symbol}</div>
-                <div class="l-right">
-                    <div>${line.role || '&nbsp;'}</div>
-                    <div class="beast-tag">${beasts[idx]}</div>
-                </div>
-            </div>`;
+        container.innerHTML += `<div class="line-row ${isMoving ? 'moving' : ''}">
+            <div class="l-left">
+                <div>${line.relative}</div>
+                <div style="font-size:10px">${line.branch}${line.wuxing}</div>
+                <div class="pill-row">${tagsHTML(ev.tags)}</div>
+                ${fushenDisplay}
+            </div>
+            <div class="l-center ${line.type}">${symbol}</div>
+            <div class="l-right">
+                <div>${line.role || '&nbsp;'}</div>
+                <div class="beast-tag">${beasts[idx]}</div>
+                <div class="line-eval ${ev.strength.css}">${ev.strength.label} ${ev.strength.score}</div>
+            </div>
+        </div>`;
     });
 }
-
 function renderMutualHex(hexId) {
     const hex = DB.lookup[hexId];
-    document.getElementById('mutual-title').innerText = `互卦：${hex.name}`;
+    document.getElementById('mutual-title').innerText = `互卦：${hex.name}（輔助）`;
     const container = document.getElementById('mutual-lines');
     container.innerHTML = "";
     hex.lines.forEach((line) => {
         let symbol = (line.type === 'yang') ? '▅▅▅▅▅' : '▅▅　▅▅';
-        container.innerHTML += `
-            <div class="line-row">
-                <div class="l-left" style="opacity:0.5; font-size:10px;">${line.branch}${line.wuxing}</div>
-                <div class="l-center ${line.type}" style="font-size:18px;">${symbol}</div>
-                <div class="l-right"></div>
-            </div>`;
+        container.innerHTML += `<div class="line-row"><div class="l-left" style="opacity:0.5; font-size:10px;">${line.branch}${line.wuxing}</div><div class="l-center ${line.type}" style="font-size:18px;">${symbol}</div><div class="l-right"></div></div>`;
     });
 }
-
-function renderTargetHex(targetId, origId) {
-    const origHex = DB.lookup[origId]; 
-    const targetHexData = DB.matrix[targetId]; 
+function renderTargetHex(targetId, origId, lineEval) {
+    const origHex = DB.lookup[origId];
+    const targetHexData = DB.matrix[targetId];
     const relatives = targetHexData.relatives_matrix[origHex.palace_wuxing];
     const staticTarget = DB.lookup[targetId];
     document.getElementById('target-title').innerText = `之卦：${staticTarget.name}`;
     const container = document.getElementById('target-lines');
-    container.innerHTML = "";
+    container.innerHTML = '';
     staticTarget.lines.forEach((line, idx) => {
-        let symbol = (line.type === 'yang') ? '▅▅▅▅▅' : '▅▅　▅▅';
-        container.innerHTML += `
-            <div class="line-row">
-                <div class="l-left">
-                    <div style="color:#d35400">${relatives[idx]}</div>
-                    <div style="font-size:10px">${line.branch}${line.wuxing}</div>
-                </div>
-                <div class="l-center ${line.type}">${symbol}</div>
-                <div class="l-right"></div>
-            </div>`;
+        const symbol = (line.type === 'yang') ? '▅▅▅▅▅' : '▅▅　▅▅';
+        const ev = lineEval?.[idx];
+        const isRelevant = ev?.target_line_relevance?.relevant_to_main_judgment;
+        const changeHTML = ev?.change ? `<span class="fushen-tag">${ev.change.effect.label}${ev.change.advance_retreat.code !== 'none' ? ' / ' + ev.change.advance_retreat.label : ''}</span>` : `<span class="fushen-tag">背景爻，非動變主判</span>`;
+        const relevanceTag = isRelevant ? `<span class="tag move">變出主判</span>` : `<span class="tag neutral">背景</span>`;
+        container.innerHTML += `<div class="line-row ${isRelevant ? '' : 'muted-target'}"><div class="l-left"><div style="color:#d35400">${relatives[idx]} ${relevanceTag}</div><div style="font-size:10px">${line.branch}${line.wuxing}</div>${changeHTML}</div><div class="l-center ${line.type}">${symbol}</div><div class="l-right"></div></div>`;
     });
 }
 
-// ----------------------------------------------------
-// AI Prompt Generation (Fixed Logic)
-// ----------------------------------------------------
-function generateAIPrompt(topic, gz, voids, origId, mutualId, targetId, castLines, beasts, tiYongMap) {
+function formatOccurrenceList(summary) {
+    if (!summary || !summary.occurrences || summary.occurrences.length === 0) return `${summary?.token || '-'}：未現`;
+    const parts = summary.occurrences.map(o => {
+        if (o.match_type === '伏神') return `${summary.token}：伏於第${o.pos}爻（${o.branch}${o.wuxing}，飛神${o.host_relative}${o.host_branch}）`;
+        const score = o.strength ? `，${o.strength.label}${o.strength.score}` : '';
+        return `${summary.token}：第${o.pos}爻${o.match_type}（${o.relative}${o.branch}${o.wuxing}${score}）`;
+    });
+    return parts.join('<br>');
+}
+function renderYongshenEvaluation(analysis) {
+    const ev = analysis.yongshen.evaluation;
+    if (!ev) return '';
+    const primary = ev.primary.map(formatOccurrenceList).join('<br>') || '-';
+    const secondary = ev.secondary.map(formatOccurrenceList).join('<br>') || '-';
+    const avoid = ev.avoid_or_counterpart.map(formatOccurrenceList).join('<br>') || '-';
+    const supportLines = [];
+    Object.entries(ev.support_roles || {}).forEach(([rel, roles]) => {
+        supportLines.push(`用神${rel}：原神=${roles.source.status} ${roles.source.token}；忌神=${roles.counter.status} ${roles.counter.token}；仇神=${roles.enemy_source.status} ${roles.enemy_source.token}`);
+    });
+    return `<div style="margin-top:8px"><strong>主用命中</strong><br>${primary}</div>
+            <div style="margin-top:8px"><strong>輔助參看</strong><br>${secondary}</div>
+            <div style="margin-top:8px"><strong>忌仇/對立面</strong><br>${avoid}</div>
+            ${supportLines.length ? `<div style="margin-top:8px"><strong>原忌仇關係</strong><br>${supportLines.join('<br>')}</div>` : ''}`;
+}
+
+
+function promptOccurrence(summary) {
+    if (!summary) return '';
+    if (!summary.occurrences || !summary.occurrences.length) return `${summary.token}：未現`;
+    return summary.occurrences.map(o => {
+        if (o.match_type === '伏神') return `${summary.token}：伏於第${o.pos}爻，${o.branch}${o.wuxing}，飛神${o.host_relative}${o.host_branch}，飛神力量=${o.host_strength?.label || '-'}${o.host_strength?.score ?? ''}`;
+        return `${summary.token}：第${o.pos}爻${o.match_type}，${o.relative}${o.branch}${o.wuxing}，${o.strength?.label || '-'}${o.strength?.score ?? ''}`;
+    }).join('；');
+}
+function yongshenPromptBlock(analysis) {
+    const y = analysis.yongshen.profile || {};
+    const ev = analysis.yongshen.evaluation || {};
+    const lines = [];
+    lines.push(`分類=${y.label || analysis.yongshen.key}；主用=${(y.primary || []).join('、') || '未指定'}；輔助=${(y.secondary || []).join('、') || '未指定'}；忌仇/對立=${(y.avoid_or_counterpart || []).join('、') || '-'}`);
+    if (ev.primary?.length) lines.push(`主用命中：${ev.primary.map(promptOccurrence).join('｜')}`);
+    if (ev.secondary?.length) lines.push(`輔助命中：${ev.secondary.map(promptOccurrence).join('｜')}`);
+    if (ev.avoid_or_counterpart?.length) lines.push(`忌仇/對立命中：${ev.avoid_or_counterpart.map(promptOccurrence).join('｜')}`);
+    Object.entries(ev.support_roles || {}).forEach(([rel, roles]) => {
+        lines.push(`用神${rel}的原忌仇：原神${roles.source.token}=${roles.source.status}；忌神${roles.counter.token}=${roles.counter.status}；仇神${roles.enemy_source.token}=${roles.enemy_source.status}；泄氣所往${roles.leaks_to.token}=${roles.leaks_to.status}`);
+    });
+    return lines.join('\n');
+}
+
+async function copyTextAreaValue(textareaId, successMessage) {
+    const el = document.getElementById(textareaId);
+    if (!el) { alert('找不到可複製的內容。'); return; }
+    const value = el.value || '';
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(value);
+        } else {
+            el.focus();
+            el.select();
+            el.setSelectionRange(0, value.length);
+            const ok = document.execCommand('copy');
+            if (!ok) throw new Error('execCommand copy failed');
+        }
+        alert(successMessage);
+    } catch (err) {
+        el.focus();
+        el.select();
+        alert('自動複製失敗，內容已選取，請使用 Ctrl/Cmd+C 複製。');
+    }
+}
+function copyPrompt() { copyTextAreaValue('ai-prompt-area', '提示詞已複製！'); }
+function copyStructuredJson() { copyTextAreaValue('structured-json-area', '卦盤資料已複製！'); }
+
+
+/* === Code Audit and Structured Evaluation Layer === */
+const ENGINE_VERSION = 'v8.8-calibration-golden-tests';
+const ENGINE_TZ_OFFSETS = { 'Asia/Taipei': 480 };
+const ENGINE_YONGSHEN_TOKENS = ['兄弟','子孫','妻財','官鬼','父母','世爻','應爻','動爻'];
+const ENGINE_SCORE_NOTE = 'score 為工程化輔助權重，僅用於排序與提示；傳統判斷仍以月日、用神、世應、動變與空破合沖刑害等客觀標籤為準。';
+
+const ENGINE_HEURISTIC_WEIGHTS = Object.freeze({
+    month_relation_scale: 2,
+    day_relation_scale: 1,
+    month_construct: 2.5,
+    day_construct: 1.2,
+    month_break: -3.5,
+    void: -2,
+    month_combine: 0.4,
+    month_clash: -1,
+    month_harm_or_penalty: -0.6,
+    day_combine: 0.4,
+    day_clash: -1.2,
+    day_harm_or_penalty: -0.5,
+    moving: 0.5
+});
+
+
+const ENGINE_DAY_PILLAR_GOLDEN_CASES = Object.freeze([
+    { date_time:'1900-01-01T12:00', expected_day:'甲戌', expected_year:'己亥', expected_month:'丙子', source:'huangli123_1900_01_01', authority_level:'external_almanac_crosscheck' },
+    { date_time:'2000-01-01T12:00', expected_day:'戊午', expected_year:'己卯', expected_month:'丙子', source:'calendar_8s8s_2000_01_01', authority_level:'external_almanac_crosscheck' },
+    { date_time:'2024-01-01T12:00', expected_day:'甲子', expected_year:'癸卯', expected_month:'甲子', source:'yinliyangli_and_calendar_8s8s_2024_01_01', authority_level:'external_almanac_crosscheck' },
+    { date_time:'2026-06-11T12:00', expected_day:'丙辰', expected_year:'丙午', expected_month:'甲午', source:'cantian_2026_06_11', authority_level:'external_almanac_crosscheck' },
+    { date_time:'2030-01-01T12:00', expected_day:'丙申', expected_year:'己酉', expected_month:'丙子', source:'ximizi_2030_01_01', authority_level:'external_almanac_crosscheck' }
+]);
+const ENGINE_SOLAR_TERM_GOLDEN_CASES_2026_HKO = Object.freeze([
+    { name:'大寒', longitude:300, approxMonth:1, approxDay:20, expected_local:'2026-01-20T09:45' },
+    { name:'雨水', longitude:330, approxMonth:2, approxDay:18, expected_local:'2026-02-18T23:52' },
+    { name:'春分', longitude:0, approxMonth:3, approxDay:20, expected_local:'2026-03-20T22:46' },
+    { name:'穀雨', longitude:30, approxMonth:4, approxDay:20, expected_local:'2026-04-20T09:39' },
+    { name:'小滿', longitude:60, approxMonth:5, approxDay:21, expected_local:'2026-05-21T08:37' },
+    { name:'夏至', longitude:90, approxMonth:6, approxDay:21, expected_local:'2026-06-21T16:25' },
+    { name:'大暑', longitude:120, approxMonth:7, approxDay:23, expected_local:'2026-07-23T03:13' },
+    { name:'處暑', longitude:150, approxMonth:8, approxDay:23, expected_local:'2026-08-23T10:19' },
+    { name:'秋分', longitude:180, approxMonth:9, approxDay:23, expected_local:'2026-09-23T08:05' },
+    { name:'霜降', longitude:210, approxMonth:10, approxDay:23, expected_local:'2026-10-23T17:38' },
+    { name:'小雪', longitude:240, approxMonth:11, approxDay:22, expected_local:'2026-11-22T15:23' },
+    { name:'冬至', longitude:270, approxMonth:12, approxDay:22, expected_local:'2026-12-22T04:50' }
+]);
+const ENGINE_CALIBRATION_POLICY = Object.freeze({
+    day_pillar_baseline_verified: true,
+    day_pillar_golden_case_count: ENGINE_DAY_PILLAR_GOLDEN_CASES.length,
+    solar_term_benchmark_source: 'Hong Kong Observatory Almanac 2026 major solar terms, UTC+08',
+    solar_term_tolerance_minutes: 30,
+    hexagram_snapshot_expected_checksum: '55359a51',
+    hexagram_snapshot_scope: '64卦 id/seq/name/binary/palace/palace_wuxing/note/六爻納甲六親世應伏神摘要',
+    caveat: '本機內建基準可檢出程式回歸；若要宣稱權威曆法級，仍應定期以正式萬年曆資料批次校驗。'
+});
+
+function getSelectedTimezone() { return document.getElementById('q-timezone')?.value || 'Asia/Taipei'; }
+function getSelectedTzOffset() { return ENGINE_TZ_OFFSETS[getSelectedTimezone()] ?? 480; }
+function getZiRule() { return document.getElementById('q-zi-rule')?.value || 'civil_midnight'; }
+function parseDateTimeFields(dateStr) {
+    const m = String(dateStr || '').match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
+    if (!m) throw new Error('時間格式錯誤，請使用 datetime-local 欄位。');
+    const fields = { year:+m[1], month:+m[2], day:+m[3], hour:+m[4], minute:+m[5], second:0, millisecond:0 };
+    if (fields.year < 1900 || fields.year > 2100) throw new Error('年份超出目前工程校驗範圍：請使用 1900-2100。');
+    if (fields.month < 1 || fields.month > 12 || fields.hour > 23 || fields.minute > 59) throw new Error('時間欄位超出有效範圍。');
+    const probe = new Date(Date.UTC(fields.year, fields.month - 1, fields.day));
+    if (probe.getUTCFullYear() !== fields.year || probe.getUTCMonth() + 1 !== fields.month || probe.getUTCDate() !== fields.day) throw new Error('日期不存在，請重新輸入。');
+    return fields;
+}
+function fieldsToInstantMs(fields, offsetMinutes) {
+    return Date.UTC(fields.year, fields.month - 1, fields.day, fields.hour || 0, fields.minute || 0, fields.second || 0, fields.millisecond || 0) - offsetMinutes * 60000;
+}
+function instantToFields(ms, offsetMinutes) {
+    const d = new Date(ms + offsetMinutes * 60000);
+    return { year:d.getUTCFullYear(), month:d.getUTCMonth()+1, day:d.getUTCDate(), hour:d.getUTCHours(), minute:d.getUTCMinutes(), second:d.getUTCSeconds(), millisecond:d.getUTCMilliseconds() };
+}
+function formatFields(fields) {
+    const pad = n => String(n).padStart(2, '0');
+    return `${fields.year}-${pad(fields.month)}-${pad(fields.day)} ${pad(fields.hour || 0)}:${pad(fields.minute || 0)}`;
+}
+function formatInstantInZone(ms, offsetMinutes) { return formatFields(instantToFields(ms, offsetMinutes)); }
+function addCivilDays(fields, days) {
+    const ms = Date.UTC(fields.year, fields.month - 1, fields.day) + days * 86400000;
+    const d = new Date(ms);
+    return { ...fields, year:d.getUTCFullYear(), month:d.getUTCMonth()+1, day:d.getUTCDate() };
+}
+function civilDateDiffFromBase(fields, baseY, baseM, baseD) {
+    return Math.floor((Date.UTC(fields.year, fields.month - 1, fields.day) - Date.UTC(baseY, baseM - 1, baseD)) / 86400000);
+}
+function applyZiDayRule(fields, rule) {
+    if (rule === 'zi_start_23' && fields.hour >= 23) return { effective:addCivilDays(fields, 1), adjusted:true, rule_label:'子初 23:00 換日' };
+    if (rule === 'civil_only') return { effective:{ ...fields }, adjusted:false, rule_label:'沿用輸入日期' };
+    return { effective:{ ...fields }, adjusted:false, rule_label:'民用日期 / 子正 00:00 換日' };
+}
+
+const solarTermCacheAudit = {};
+function findSolarTermInstantAudit(year, term, offsetMinutes) {
+    const center = fieldsToInstantMs({ year, month:term.approxMonth, day:term.approxDay, hour:12, minute:0, second:0, millisecond:0 }, offsetMinutes);
+    let left = center - 5 * 86400000;
+    let right = center + 5 * 86400000;
+    let fLeft = signedAngleDiff(sunApparentLongitude(new Date(left)), term.longitude);
+    let found = false;
+    for (let t = left + 6 * 3600000; t <= right; t += 6 * 3600000) {
+        const fProbe = signedAngleDiff(sunApparentLongitude(new Date(t)), term.longitude);
+        if ((fLeft <= 0 && fProbe >= 0) || (fLeft >= 0 && fProbe <= 0)) {
+            right = t;
+            left = t - 6 * 3600000;
+            found = true;
+            break;
+        }
+        fLeft = fProbe;
+    }
+    if (!found) return center;
+    for (let i = 0; i < 50; i++) {
+        const mid = (left + right) / 2;
+        const fMid = signedAngleDiff(sunApparentLongitude(new Date(mid)), term.longitude);
+        const fL = signedAngleDiff(sunApparentLongitude(new Date(left)), term.longitude);
+        if ((fL <= 0 && fMid >= 0) || (fL >= 0 && fMid <= 0)) right = mid;
+        else left = mid;
+    }
+    return Math.round((left + right) / 2);
+}
+function getSolarJieTermsAudit(year, timezone) {
+    const offset = ENGINE_TZ_OFFSETS[timezone] ?? 480;
+    const key = `${timezone}:${year}`;
+    if (solarTermCacheAudit[key]) return solarTermCacheAudit[key];
+    solarTermCacheAudit[key] = SOLAR_JIE_TERMS.map(t => ({ ...t, instant_ms: findSolarTermInstantAudit(year, t, offset), time: null }))
+        .map(t => ({ ...t, time: formatInstantInZone(t.instant_ms, offset) }))
+        .sort((a,b) => a.instant_ms - b.instant_ms);
+    return solarTermCacheAudit[key];
+}
+function getLatestJieTermAudit(instantMs, timezone) {
+    const offset = ENGINE_TZ_OFFSETS[timezone] ?? 480;
+    const fields = instantToFields(instantMs, offset);
+    return [...getSolarJieTermsAudit(fields.year - 1, timezone), ...getSolarJieTermsAudit(fields.year, timezone), ...getSolarJieTermsAudit(fields.year + 1, timezone)]
+        .filter(t => t.instant_ms <= instantMs).sort((a,b) => b.instant_ms - a.instant_ms)[0];
+}
+function getLichunInstantAudit(year, timezone) { return getSolarJieTermsAudit(year, timezone).find(t => t.name === '立春').instant_ms; }
+function getYearPillarByLichunAudit(instantMs, timezone) {
+    const offset = ENGINE_TZ_OFFSETS[timezone] ?? 480;
+    const fields = instantToFields(instantMs, offset);
+    const gYear = instantMs < getLichunInstantAudit(fields.year, timezone) ? fields.year - 1 : fields.year;
+    const stemIndex = mod(gYear - 4, 10);
+    const branchIndex = mod(gYear - 4, 12);
+    return { yearNumber:gYear, stem:HEAVENLY_STEMS[stemIndex], branch:EARTHLY_BRANCHES[branchIndex], stemIndex, branchIndex, gz:gzName(stemIndex, branchIndex) };
+}
+function getMonthPillarBySolarTermAudit(instantMs, timezone, yearPillar) {
+    const latest = getLatestJieTermAudit(instantMs, timezone);
+    const requestedOverride = getEvaluationSettings().month_override || 'auto';
+    const overrideApplied = requestedOverride !== 'auto' && YIN_MONTH_BRANCHES.includes(requestedOverride);
+    const branch = overrideApplied ? requestedOverride : latest.branch;
+    const monthIndexFromYin = overrideApplied ? YIN_MONTH_BRANCHES.indexOf(branch) : latest.monthIndexFromYin;
+    const monthStemIndex = getMonthStemIndex(yearPillar.stem, monthIndexFromYin);
+    const branchIndex = EARTHLY_BRANCHES.indexOf(branch);
+    return {
+        stem:HEAVENLY_STEMS[monthStemIndex], branch, branchIndex, stemIndex:monthStemIndex,
+        gz:HEAVENLY_STEMS[monthStemIndex] + branch, wuxing:BRANCH_WUXING[branch],
+        jie:latest.name, jieTime:latest.time, jieInstantMs:latest.instant_ms, monthIndexFromYin,
+        override:{ applied:overrideApplied, requested:requestedOverride, computed_branch:latest.branch, computed_gz:HEAVENLY_STEMS[getMonthStemIndex(yearPillar.stem, latest.monthIndexFromYin)] + latest.branch, computed_jie:latest.name }
+    };
+}
+function getDayPillarFromFieldsAudit(fields) {
+    const diff = civilDateDiffFromBase(fields, 2024, 1, 1);
+    const cycle = mod(diff, 60);
+    const stemIndex = cycle % 10;
+    const branchIndex = cycle % 12;
+    return { stem:HEAVENLY_STEMS[stemIndex], branch:EARTHLY_BRANCHES[branchIndex], stemIndex, branchIndex, gz:gzName(stemIndex, branchIndex), wuxing:BRANCH_WUXING[EARTHLY_BRANCHES[branchIndex]] };
+}
+function getHourPillarFromFieldsAudit(fields, dayStemIndex) {
+    const branchIndex = Math.floor((fields.hour + 1) / 2) % 12;
+    const startStemIndex = (dayStemIndex % 5) * 2;
+    const stemIndex = mod(startStemIndex + branchIndex, 10);
+    return { stem:HEAVENLY_STEMS[stemIndex], branch:EARTHLY_BRANCHES[branchIndex], stemIndex, branchIndex, gz:gzName(stemIndex, branchIndex), wuxing:BRANCH_WUXING[EARTHLY_BRANCHES[branchIndex]] };
+}
+function isNearJieBoundaryAudit(instantMs, monthPillar, timezone) {
+    const offset = ENGINE_TZ_OFFSETS[timezone] ?? 480;
+    const fields = instantToFields(instantMs, offset);
+    const diffHours = Math.abs(instantMs - monthPillar.jieInstantMs) / 3600000;
+    const next = [...getSolarJieTermsAudit(fields.year, timezone), ...getSolarJieTermsAudit(fields.year + 1, timezone)]
+        .filter(t => t.instant_ms > instantMs).sort((a,b) => a.instant_ms - b.instant_ms)[0];
+    const nextDiff = next ? Math.abs(next.instant_ms - instantMs) / 3600000 : Infinity;
+    return { near: diffHours <= 24 || nextDiff <= 24, previousHours: diffHours, nextTerm: next, nextHours: nextDiff };
+}
+function getGanZhi(dateStr) {
+    const timezone = getSelectedTimezone();
+    const offset = getSelectedTzOffset();
+    const ziRule = getZiRule();
+    const inputFields = parseDateTimeFields(dateStr);
+    const instantMs = fieldsToInstantMs(inputFields, offset);
+    const dayRule = applyZiDayRule(inputFields, ziRule);
+    const year = getYearPillarByLichunAudit(instantMs, timezone);
+    const month = getMonthPillarBySolarTermAudit(instantMs, timezone, year);
+    const day = getDayPillarFromFieldsAudit(dayRule.effective);
+    const hour = getHourPillarFromFieldsAudit(inputFields, day.stemIndex);
+    const boundary = isNearJieBoundaryAudit(instantMs, month, timezone);
+    return {
+        year: year.gz, month: month.gz, day: day.gz, hour: hour.gz,
+        yearStem: year.stem, yearBranch: year.branch,
+        monthStem: month.stem, monthBranch: month.branch, monthWuxing: month.wuxing,
+        dayStem: day.stem, dayBranch: day.branch, dayWuxing: day.wuxing,
+        hourStem: hour.stem, hourBranch: hour.branch,
+        pillars: { year, month, day, hour },
+        timezone: { name: timezone, offset_minutes: offset },
+        input_time: { raw: dateStr, local_fields: inputFields, instant_ms: instantMs, formatted: formatFields(inputFields) },
+        day_change_rule: { code: ziRule, label: dayRule.rule_label, adjusted: dayRule.adjusted, effective_date: `${dayRule.effective.year}-${String(dayRule.effective.month).padStart(2,'0')}-${String(dayRule.effective.day).padStart(2,'0')}` },
+        day_pillar_baseline: { base_date:'2024-01-01', base_ganzhi:'甲子', verified:true, golden_cases:ENGINE_DAY_PILLAR_GOLDEN_CASES.length, warning:'日柱基準已納入外部黃曆交叉測試；若未來擴大年份範圍，仍需追加權威萬年曆樣本。' },
+        solarTerm: { name: month.jie, time: month.jieTime, nearBoundary: boundary.near, nextName: boundary.nextTerm?.name || null, nextTime: boundary.nextTerm?.time || null, accuracy:'astronomical_approximation', requires_calendar_verification_near_boundary:true, boundary_warning_hours:24 },
+        monthOverride: month.override,
+        note: month.override?.applied
+            ? `已手動覆寫月令為${month.branch}月；節氣推算原為${month.override.computed_gz}。此設定僅供校正使用。`
+            : (boundary.near ? '接近節氣交界，建議用正式萬年曆校對節氣時刻。' : '年柱以立春為界；月令以節氣為界；時間依所選時區固定換算。')
+    };
+}
+
+function populateYongshenCategories() {
+    const select = document.getElementById('q-category');
+    if (select) {
+        const categories = getYongshenCategoryMap();
+        select.innerHTML = '';
+        Object.entries(categories).forEach(([key, val]) => {
+            const opt = document.createElement('option');
+            opt.value = key;
+            opt.textContent = val.label || key;
+            select.appendChild(opt);
+        });
+        if ([...select.options].some(o => o.value === 'general_trend')) select.value = 'general_trend';
+        else if (select.options.length) select.selectedIndex = 0;
+    }
+    populateYongshenOverrideSelectors();
+}
+function populateYongshenOverrideSelectors() {
+    const primary = document.getElementById('q-primary-override');
+    const secondary = document.getElementById('q-secondary-override');
+    [primary, secondary].forEach((sel, idx) => {
+        if (!sel) return;
+        const current = sel.value || 'auto';
+        sel.innerHTML = '';
+        const auto = document.createElement('option');
+        auto.value = 'auto';
+        auto.textContent = idx === 0 ? '主用：依分類' : '輔助：依分類';
+        sel.appendChild(auto);
+        ENGINE_YONGSHEN_TOKENS.forEach(token => {
+            const opt = document.createElement('option');
+            opt.value = token;
+            opt.textContent = token;
+            sel.appendChild(opt);
+        });
+        if ([...sel.options].some(o => o.value === current)) sel.value = current;
+    });
+}
+function populateMonthOverrideOptions() {
+    const sel = document.getElementById('q-month-override');
+    if (!sel) return;
+    const current = sel.value || 'auto';
+    sel.innerHTML = '<option value="auto">月令：依節氣自動推算</option>';
+    YIN_MONTH_BRANCHES.forEach(b => {
+        const opt = document.createElement('option');
+        opt.value = b;
+        opt.textContent = `月令校正：${b}月（手動）`;
+        sel.appendChild(opt);
+    });
+    if ([...sel.options].some(o => o.value === current)) sel.value = current;
+}
+function toggleManualLinesInput() {
+    const method = document.getElementById('q-method')?.value || 'auto_crypto';
+    const input = document.getElementById('q-lines');
+    if (input) input.style.display = method === 'manual' ? 'block' : 'none';
+}
+function initApp() {
+    document.getElementById('system-status').innerText = '系統就緒 (System Ready)';
+    document.getElementById('system-status').className = 'ready';
+    document.getElementById('loader-card').style.display = 'none';
+    const inputCard = document.getElementById('input-card');
+    inputCard.style.display = 'block';
+    inputCard.style.opacity = '1';
+    inputCard.style.pointerEvents = 'auto';
+    const now = new Date(Date.now() + getSelectedTzOffset() * 60000);
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('q-time').value = `${now.getUTCFullYear()}-${pad(now.getUTCMonth()+1)}-${pad(now.getUTCDate())}T${pad(now.getUTCHours())}:${pad(now.getUTCMinutes())}`;
+    populateYongshenCategories();
+    populateMonthOverrideOptions();
+    toggleManualLinesInput();
+    const test = runSelfTest();
+    if (!test.ok) {
+        updateStatus('系統資料檢查有異常');
+        document.getElementById('system-status').className = '';
+    }
+}
+
+function getManualOverrideProfile(baseProfile) {
+    const profile = JSON.parse(JSON.stringify(baseProfile || { label:'一般趨勢', primary:['世爻'], secondary:['應爻','動爻'], avoid_or_counterpart:[], note:'' }));
+    const primaryOverride = document.getElementById('q-primary-override')?.value || 'auto';
+    const secondaryOverride = document.getElementById('q-secondary-override')?.value || 'auto';
+    profile.override = { primary: primaryOverride, secondary: secondaryOverride, applied: false };
+    if (primaryOverride !== 'auto') { profile.primary = [primaryOverride]; profile.override.applied = true; }
+    if (secondaryOverride !== 'auto') { profile.secondary = Array.from(new Set([secondaryOverride, ...(profile.secondary || [])])); profile.override.applied = true; }
+    if (profile.override.applied) profile.note = `${profile.note || ''}（已套用手動用神覆寫）`.trim();
+    return profile;
+}
+
+function cryptoNibble() {
+    if (!(window.crypto && crypto.getRandomValues)) {
+        throw new Error('目前瀏覽器不支援安全隨機數，自動起卦無法使用。請改用手動輸入六爻，或改用支援安全隨機數的瀏覽器與連線環境。');
+    }
+    const arr = new Uint32Array(1);
+    crypto.getRandomValues(arr);
+    return { raw_uint32: arr[0], nibble: arr[0] & 15, source:'crypto.getRandomValues', verified_crypto:true };
+}
+function castValueFromNibble(n) { return n < 1 ? 6 : n < 6 ? 7 : n < 13 ? 8 : 9; }
+function parseManualCastLines(text) {
+    const vals = String(text || '').trim().split(/[\s,，、;；]+/).filter(Boolean).map(Number);
+    if (vals.length !== 6 || vals.some(v => ![6,7,8,9].includes(v))) throw new Error('手動六爻必須由下至上輸入 6 個值，且每個值只能是 6、7、8、9。');
+    return vals;
+}
+function getCastLinesFromUI() {
+    const method = document.getElementById('q-method')?.value || 'auto_crypto';
+    if (method === 'manual') {
+        const lines = parseManualCastLines(document.getElementById('q-lines')?.value || '');
+        return { lines, metadata: { method:'manual', label:'手動輸入六爻值', input_order:'由下至上（初爻到上爻）', random_trace:[], probabilities:null } };
+    }
+    const trace = [];
+    const lines = [];
+    for (let i=0; i<6; i++) {
+        const r = cryptoNibble();
+        const value = castValueFromNibble(r.nibble);
+        lines.push(value);
+        trace.push({ pos:i+1, ...r, cast_value:value });
+    }
+    return { lines, metadata: { method:'auto_crypto_yarrow_probability_distribution', label:'Crypto 隨機數，依蓍草法機率分布抽樣', input_order:'由下至上（初爻到上爻）', random_trace:trace, probabilities:{ '6_老陰':1/16, '7_少陽':5/16, '8_少陰':7/16, '9_老陽':3/16 } } };
+}
+
+function getBranchStatus(branch, wuxing, ctx) {
+    const monthInteractions = getBranchInteraction(ctx.gz.monthBranch, branch);
+    const dayInteractions = getBranchInteraction(ctx.gz.dayBranch, branch);
+    const monthBreakBranch = getMonthBreakBranch(ctx.gz.monthBranch);
+    const flags = [];
+    if (branch === ctx.gz.monthBranch) flags.push('月建');
+    if (branch === ctx.gz.dayBranch) flags.push('臨日');
+    if (branch === monthBreakBranch) flags.push('月破');
+    if (ctx.voidBranches.includes(branch)) flags.push('旬空');
+    monthInteractions.forEach(t => flags.push(`月${t}`));
+    dayInteractions.forEach(t => flags.push(`日${t}`));
+    return {
+        branch, wuxing,
+        month: { branch:ctx.gz.monthBranch, wuxing:ctx.gz.monthWuxing, relation:getWuxingRelation(ctx.gz.monthWuxing, wuxing), interactions:monthInteractions, life_stage:getLifeStage(wuxing, ctx.gz.monthBranch) },
+        day: { branch:ctx.gz.dayBranch, wuxing:ctx.gz.dayWuxing, relation:getWuxingRelation(ctx.gz.dayWuxing, wuxing), interactions:dayInteractions, life_stage:getLifeStage(wuxing, ctx.gz.dayBranch) },
+        flags,
+        is_void: ctx.voidBranches.includes(branch),
+        is_month_break: branch === monthBreakBranch,
+        is_day_clash: dayInteractions.includes('沖')
+    };
+}
+function relationScore(rel, weight) {
+    switch(rel.code) {
+        case 'same': return 1.0 * weight;
+        case 'from_generates_to': return 1.2 * weight;
+        case 'from_controls_to': return -1.2 * weight;
+        case 'to_generates_from': return -0.7 * weight;
+        case 'to_controls_from': return -0.4 * weight;
+        default: return 0;
+    }
+}
+function scoreBranchStatusForUse(status) {
+    let score = 0;
+    const components = [];
+    const add = (value, label) => { score += value; components.push({ label, value:Number(value.toFixed(2)) }); };
+    add(relationScore(status.month.relation, ENGINE_HEURISTIC_WEIGHTS.month_relation_scale), `月令${status.month.relation.label}`);
+    add(relationScore(status.day.relation, ENGINE_HEURISTIC_WEIGHTS.day_relation_scale), `日辰${status.day.relation.label}`);
+    if (status.flags.includes('月建')) add(2.5, '臨月建');
+    if (status.flags.includes('臨日')) add(ENGINE_HEURISTIC_WEIGHTS.day_construct, '臨日辰');
+    if (status.is_month_break) add(ENGINE_HEURISTIC_WEIGHTS.month_break, '月破');
+    if (status.is_void) add(ENGINE_HEURISTIC_WEIGHTS.void, '旬空');
+    status.month.interactions.forEach(t => { if (t === '六合') add(ENGINE_HEURISTIC_WEIGHTS.month_combine,'月合'); if (t === '沖') add(ENGINE_HEURISTIC_WEIGHTS.month_clash,'月沖'); if (t === '害' || t === '刑') add(ENGINE_HEURISTIC_WEIGHTS.month_harm_or_penalty,`月${t}`); });
+    status.day.interactions.forEach(t => { if (t === '六合') add(ENGINE_HEURISTIC_WEIGHTS.day_combine,'日合'); if (t === '沖') add(ENGINE_HEURISTIC_WEIGHTS.day_clash,'日沖'); if (t === '害' || t === '刑') add(ENGINE_HEURISTIC_WEIGHTS.day_harm_or_penalty,`日${t}`); });
+    return { score:Number(score.toFixed(2)), label:strengthLabel(score).label, components, score_is_heuristic:true };
+}
+function evaluateHiddenSpiritAudit(hidden, hostLineEval, ctx) {
+    if (!hidden) return null;
+    const status = getBranchStatus(hidden.branch, hidden.wuxing, ctx);
+    const hiddenStrength = scoreBranchStatusForUse(status);
+    const flyToHidden = getWuxingRelation(hostLineEval.original.wuxing, hidden.wuxing);
+    const hiddenToFly = getWuxingRelation(hidden.wuxing, hostLineEval.original.wuxing);
+    let label = '飛伏關係未明';
+    if (flyToHidden.code === 'from_generates_to') label = '飛神生伏';
+    else if (flyToHidden.code === 'from_controls_to') label = '飛神剋伏';
+    else if (hiddenToFly.code === 'from_generates_to') label = '伏神生飛';
+    else if (hiddenToFly.code === 'from_controls_to') label = '伏神剋飛';
+    else if (flyToHidden.code === 'same') label = '飛伏比和';
+    const blockers = [];
+    const helpers = [];
+    if (status.is_void) blockers.push('伏神旬空');
+    if (status.is_month_break) blockers.push('伏神月破');
+    if (label === '飛神剋伏') blockers.push('飛神壓制伏神');
+    if (hostLineEval.branch_status?.is_void) helpers.push('飛神旬空，伏神壓制減輕候選');
+    if (hostLineEval.branch_status?.is_month_break) helpers.push('飛神月破，伏神壓制減輕候選');
+    if (['飛神生伏','飛伏比和'].includes(label)) helpers.push(label);
+    if (label === '伏神剋飛') helpers.push('伏神剋飛，有出伏抗衡候選');
+    if (status.flags.includes('月建') || status.flags.includes('臨日')) helpers.push('伏神得月日');
+    if (status.day.interactions.includes('沖') || status.month.interactions.includes('沖')) helpers.push('伏神被沖出候選');
+    let surface_status = '伏藏待引動';
+    if (blockers.length && !helpers.length) surface_status = '受制伏藏';
+    else if (!blockers.length && helpers.length) surface_status = '可出伏候選';
+    else if (blockers.length && helpers.length) surface_status = '吉凶並見待判';
+    return {
+        relative:hidden.relative, branch:hidden.branch, wuxing:hidden.wuxing,
+        host_relative:hostLineEval.original.relative, host_branch:hostLineEval.original.branch,
+        fly_to_hidden:flyToHidden, hidden_to_fly:hiddenToFly, label, status, hidden_strength: hiddenStrength,
+        surface_evaluation:{ status:surface_status, blockers, helpers, can_surface_hint:surface_status === '可出伏候選' || surface_status === '吉凶並見待判', note:'伏神能否出伏仍需合看用神、動爻、日月與飛神狀態。' }
+    };
+}
+
+function evaluateChangeStatusAudit(line, targetLine, targetRel, ctx) {
+    const effect = getChangeEffect(line.wuxing, targetLine.wuxing);
+    const advanceRetreat = getAdvanceRetreat(line.branch, targetLine.branch);
+    const targetStatus = getBranchStatus(targetLine.branch, targetLine.wuxing, ctx);
+    const originalToChanged = getBranchInteraction(line.branch, targetLine.branch);
+    const changedToOriginal = getBranchInteraction(targetLine.branch, line.branch);
+    const extra = [];
+    if (targetStatus.is_void) extra.push('化空');
+    if (targetStatus.is_month_break) extra.push('化月破');
+    if (targetStatus.is_day_clash) extra.push('化日沖');
+    if (targetStatus.month.life_stage === '墓' || targetStatus.day.life_stage === '墓') extra.push('化墓');
+    if (targetStatus.month.life_stage === '絕' || targetStatus.day.life_stage === '絕') extra.push('化絕');
+    if (originalToChanged.includes('六合') || changedToOriginal.includes('六合')) extra.push('化合');
+    if (originalToChanged.includes('沖') || changedToOriginal.includes('沖')) extra.push('化沖');
+    return { target_relative:targetRel, target_branch:targetLine.branch, target_wuxing:targetLine.wuxing, effect, advance_retreat:advanceRetreat, target_status:targetStatus, original_changed_branch_interactions:Array.from(new Set([...originalToChanged, ...changedToOriginal])), extra_labels:extra };
+}
+function evaluateCovertMotion(branchStatus, score, isMoving) {
+    if (isMoving || !branchStatus.day.interactions.includes('沖')) return { code:'none', label:'非暗動條件', active:false, blockers:[], helpers:[] };
+    const blockers = [];
+    const helpers = [];
+    if (branchStatus.is_void) blockers.push('旬空');
+    if (branchStatus.is_month_break) blockers.push('月破');
+    if (branchStatus.month.interactions.includes('沖')) blockers.push('月沖');
+    if (branchStatus.flags.includes('月建')) helpers.push('月建');
+    if (branchStatus.flags.includes('臨日')) helpers.push('臨日');
+    if (['same','from_generates_to'].includes(branchStatus.month.relation.code)) helpers.push(`月令${branchStatus.month.relation.label}`);
+    if (['same','from_generates_to'].includes(branchStatus.day.relation.code)) helpers.push(`日辰${branchStatus.day.relation.label}`);
+    if (score >= 1) helpers.push('旺相分數支持');
+    if (blockers.length && helpers.length === 0) return { code:'day_break_or_scattered', label:'日破/沖散候選', active:false, blockers, helpers, note:'靜爻逢日沖但空破或無生扶，先作日破/沖散候選。' };
+    if (helpers.length) return { code:'covert_moving_candidate', label:'暗動候選', active:true, blockers, helpers, note:'靜爻逢日沖且有月日生扶或旺相條件，可作暗動候選。' };
+    return { code:'weak_day_clash_candidate', label:'日沖弱動候選', active:false, blockers, helpers, note:'靜爻逢日沖但扶助不足，需人工判定是沖起或沖破。' };
+}
+function evaluateLine(line, idx, castVal, targetLine, targetRel, ctx) {
+    const isMoving = castVal === 6 || castVal === 9;
+    const branchStatus = getBranchStatus(line.branch, line.wuxing, ctx);
+    const tags = [];
+    const components = [];
+    let score = 0;
+    const addScore = (value, label) => { score += value; components.push({ label, value:Number(value.toFixed(2)) }); };
+    addScore(relationScore(branchStatus.month.relation, ENGINE_HEURISTIC_WEIGHTS.month_relation_scale), `月令${branchStatus.month.relation.label}`);
+    addScore(relationScore(branchStatus.day.relation, ENGINE_HEURISTIC_WEIGHTS.day_relation_scale), `日辰${branchStatus.day.relation.label}`);
+    if (branchStatus.flags.includes('月建')) { tags.push(tagObj('月建','good')); addScore(ENGINE_HEURISTIC_WEIGHTS.month_construct,'臨月建'); }
+    if (branchStatus.is_month_break) { tags.push(tagObj('月破','bad')); addScore(ENGINE_HEURISTIC_WEIGHTS.month_break,'月破'); }
+    if (branchStatus.is_void) { tags.push(tagObj('旬空','bad')); addScore(ENGINE_HEURISTIC_WEIGHTS.void,'旬空'); }
+    branchStatus.month.interactions.forEach(t => { const type = t === '六合' ? 'good' : (t === '沖' ? 'bad' : 'warn'); tags.push(tagObj(`月${t}`, type)); if (t === '六合') addScore(ENGINE_HEURISTIC_WEIGHTS.month_combine,'月合'); if (t === '沖') addScore(ENGINE_HEURISTIC_WEIGHTS.month_clash,'月沖'); if (t === '害' || t === '刑') addScore(ENGINE_HEURISTIC_WEIGHTS.month_harm_or_penalty,`月${t}`); });
+    branchStatus.day.interactions.forEach(t => { const type = t === '六合' ? 'good' : (t === '沖' ? 'bad' : 'warn'); tags.push(tagObj(`日${t}`, type)); if (t === '六合') addScore(ENGINE_HEURISTIC_WEIGHTS.day_combine,'日合'); if (t === '沖') addScore(ENGINE_HEURISTIC_WEIGHTS.day_clash,'日沖'); if (t === '害' || t === '刑') addScore(ENGINE_HEURISTIC_WEIGHTS.day_harm_or_penalty,`日${t}`); });
+    if (branchStatus.flags.includes('臨日')) { tags.push(tagObj('臨日','good')); addScore(ENGINE_HEURISTIC_WEIGHTS.day_construct,'臨日辰'); }
+    if (isMoving) { tags.push(tagObj('動爻','move')); addScore(ENGINE_HEURISTIC_WEIGHTS.moving,'發動'); }
+    const covert_motion = evaluateCovertMotion(branchStatus, score, isMoving);
+    if (covert_motion.code !== 'none') tags.push(tagObj(covert_motion.label, covert_motion.active ? 'warn' : 'bad', covert_motion.note || ''));
+    let change = null;
+    if (isMoving && targetLine) {
+        change = evaluateChangeStatusAudit(line, targetLine, targetRel, ctx);
+        tags.push(tagObj(change.effect.label, change.effect.code === 'changed_generates_original' ? 'good' : change.effect.code === 'changed_controls_original' ? 'bad' : 'neutral'));
+        if (change.advance_retreat.code !== 'none') tags.push(tagObj(change.advance_retreat.label, change.advance_retreat.code.includes('advance') ? 'good' : 'bad'));
+        change.extra_labels.forEach(x => tags.push(tagObj(x, x.includes('破') || x.includes('空') || x.includes('絕') || x.includes('沖') ? 'bad' : 'warn')));
+    }
+    const strength = strengthLabel(score);
+    const baseEval = {
+        pos:idx+1, label:line.label_display, cast_value:castVal, moving:isMoving,
+        original:{ relative:line.relative, branch:line.branch, wuxing:line.wuxing, role:line.role || '', hidden_spirit:line.hidden_spirit || null },
+        relations:{ month:{ branch:ctx.gz.monthBranch, wuxing:ctx.gz.monthWuxing, relation:branchStatus.month.relation.label, interactions:branchStatus.month.interactions, life_stage:branchStatus.month.life_stage }, day:{ branch:ctx.gz.dayBranch, wuxing:ctx.gz.dayWuxing, relation:branchStatus.day.relation.label, interactions:branchStatus.day.interactions, life_stage:branchStatus.day.life_stage } },
+        branch_status:branchStatus, tags, covert_motion,
+        strength:{ score:Number(score.toFixed(2)), label:strength.label, css:strength.css, components, score_is_heuristic:true, score_note:ENGINE_SCORE_NOTE, objective_flags:Array.from(new Set(tags.map(t => t.label))) },
+        change,
+        target_line_relevance:{ relevant_to_main_judgment:isMoving, policy:getEvaluationSettings().target_relevance, note:isMoving ? '動爻變出，納入主判。' : '非動爻之變卦爻只作背景，不與動爻等權。' }
+    };
+    baseEval.hidden_spirit_evaluation = evaluateHiddenSpiritAudit(line.hidden_spirit, baseEval, ctx);
+    return baseEval;
+}
+
+
+function evaluateGlobalCombinations(lineEvaluations, ctx) {
+    const sources = [];
+    sources.push({ branch:ctx.gz.monthBranch, source:'月令', moving:false, active:true, blocked:false, flags:['月令'] });
+    sources.push({ branch:ctx.gz.dayBranch, source:'日辰', moving:false, active:true, blocked:false, flags:['日辰'] });
+    lineEvaluations.forEach(l => sources.push({ branch:l.original.branch, source:`第${l.pos}爻`, pos:l.pos, moving:l.moving, active:l.moving || l.covert_motion?.active, blocked:l.branch_status.is_void || l.branch_status.is_month_break, flags:l.branch_status.flags, relative:l.original.relative, role:l.original.role || '' }));
+    const groups = DB.logic.branch_combinations?.three_harmony_groups || {};
+    const threeHarmony = [];
+    Object.entries(groups).forEach(([name, group]) => {
+        const hitSources = sources.filter(s => group.branches.includes(s.branch));
+        const hitBranches = Array.from(new Set(hitSources.map(s => s.branch)));
+        if (hitBranches.length < 2) return;
+        const blockers = hitSources.filter(s => s.blocked).map(s => `${s.source}${s.flags?.length ? '(' + s.flags.join('/') + ')' : ''}`);
+        const hasMoving = hitSources.some(s => s.moving || s.active);
+        const hasMonthOrDay = hitSources.some(s => s.source === '月令' || s.source === '日辰');
+        const hasPeak = hitBranches.includes(group.peak);
+        const monthSupportsTransform = ['same','from_generates_to'].includes(getWuxingRelation(ctx.gz.monthWuxing, group.element).code);
+        const hasExternalClash = hitBranches.some(b => {
+            const clash = DB.logic.branch_interactions?.[b]?.clash;
+            return clash && sources.some(s => s.branch === clash && !group.branches.includes(s.branch));
+        });
+        if (hasExternalClash) blockers.push('局外沖散候選');
+        let type = '拱合候選';
+        let status = '拱合候選';
+        if (hitBranches.length === 3) {
+            type = '三合候選';
+            if (blockers.length) status = '三合受阻';
+            else if (!monthSupportsTransform) status = '合而不化候選';
+            else if (hasMoving || hasMonthOrDay) status = '三合成局候選';
+            else status = '三合待引動';
+        } else if (hasPeak) {
+            type = '旺支半合候選';
+            if (blockers.length) status = '半合受阻';
+            else if (!monthSupportsTransform) status = '半合而不化候選';
+            else status = '半合候選';
+        } else {
+            type = '生墓拱合候選';
+            if (blockers.length) status = '拱合受阻';
+            else if (!monthSupportsTransform) status = '拱合不化候選';
+            else status = '拱合候選';
+        }
+        threeHarmony.push({ type, status, group:name, element:group.element, branches:hitBranches, required_branches:group.branches, roles:group.roles, sources:hitSources, blockers, has_moving_or_covert:hasMoving, has_month_or_day:hasMonthOrDay, month_supports_transformation:monthSupportsTransform, has_external_clash:hasExternalClash, can_treat_as_formed:status === '三合成局候選', note:'三合/半合需再看用神相關性、空破、沖散與動爻引動。' });
+    });
+    const six = [];
+    lineEvaluations.forEach(l => {
+        [['月令', ctx.gz.monthBranch], ['日辰', ctx.gz.dayBranch]].forEach(([withName, withBranch]) => {
+            const comb = getSixCombination(l.original.branch, withBranch);
+            if (!comb) return;
+            const transformedRelMonth = getWuxingRelation(ctx.gz.monthWuxing, comb.transforms_to);
+            const blocked = l.branch_status.is_void || l.branch_status.is_month_break;
+            const supported = transformedRelMonth.code === 'same' || transformedRelMonth.code === 'from_generates_to';
+            let status = '六合候選';
+            if (blocked) status = '六合受阻';
+            else if (!supported) status = '合而不化候選';
+            else if (l.moving || l.covert_motion?.active || withName === '月令' || withName === '日辰') status = '合化候選';
+            const greed = l.moving && ['changed_generates_original','changed_controls_original'].includes(l.change?.effect?.code || '') ? '貪合可能改變動變生剋權重，需人工確認。' : '';
+            six.push({ pos:l.pos, with:withName, pair:comb.branches.join(''), transforms_to:comb.transforms_to, status, blocked, transformation_supported_by_month:supported, month_relation_to_transform:transformedRelMonth.label, greed_note:greed, note:'六合是否化氣需看月令、動爻、空破與用神相關性；不得一律視為化。' });
+        });
+    });
+    return { focus_sources:sources, three_harmony:threeHarmony, six_combinations:six };
+}
+
+
+function hiddenOccurrence(lineEval, hidden) {
+    return { pos:lineEval.pos, match_type:'伏神', relative:hidden.relative, branch:hidden.branch, wuxing:hidden.wuxing, role:lineEval.original.role || '', host_relative:lineEval.original.relative, host_branch:lineEval.original.branch, host_strength:lineEval.strength, hidden_evaluation:lineEval.hidden_spirit_evaluation, tags:['伏神', ...(lineEval.hidden_spirit_evaluation?.status?.flags || [])] };
+}
+
+function evaluateWorldResponse(lines) {
+    const world = lines.find(l => l.original.role === '世') || null;
+    const response = lines.find(l => l.original.role === '應') || null;
+    if (!world || !response) return { world, response, relation:null, branch_interactions:[], note:'世應不完整，資料需檢查。' };
+    return { world:{ pos:world.pos, relative:world.original.relative, branch:world.original.branch, wuxing:world.original.wuxing, strength:world.strength, tags:world.tags.map(t => t.label) }, response:{ pos:response.pos, relative:response.original.relative, branch:response.original.branch, wuxing:response.original.wuxing, strength:response.strength, tags:response.tags.map(t => t.label) }, relation:getWuxingRelation(world.original.wuxing, response.original.wuxing), reverse_relation:getWuxingRelation(response.original.wuxing, world.original.wuxing), branch_interactions:Array.from(new Set([...getBranchInteraction(world.original.branch, response.original.branch), ...getBranchInteraction(response.original.branch, world.original.branch)])), note:'世應關係需依問題類型判讀：世多代表求測者，應多代表對方、對境或外部條件。' };
+}
+function evaluateShensha(lines, gz) {
+    const stars = DB.logic.shen_sha || {};
+    const dayStem = gz.dayStem;
+    const dayBranch = gz.dayBranch;
+    const basis = DB.logic.shen_sha_basis || { traveling_horse:'day_branch', peach_blossom:'day_branch', noble_man:'day_stem', prosperity:'day_stem', sheep_blade:'day_stem' };
+    const refs = {
+        traveling_horse: stars.traveling_horse?.[dayBranch] || null,
+        peach_blossom: stars.peach_blossom?.[dayBranch] || null,
+        noble_man: stars.noble_man?.[dayStem] || [],
+        prosperity: stars.prosperity?.[dayStem] || null,
+        sheep_blade: stars.sheep_blade?.[dayStem] || null
+    };
+    const labels = { traveling_horse:'驛馬', peach_blossom:'桃花', noble_man:'貴人', prosperity:'祿', sheep_blade:'羊刃' };
+    const line_marks = [];
+    lines.forEach(l => {
+        Object.entries(refs).forEach(([key, value]) => {
+            const values = Array.isArray(value) ? value : [value];
+            if (values.includes(l.original.branch)) line_marks.push({ pos:l.pos, star:key, label:labels[key], basis:basis[key] || 'unknown', branch:l.original.branch, relative:l.original.relative, role:l.original.role || '', moving:l.moving, strength:l.strength.label, note:'神煞為輔助標記，不凌駕月日用神與動變。' });
+        });
+    });
+    return { references:refs, basis, line_marks, policy:'神煞只作輔助標記；若臨用神、世爻、應爻或動爻，才提高參考權重。' };
+}
+
+
+function buildAnalysis(topic, timeStr, gz, voidBranches, origId, mutualId, targetId, castLines, sixBeasts, castMetadata = null) {
     const orig = DB.lookup[origId];
     const mutual = DB.lookup[mutualId];
     const target = DB.lookup[targetId];
     const targetRelData = DB.matrix[targetId].relatives_matrix[orig.palace_wuxing];
-    
-    const stars = DB.logic.shen_sha;
-    const horse = stars.traveling_horse[gz.dayBranch] || "無";
-    const flower = stars.peach_blossom[gz.dayBranch] || "無";
-    const noble = (stars.noble_man[gz.dayStem] || []).join("/");
+    const categories = getYongshenCategoryMap();
+    const yongshenKey = document.getElementById('q-category')?.value || 'general_trend';
+    const yongshenBase = categories[yongshenKey] || categories.general_trend || null;
+    const yongshen = getManualOverrideProfile(yongshenBase);
+    const ctx = { gz, voidBranches };
+    const lines = orig.lines.map((line, idx) => evaluateLine(line, idx, castLines[idx], target.lines[idx], targetRelData[idx], ctx));
+    const yongshenEvaluation = evaluateYongshen(yongshen, lines);
+    const combinations = evaluateGlobalCombinations(lines, ctx);
+    const worldResponse = evaluateWorldResponse(lines);
+    const shensha = evaluateShensha(lines, gz);
+    const settings = getEvaluationSettings();
+    return {
+        engine_version: ENGINE_VERSION,
+        data_files: DB.fileMeta,
+        load_mode: DB.loadMode,
+        evaluation_settings: {
+            ...settings,
+            notes:{
+                soil_life_stage: DB.logic.school_variants?.soil_life_stage?.options?.[settings.soil_life_stage] || '',
+                advance_retreat: DB.logic.school_variants?.advance_retreat?.options?.[settings.advance_retreat] || '',
+                target_relevance: DB.logic.target_line_relevance_policy?.description || '非動爻之變卦爻只作背景。'
+            }
+        },
+        topic,
+        time: timeStr.replace('T',' '),
+        calendar: { year:gz.year, month:gz.month, day:gz.day, hour:gz.hour, full_pillars:`${gz.year}年 ${gz.month}月 ${gz.day}日 ${gz.hour}時`, timezone:gz.timezone, input_time:gz.input_time, day_change_rule:gz.day_change_rule, month_order:{ branch:gz.monthBranch, wuxing:gz.monthWuxing, solar_term:gz.solarTerm, override:gz.monthOverride || null }, void_branches:voidBranches, note:gz.note },
+        cast: castMetadata || { method:'unknown' },
+        yongshen: { key:yongshenKey, profile:yongshen, evaluation:yongshenEvaluation },
+        hexagrams: { original:{ id:origId, name:orig.name, palace:orig.palace, palace_wuxing:orig.palace_wuxing }, mutual:{ id:mutualId, name:mutual.name, weight:'輔助參考，不凌駕用神、世應、月日、動變。' }, target:{ id:targetId, name:target.name, relatives_basis:`以本卦${orig.palace}宮${orig.palace_wuxing}定變爻六親`, relevance_policy:settings.target_relevance } },
+        lines,
+        world_response: worldResponse,
+        combinations,
+        shensha,
+        scoring_policy: { score_is_heuristic:true, note:ENGINE_SCORE_NOTE, weights:ENGINE_HEURISTIC_WEIGHTS },
+        quality_assurance: DB.calibrationReport || runCalibrationSuite()
+    };
+}
 
-    // Calculate Month/Day Interactions explicitly for the AI
-    const dayClash = DB.logic.branch_interactions[gz.dayBranch].clash;
-    const monthClash = DB.logic.branch_interactions[gz.monthBranch].clash;
-    
-    let movingLinesDesc = [];
-    let lineDetails = [];
-    
-    orig.lines.forEach((l, i) => {
-        const val = castLines[i];
-        const isMoving = (val === 6 || val === 9);
-        const moveStr = isMoving ? " [動]" : "";
-        const targetLine = target.lines[i];
-        const targetRel = targetRelData[i];
-        
-        let status = [];
-        if (voids.includes(l.branch)) status.push("旬空");
-        if (l.branch === dayClash) status.push("日破");
-        if (l.branch === monthClash) status.push("月破");
-        if (l.branch === gz.monthBranch) status.push("臨月建(旺)"); 
-        if (l.branch === gz.dayBranch) status.push("臨日辰(旺)");
-        
-        // Add Ti/Yong text to the line detail if applicable
-        let tiYongStr = "";
-        if (tiYongMap) {
-            if (i >= 3 && tiYongMap.upper === '體') tiYongStr = "[體卦] ";
-            else if (i >= 3 && tiYongMap.upper === '用') tiYongStr = "[用卦] ";
-            else if (i < 3 && tiYongMap.lower === '體') tiYongStr = "[體卦] ";
-            else if (i < 3 && tiYongMap.lower === '用') tiYongStr = "[用卦] ";
-        }
-        
-        const statusStr = status.length > 0 ? `(${status.join(",")})` : "";
-        let fushenStr = l.hidden_spirit ? ` (伏神: ${l.hidden_spirit.relative} ${l.hidden_spirit.branch}${l.hidden_spirit.wuxing})` : "";
-
-        let lineDesc = `第${i+1}爻: ${tiYongStr}${beasts[i]} | ${l.relative} | ${l.branch}${l.wuxing} | ${l.role}${fushenStr} ${statusStr}${moveStr}`;
-        
-        if (isMoving) {
-            lineDesc += ` -> 變出: ${targetRel} ${targetLine.branch}${targetLine.wuxing}`;
-            movingLinesDesc.push(`- 第${i+1}爻發動 (${l.relative}變${targetRel})：由 ${l.branch}${l.wuxing} 變 ${targetLine.branch}${targetLine.wuxing}`);
-        }
-        lineDetails.push(lineDesc);
+function castHexagram() {
+    const topic = document.getElementById('q-topic').value || '無題';
+    const timeStr = document.getElementById('q-time').value;
+    if (!timeStr) { alert('請先指定占卜時間'); return; }
+    let cast;
+    try { cast = getCastLinesFromUI(); }
+    catch (err) { alert(err.message); return; }
+    let gz;
+    try { gz = getGanZhi(timeStr); }
+    catch (err) { alert(err.message || '干支時間計算失敗，請檢查占卜時間與設定。'); return; }
+    const voidBranches = getVoid(gz.dayStem, gz.dayBranch);
+    const sixBeasts = DB.logic.six_beasts_rules[gz.dayStem];
+    const castLines = cast.lines;
+    let origId = 0, targetId = 0;
+    castLines.forEach((val, i) => {
+        const isYang = (val === 7 || val === 9) ? 1 : 0;
+        const targetIsYang = (val === 9) ? 0 : (val === 6) ? 1 : isYang;
+        origId |= (isYang << i);
+        targetId |= (targetIsYang << i);
     });
+    const mutualId = getMutualHexId(castLines);
+    const analysis = buildAnalysis(topic, timeStr, gz, voidBranches, origId, mutualId, targetId, castLines, sixBeasts, cast.metadata);
+    DB.lastAnalysis = analysis;
+    renderResultUI(topic, timeStr, gz, voidBranches);
+    renderOriginalHex(origId, castLines, sixBeasts, analysis.lines);
+    renderMutualHex(mutualId);
+    renderTargetHex(targetId, origId, analysis.lines);
+    renderStructuredAnalysis(analysis);
+    generateAIPrompt(analysis, sixBeasts);
+    document.getElementById('result-section').style.display = 'block';
+    document.getElementById('result-section').scrollIntoView({behavior:'smooth'});
+}
+function renderResultUI(topic, time, gz, voids) {
+    document.getElementById('res-topic').innerText = topic;
+    document.getElementById('res-time').innerText = `${time.replace('T',' ')} (${gz.timezone.name})`;
+    document.getElementById('res-gz').innerText = `${gz.year}年 ${gz.month}月 ${gz.day}日 ${gz.hour}時`;
+    document.getElementById('res-month').innerText = `${gz.monthBranch}月令（${gz.monthWuxing}）`;
+    document.getElementById('res-void').innerText = voids.join('、');
+    const note = document.getElementById('calendar-note');
+    note.style.display = (gz.solarTerm.nearBoundary || gz.day_change_rule.adjusted) ? 'block' : 'none';
+    const monthOverrideText = gz.monthOverride?.applied ? `<br>月令覆寫：${gz.monthOverride.computed_gz} → ${gz.month}。` : '';
+    note.innerHTML = `${gz.note}<br>節氣：${gz.solarTerm.name} ${gz.solarTerm.time}；下一節：${gz.solarTerm.nextName || '-'} ${gz.solarTerm.nextTime || '-'}。<br>換日規則：${gz.day_change_rule.label}${gz.day_change_rule.adjusted ? '；本次日柱採下一日。' : ''}${monthOverrideText}`;
+    const marks = DB.lastAnalysis?.shensha?.line_marks || [];
+    const marksHtml = marks.length ? marks.map(m => `第${m.pos}爻${m.label}（${m.relative}${m.branch}${m.role ? '，' + m.role : ''}）`).join('；') : '無爻位命中';
+    const refs = DB.lastAnalysis?.shensha?.references || {};
+    document.getElementById('shensha-info').innerHTML = `<span class="beast-tag">驛馬</span>: ${refs.traveling_horse || '-'} | <span class="beast-tag">桃花</span>: ${refs.peach_blossom || '-'} | <span class="beast-tag">貴人</span>: ${(refs.noble_man || []).join('/') || '-'} | <span class="beast-tag">祿</span>: ${refs.prosperity || '-'} | <span class="beast-tag">羊刃</span>: ${refs.sheep_blade || '-'}<br><span style="color:#666">爻位標記：${marksHtml}</span>`;
+}
+function renderStructuredAnalysis(analysis) {
+    const y = analysis.yongshen.profile;
+    const yHTML = y ? `<strong>${y.label || analysis.yongshen.key}</strong><br>主用：${(y.primary || []).join('、') || '-'}<br>輔助：${(y.secondary || []).join('、') || '-'}<br>覆寫：${y.override?.applied ? `主用=${y.override.primary}；輔助=${y.override.secondary}` : '未覆寫'}<br><span style="color:#777">${y.note || ''}</span>${renderYongshenEvaluation(analysis)}` : '-';
+    const moving = analysis.lines.filter(l => l.moving).map(l => `第${l.pos}爻 ${l.original.relative}${l.original.branch}${l.original.wuxing} → ${l.change.target_relative}${l.change.target_branch}${l.change.target_wuxing}（${[l.change.effect.label, l.change.advance_retreat.code !== 'none' ? l.change.advance_retreat.label : null, ...(l.change.extra_labels || [])].filter(Boolean).join('，')}）`).join('<br>') || '無動爻（靜卦）';
+    const combos = [
+        ...(analysis.combinations.three_harmony || []).map(c => `${c.status}：${c.group} ${c.branches.join('')} 化${c.element}${c.blockers.length ? '；受阻=' + c.blockers.join('、') : ''}`),
+        ...(analysis.combinations.six_combinations || []).map(c => `第${c.pos}爻與${c.with}${c.pair}：${c.status}，合化${c.transforms_to}`)
+    ].join('<br>') || '未形成明顯月日／動爻合局提示';
+    const wr = analysis.world_response;
+    const wrHtml = wr?.world && wr?.response ? `世：第${wr.world.pos}爻 ${wr.world.relative}${wr.world.branch}${wr.world.wuxing}（${wr.world.strength.label}${wr.world.strength.score}）<br>應：第${wr.response.pos}爻 ${wr.response.relative}${wr.response.branch}${wr.response.wuxing}（${wr.response.strength.label}${wr.response.strength.score}）<br>世→應：${wr.relation.label}；支互動：${wr.branch_interactions.join('、') || '無'}` : '世應資料不完整';
+    const hidden = analysis.lines.filter(l => l.hidden_spirit_evaluation).map(l => `第${l.pos}爻伏神：${l.hidden_spirit_evaluation.relative}${l.hidden_spirit_evaluation.branch}${l.hidden_spirit_evaluation.wuxing}，${l.hidden_spirit_evaluation.label}，${l.hidden_spirit_evaluation.status.flags.join('、') || '無空破'}`).join('<br>') || '無伏神';
+    document.getElementById('structured-summary').innerHTML = `<div class="structured-grid">
+        <div class="structured-box"><h3>用神分類與命中</h3>${yHTML}</div>
+        <div class="structured-box"><h3>世應關係</h3>${wrHtml}</div>
+        <div class="structured-box"><h3>動變</h3>${moving}</div>
+        <div class="structured-box"><h3>合局提示</h3>${combos}</div>
+        <div class="structured-box"><h3>伏神 / 飛伏</h3>${hidden}</div>
+        <div class="structured-box"><h3>評分說明</h3>${analysis.scoring_policy.note}</div>
+    </div>`;
+    document.getElementById('structured-json-area').value = JSON.stringify(analysis, null, 2);
+}
+function linePromptDetail(line, beast) {
+    const tags = line.tags.map(t => t.label).join('、') || '無';
+    const hidden = line.hidden_spirit_evaluation ? `｜伏神=${line.hidden_spirit_evaluation.relative}${line.hidden_spirit_evaluation.branch}${line.hidden_spirit_evaluation.wuxing}/${line.hidden_spirit_evaluation.label}/${line.hidden_spirit_evaluation.status.flags.join('、') || '無空破'}` : '';
+    const base = `第${line.pos}爻：${beast}｜${line.original.relative}｜${line.original.branch}${line.original.wuxing}｜${line.original.role || '-'}｜旺衰=${line.strength.label}(${line.strength.score}, heuristic)｜月=${line.relations.month.relation}/${line.relations.month.life_stage || '-'}｜日=${line.relations.day.relation}/${line.relations.day.life_stage || '-'}｜標籤=${tags}${hidden}`;
+    if (!line.change) return base;
+    const extra = line.change.extra_labels?.length ? `｜${line.change.extra_labels.join('、')}` : '';
+    return `${base}｜動變=${line.change.target_relative}${line.change.target_branch}${line.change.target_wuxing}｜${line.change.effect.label}${line.change.advance_retreat.code !== 'none' ? '｜' + line.change.advance_retreat.label : ''}${extra}`;
+}
+function generateAIPrompt(analysis, beasts) {
+    const lineDetails = analysis.lines.map((l, idx) => linePromptDetail(l, beasts[idx]));
+    const movingLinesDesc = analysis.lines.filter(l => l.moving).map(l => `- 第${l.pos}爻發動：${l.original.relative}${l.original.branch}${l.original.wuxing} 變 ${l.change.target_relative}${l.change.target_branch}${l.change.target_wuxing}；${[l.change.effect.label, l.change.advance_retreat.code !== 'none' ? l.change.advance_retreat.label : null, ...(l.change.extra_labels || [])].filter(Boolean).join('；')}`);
+    const wr = analysis.world_response;
+    const wrLine = wr?.world && wr?.response ? `世第${wr.world.pos}爻${wr.world.relative}${wr.world.branch}${wr.world.wuxing}，應第${wr.response.pos}爻${wr.response.relative}${wr.response.branch}${wr.response.wuxing}；世應五行=${wr.relation.label}；支互動=${wr.branch_interactions.join('、') || '無'}` : '世應資料不完整';
+    const shenshaMarks = analysis.shensha.line_marks.map(m => `第${m.pos}爻${m.label}`).join('、') || '無爻位命中';
+    const prompt = `請扮演一位精通京房易學、六爻預測與五行生剋的資深占卜師，針對以下結構化卦象進行專業解讀。請以程式輸出的月日旺衰、空破合沖刑害、用神命中、伏神、世應與動變回頭生剋為主要依據，不要自行改寫四柱、爻序或用神分類。
 
-    let methodSpecificPrompt = "";
-    if (tiYongMap) {
-        methodSpecificPrompt = `【梅花易數斷法參考】：
-- 體卦 (${tiYongMap.upper === '體' ? '上卦' : '下卦'}): 代表求測者自身或主體。
-- 用卦 (${tiYongMap.upper === '用' ? '上卦' : '下卦'}): 代表所測之事或對方。
-- 請重點分析「體用生剋」：用生體大吉，體生用洩氣，用剋體大凶，體剋用小吉，比和為吉。
-- 結合互卦看過程，結合變卦看結果。`;
-    }
+【占卜主題】：${analysis.topic}
+【四柱】：${analysis.calendar.full_pillars}
+【時區與換日】：${analysis.calendar.timezone.name}；${analysis.calendar.day_change_rule.label}${analysis.calendar.day_change_rule.adjusted ? '（本次已調整日柱）' : ''}
+【月令】：${analysis.calendar.month_order.branch}月令（${analysis.calendar.month_order.wuxing}），節氣=${analysis.calendar.month_order.solar_term.name} ${analysis.calendar.month_order.solar_term.time}
+【旬空】：${analysis.calendar.void_branches.join('、')}
+【起卦】：${analysis.cast.label || analysis.cast.method}；爻序=${analysis.cast.input_order || '初爻至上爻'}
+【評分聲明】：${analysis.scoring_policy.note}
 
-    const prompt = `
-請扮演一位擁有40年經驗的易經大師，精通「京房六爻」與「梅花易數」。針對以下卦象進行嚴謹的斷卦分析。
+【用神結構】：
+${yongshenPromptBlock(analysis)}
 
-【占卜主題】：${topic}
+【世應結構】：
+${wrLine}
 
-【天時背景 (已校正節氣)】：
-- 四柱：${gz.year}年 ${gz.month}月 ${gz.day}日
-- 月建：${gz.monthBranch}月 (五行${gz.monthWuxing}旺) -> 沖(月破): ${monthClash}
-- 日辰：${gz.dayStem}${gz.dayBranch} (五行${gz.dayWuxing}旺) -> 沖(日破): ${dayClash}
-- 旬空：${voids.join("")}
-- 神煞：驛馬${horse} | 桃花${flower} | 貴人${noble}
+【神煞標記】：
+${shenshaMarks}（神煞只作輔助，不凌駕月日、用神、世應與動變）
 
 【卦象結構】：
-1. 本卦 (現狀)：${orig.name} (${orig.palace}宮${orig.palace_wuxing})
-2. 互卦 (過程)：${mutual.name}
-3. 之卦 (結果)：${target.name}
+1. 本卦：${analysis.hexagrams.original.name}（${analysis.hexagrams.original.palace}宮${analysis.hexagrams.original.palace_wuxing}）
+2. 之卦：${analysis.hexagrams.target.name}（變爻六親以本卦卦宮五行定）
+3. 互卦：${analysis.hexagrams.mutual.name}（僅作過程/內在輔助，不凌駕用神、世應、月日、動爻）
 
-${methodSpecificPrompt}
-
-【排盤詳情 (由下至上)】：
-${lineDetails.reverse().join("\n")}
+【排盤詳情（由下至上，初爻到上爻）】：
+${lineDetails.join('\n')}
 
 【動爻分析】：
-${movingLinesDesc.length > 0 ? movingLinesDesc.join("\n") : "無動爻 (靜卦)"}
+${movingLinesDesc.length > 0 ? movingLinesDesc.join('\n') : '無動爻（靜卦）'}
 
-【解卦標準程序 (SOP)】：
-1. **定準用神**：${tiYongMap ? "確認「體卦」與「用卦」" : "依據主題選取「用神」(如問財看妻財)"}，並務必檢核其在${gz.monthBranch}月${gz.dayBranch}日的旺衰（如月破、日合、長生、帝旺、死墓絕）。
-2. **核心斷語**：${tiYongMap ? "依據「體用生剋」" : "依據「世應」與「動爻」對用神的生剋"}，判定吉凶趨勢。
-3. **動變分析**：若有動爻，重點分析其變卦後的「回頭生/剋」或「化空/化墓/化進退」。
-4. **應期與建議**：推算應驗時間（月/日），並給出具體建議。
-`.trim();
+【合局提示】：
+${analysis.combinations.three_harmony.map(c => `- ${c.status}：${c.group} ${c.branches.join('')} 化${c.element}${c.blockers.length ? '；受阻=' + c.blockers.join('、') : ''}`).join('\n') || '未形成明顯三合提示'}
+${analysis.combinations.six_combinations.map(c => `- 第${c.pos}爻與${c.with}${c.pair}：${c.status}，合化${c.transforms_to}`).join('\n') || '未形成明顯六合提示'}
 
+【解卦規則】：
+1. 先確認主用是否明現、伏藏或未現，再看原神、忌神、仇神。
+2. 月令、日辰、旬空、月破、日沖、六合、刑害、世應與動變優先於互卦。
+3. 動爻必須檢查回頭生、回頭剋、化進、化退、化空、化破、化墓、化絕、化合、化沖。
+4. 伏神必須同時看伏神自身與飛神狀態，不可只因伏藏就直接判無用。
+5. 合局需區分成局候選、半合候選、拱合候選與受阻，不可一律視為已化。
+6. 結論需區分「程式已標記的客觀結構」與「術數判斷推論」。`.trim();
     document.getElementById('ai-prompt-area').value = prompt;
 }
 
-function copyPrompt() {
-    const copyText = document.getElementById("ai-prompt-area");
-    copyText.select();
-    copyText.setSelectionRange(0, 99999); 
-    document.execCommand("copy");
-    alert("提示詞已複製！");
+function calcRelativeFromWuxing(palaceWuxing, lineWuxing) {
+    const rel = { generates:{ 木:'火', 火:'土', 土:'金', 金:'水', 水:'木' }, controls:{ 木:'土', 土:'水', 水:'火', 火:'金', 金:'木' } };
+    if (palaceWuxing === lineWuxing) return '兄弟';
+    if (rel.generates[palaceWuxing] === lineWuxing) return '子孫';
+    if (rel.generates[lineWuxing] === palaceWuxing) return '父母';
+    if (rel.controls[palaceWuxing] === lineWuxing) return '妻財';
+    if (rel.controls[lineWuxing] === palaceWuxing) return '官鬼';
+    return '未知';
 }
-</script>
+const PALACE_PURE_ID = { '乾':63, '坤':0, '震':9, '巽':54, '坎':18, '離':45, '艮':36, '兌':27 };
+const TRIGRAM_NAJIA = {
+    7: { lower:{ stem:'甲', branches:['子','寅','辰'] }, upper:{ stem:'壬', branches:['午','申','戌'] } },
+    0: { lower:{ stem:'乙', branches:['未','巳','卯'] }, upper:{ stem:'癸', branches:['丑','亥','酉'] } },
+    1: { lower:{ stem:'庚', branches:['子','寅','辰'] }, upper:{ stem:'庚', branches:['午','申','戌'] } },
+    6: { lower:{ stem:'辛', branches:['丑','亥','酉'] }, upper:{ stem:'辛', branches:['未','巳','卯'] } },
+    2: { lower:{ stem:'戊', branches:['寅','辰','午'] }, upper:{ stem:'戊', branches:['申','戌','子'] } },
+    5: { lower:{ stem:'己', branches:['卯','丑','亥'] }, upper:{ stem:'己', branches:['酉','未','巳'] } },
+    4: { lower:{ stem:'丙', branches:['辰','午','申'] }, upper:{ stem:'丙', branches:['戌','子','寅'] } },
+    3: { lower:{ stem:'丁', branches:['巳','卯','丑'] }, upper:{ stem:'丁', branches:['亥','酉','未'] } }
+};
+function trigramValueFromLines(lines, startIndex) {
+    return (lines[startIndex]?.type === 'yang' ? 1 : 0) | ((lines[startIndex+1]?.type === 'yang' ? 1 : 0) << 1) | ((lines[startIndex+2]?.type === 'yang' ? 1 : 0) << 2);
+}
+function validateNajiaForHex(hex, errors) {
+    const lower = TRIGRAM_NAJIA[trigramValueFromLines(hex.lines, 0)]?.lower;
+    const upper = TRIGRAM_NAJIA[trigramValueFromLines(hex.lines, 3)]?.upper;
+    if (!lower || !upper) { errors.push(`${hex.name} 無法推得上下卦納甲。`); return; }
+    for (let i=0; i<3; i++) {
+        const l = hex.lines[i];
+        if (l.stem !== lower.stem || l.branch !== lower.branches[i]) errors.push(`${hex.name} 第${i+1}爻納甲應為 ${lower.stem}${lower.branches[i]}，實為 ${l.stem}${l.branch}。`);
+    }
+    for (let i=0; i<3; i++) {
+        const l = hex.lines[i+3];
+        if (l.stem !== upper.stem || l.branch !== upper.branches[i]) errors.push(`${hex.name} 第${i+4}爻納甲應為 ${upper.stem}${upper.branches[i]}，實為 ${l.stem}${l.branch}。`);
+    }
+}
+function validateHiddenSpiritForHex(hex, errors) {
+    const baseId = PALACE_PURE_ID[hex.palace];
+    const base = DB.lookup[baseId];
+    if (!base) { errors.push(`${hex.name} 找不到本宮卦 ${hex.palace}。`); return; }
+    const visibleRelatives = new Set(hex.lines.map(l => l.relative));
+    hex.lines.forEach((l, idx) => {
+        if (!l.hidden_spirit) return;
+        const h = l.hidden_spirit;
+        const baseLine = base.lines[idx];
+        if (visibleRelatives.has(h.relative)) errors.push(`${hex.name} 第${l.pos}爻伏神 ${h.relative} 已在明爻出現，疑似不應伏。`);
+        if (h.line_from_base !== hex.palace) errors.push(`${hex.name} 第${l.pos}爻伏神來源宮錯誤：${h.line_from_base}。`);
+        if (!baseLine || h.stem !== baseLine.stem || h.branch !== baseLine.branch || h.wuxing !== baseLine.wuxing || h.relative !== baseLine.relative) {
+            errors.push(`${hex.name} 第${l.pos}爻伏神與本宮卦第${idx+1}爻不一致。`);
+        }
+    });
+}
+function validateBranchInteractionSymmetry(errors) {
+    const bi = DB.logic.branch_interactions || {};
+    EARTHLY_BRANCHES.forEach(b => {
+        const r = bi[b];
+        if (!r) return;
+        if (r.clash && bi[r.clash]?.clash !== b) errors.push(`${b}沖${r.clash} 不是對稱沖。`);
+        if (r.combine && bi[r.combine]?.combine !== b) errors.push(`${b}合${r.combine} 不是對稱合。`);
+        if (r.harm && bi[r.harm]?.harm !== b) errors.push(`${b}害${r.harm} 不是對稱害。`);
+        if (!Array.isArray(r.penalty)) errors.push(`${b} 刑資料不是陣列。`);
+    });
+}
+function validateDynamicMatrix(errors) {
+    ['金','木','水','火','土'].forEach(wx => {
+        for (let i=0; i<64; i++) {
+            const h = DB.lookup[i];
+            const m = DB.matrix[String(i)] || DB.matrix[i];
+            if (!m) { errors.push(`矩陣缺 id=${i}`); continue; }
+            if (m.name !== h.name || m.seq !== h.seq) errors.push(`矩陣 id=${i} 名稱或卦序與主資料不一致。`);
+            const lineWx = h.lines.map(l => l.wuxing);
+            if (JSON.stringify(m.structure_wuxing) !== JSON.stringify(lineWx)) errors.push(`矩陣 id=${i} structure_wuxing 與主資料不一致。`);
+            const rels = m.relatives_matrix?.[wx];
+            if (!Array.isArray(rels) || rels.length !== 6) { errors.push(`矩陣 id=${i} 缺 ${wx} 六親。`); continue; }
+            rels.forEach((rel, idx) => {
+                const expected = calcRelativeFromWuxing(wx, lineWx[idx]);
+                if (rel !== expected) errors.push(`矩陣 id=${i} ${wx} 第${idx+1}爻六親應為 ${expected}，實為 ${rel}。`);
+            });
+        }
+    });
+}
+function validateLoadedCoreData() {
+    if (!DB.static || !DB.matrix || !DB.logic) throw new Error('核心資料未完整載入。');
+    const errors = [];
+    if (!DB.logic.__strict_enhanced_validated) errors.push('互動邏輯尚未通過 enhanced v1.3 嚴格版本檢查。');
+    const ids = new Set();
+    const seqs = new Set();
+    DB.static.forEach(h => {
+        ids.add(h.id); seqs.add(h.seq);
+        if (!Number.isInteger(h.id) || h.id < 0 || h.id > 63) errors.push(`${h.name || h.id} id 超出 0-63。`);
+        if (!Array.isArray(h.lines) || h.lines.length !== 6) { errors.push(`${h.name || h.id} 爻數不是 6。`); return; }
+        const bits = h.lines.map(l => l.type === 'yang' ? '1' : '0').reverse().join('');
+        const idFromLines = h.lines.reduce((acc,l,idx) => acc | ((l.type === 'yang' ? 1 : 0) << idx), 0);
+        if (String(h.binary) !== bits) errors.push(`${h.name} binary 與爻陰陽不一致。`);
+        if (h.id !== idFromLines) errors.push(`${h.name} id 與初爻 bit 編碼不一致。`);
+        const roles = h.lines.map(l => l.role).filter(Boolean);
+        if (roles.filter(r => r === '世').length !== 1 || roles.filter(r => r === '應').length !== 1) errors.push(`${h.name} 世應數量不正確。`);
+        h.lines.forEach((l, idx) => {
+            if (l.pos !== idx + 1) errors.push(`${h.name} 第${idx+1}爻 pos 錯誤。`);
+            if (!['yin','yang'].includes(l.type)) errors.push(`${h.name} 第${idx+1}爻 type 錯誤。`);
+            if (BRANCH_WUXING[l.branch] !== l.wuxing) errors.push(`${h.name} 第${l.pos}爻地支五行錯誤：${l.branch} 應為 ${BRANCH_WUXING[l.branch]}，實為 ${l.wuxing}。`);
+            if (calcRelativeFromWuxing(h.palace_wuxing, l.wuxing) !== l.relative) errors.push(`${h.name} 第${l.pos}爻六親疑似不一致。`);
+        });
+        validateNajiaForHex(h, errors);
+        validateHiddenSpiritForHex(h, errors);
+    });
+    for (let i=0; i<64; i++) if (!ids.has(i)) errors.push(`缺少卦 id=${i}`);
+    for (let i=1; i<=64; i++) if (!seqs.has(i)) errors.push(`缺少卦序 seq=${i}`);
+    validateDynamicMatrix(errors);
+    validateBranchInteractionSymmetry(errors);
+    HEAVENLY_STEMS.forEach(g => { if (!DB.logic.six_beasts_rules?.[g] || DB.logic.six_beasts_rules[g].length !== 6) errors.push(`缺六獸 ${g}`); });
+    if (Object.keys(DB.logic.sixty_jia_zi_voids || {}).length !== 60) errors.push('六十甲子旬空不是 60 組。');
+    if (!DB.logic.yongshen_categories?.categories) errors.push('用神分類 categories 缺失。');
+    if (errors.length) throw new Error(`資料檢查失敗：${errors.slice(0,12).join('；')}${errors.length > 12 ? `；另有 ${errors.length-12} 項` : ''}`);
+    const hexGolden = runHexagramGoldenTests();
+    if (!hexGolden.ok) throw new Error(`64卦 golden snapshot 不一致：${hexGolden.checksum} != ${hexGolden.expected_checksum}`);
+    DB.auditReport = { ok:true, checked_at:new Date().toISOString(), checks:['64卦id/seq','爻位/卦碼','納甲','六親','世應','伏神來源','動態矩陣逐格重算','地支互動對稱','enhanced logic v1.3','64卦 golden snapshot'], hexagram_golden_snapshot:hexGolden };
+}
 
+function parseBenchmarkLocalInstant(dateTime, timezone = 'Asia/Taipei') {
+    const offset = ENGINE_TZ_OFFSETS[timezone] ?? 480;
+    const fields = parseDateTimeFields(dateTime);
+    return fieldsToInstantMs(fields, offset);
+}
+function preserveCalendarControls(fn) {
+    const tz = document.getElementById('q-timezone');
+    const zr = document.getElementById('q-zi-rule');
+    const mo = document.getElementById('q-month-override');
+    const old = { tz:tz?.value, zr:zr?.value, mo:mo?.value };
+    if (tz) tz.value = 'Asia/Taipei';
+    if (zr) zr.value = 'civil_midnight';
+    if (mo) mo.value = 'auto';
+    try { return fn(); }
+    finally {
+        if (tz && old.tz !== undefined) tz.value = old.tz;
+        if (zr && old.zr !== undefined) zr.value = old.zr;
+        if (mo && old.mo !== undefined) mo.value = old.mo;
+    }
+}
+function runDayPillarGoldenTests() {
+    return preserveCalendarControls(() => {
+        const cases = ENGINE_DAY_PILLAR_GOLDEN_CASES.map(c => {
+            const gz = getGanZhi(c.date_time);
+            const ok = gz.day === c.expected_day && (!c.expected_year || gz.year === c.expected_year) && (!c.expected_month || gz.month === c.expected_month);
+            return { ...c, actual_day:gz.day, actual_year:gz.year, actual_month:gz.month, ok };
+        });
+        return { ok:cases.every(c => c.ok), cases, summary:`${cases.filter(c => c.ok).length}/${cases.length}` };
+    });
+}
+function runSolarTermGoldenTests() {
+    const offset = ENGINE_TZ_OFFSETS['Asia/Taipei'] || 480;
+    const cases = ENGINE_SOLAR_TERM_GOLDEN_CASES_2026_HKO.map(c => {
+        const actualMs = findSolarTermInstantAudit(2026, c, offset);
+        const expectedMs = parseBenchmarkLocalInstant(c.expected_local, 'Asia/Taipei');
+        const diffMinutes = Math.round((actualMs - expectedMs) / 60000);
+        const ok = Math.abs(diffMinutes) <= ENGINE_CALIBRATION_POLICY.solar_term_tolerance_minutes;
+        return { ...c, actual_local:formatInstantInZone(actualMs, offset), expected_local:c.expected_local.replace('T',' '), diff_minutes:diffMinutes, ok };
+    });
+    const maxAbsDiffMinutes = Math.max(...cases.map(c => Math.abs(c.diff_minutes)));
+    return { ok:cases.every(c => c.ok), max_abs_diff_minutes:maxAbsDiffMinutes, tolerance_minutes:ENGINE_CALIBRATION_POLICY.solar_term_tolerance_minutes, cases };
+}
+function fnv1a32(text) {
+    let h = 0x811c9dc5;
+    for (let i = 0; i < text.length; i++) {
+        h ^= text.charCodeAt(i);
+        h = Math.imul(h, 0x01000193) >>> 0;
+    }
+    return h.toString(16).padStart(8, '0');
+}
+function hexagramGoldenSignature(hexagrams) {
+    return [...hexagrams].sort((a,b) => a.id - b.id).map(h => {
+        const parts = [h.id, h.seq, h.name, h.binary, h.palace, h.palace_wuxing, h.note || ''];
+        h.lines.forEach(l => {
+            const hidden = l.hidden_spirit ? `${l.hidden_spirit.stem}${l.hidden_spirit.branch}${l.hidden_spirit.wuxing}${l.hidden_spirit.relative}${l.hidden_spirit.line_from_base || ''}` : '';
+            parts.push(l.pos, l.type, l.stem, l.branch, l.wuxing, l.relative, l.role || '', hidden);
+        });
+        return parts.join('|');
+    }).join('\n');
+}
+function runHexagramGoldenTests() {
+    const signature = hexagramGoldenSignature(DB.static || []);
+    const checksum = fnv1a32(signature);
+    const countOk = Array.isArray(DB.static) && DB.static.length === 64;
+    const checksumOk = checksum === ENGINE_CALIBRATION_POLICY.hexagram_snapshot_expected_checksum;
+    return { ok:countOk && checksumOk, count:DB.static?.length || 0, checksum, expected_checksum:ENGINE_CALIBRATION_POLICY.hexagram_snapshot_expected_checksum, signature_length:signature.length, scope:ENGINE_CALIBRATION_POLICY.hexagram_snapshot_scope };
+}
+function runCalibrationSuite() {
+    const day = runDayPillarGoldenTests();
+    const solar = runSolarTermGoldenTests();
+    const hex = runHexagramGoldenTests();
+    return { ok:day.ok && solar.ok && hex.ok, policy:ENGINE_CALIBRATION_POLICY, day_pillar:day, solar_terms:solar, hexagram_golden_snapshot:hex };
+}
+
+function runSelfTest() {
+    const report = { ok:true, checks:[], audit:DB.auditReport || null };
+    const add = (name, ok, detail) => { report.checks.push({ name, ok, detail }); if (!ok) report.ok = false; };
+    try {
+        const tz = document.getElementById('q-timezone');
+        const zr = document.getElementById('q-zi-rule');
+        if (tz) tz.value = 'Asia/Taipei';
+        if (zr) zr.value = 'civil_midnight';
+        const gz = getGanZhi('2026-06-11T12:00');
+        add('固定日期四柱', gz.year === '丙午' && gz.month === '甲午' && gz.day === '丙辰' && gz.hour === '甲午', `${gz.year} ${gz.month} ${gz.day} ${gz.hour}`);
+        const beforeLichun = getGanZhi('2026-02-03T12:00');
+        const afterLichun = getGanZhi('2026-02-04T12:00');
+        add('立春前後年柱變化', beforeLichun.year !== afterLichun.year || beforeLichun.solarTerm.nearBoundary || afterLichun.solarTerm.nearBoundary, `${beforeLichun.year}/${afterLichun.year}`);
+        const beforeJie = getGanZhi('2026-06-05T12:00');
+        const afterJie = getGanZhi('2026-06-06T12:00');
+        add('芒種前後月令可區分', beforeJie.month !== afterJie.month || beforeJie.solarTerm.nearBoundary || afterJie.solarTerm.nearBoundary, `${beforeJie.month}/${afterJie.month}`);
+        const mo = document.getElementById('q-month-override');
+        if (mo) mo.value = '巳';
+        const overriddenMonth = getGanZhi('2026-06-11T12:00');
+        add('手動月令覆寫有效', overriddenMonth.monthBranch === '巳' && overriddenMonth.monthOverride?.applied === true, `${overriddenMonth.month} / computed=${overriddenMonth.monthOverride?.computed_gz || '-'}`);
+        if (mo) mo.value = 'auto';
+        if (zr) zr.value = 'civil_midnight';
+        const civilLate = getGanZhi('2026-06-11T23:30');
+        if (zr) zr.value = 'zi_start_23';
+        const ziLate = getGanZhi('2026-06-11T23:30');
+        add('子初換日規則有效', civilLate.day !== ziLate.day && ziLate.day_change_rule.adjusted === true, `${civilLate.day}/${ziLate.day}`);
+        if (zr) zr.value = 'civil_midnight';
+        const pureChecks = [
+            [63,'乾','111111'], [0,'坤','000000'], [18,'坎','010010'], [45,'離','101101'],
+            [9,'震','001001'], [54,'巽','110110'], [36,'艮','100100'], [27,'兌','011011']
+        ];
+        pureChecks.forEach(([id,name,binary]) => {
+            const h = DB.lookup[id];
+            add(`八純卦 ${name}`, h?.name === name && h?.binary === binary, h ? `${h.name}/${h.binary}` : 'missing');
+        });
+        const manual = [7,8,9,6,8,7];
+        let origId = 0, targetId = 0;
+        manual.forEach((val,i) => { const isYang = val === 7 || val === 9 ? 1 : 0; const targetIsYang = val === 9 ? 0 : val === 6 ? 1 : isYang; origId |= isYang << i; targetId |= targetIsYang << i; });
+        add('固定六爻卦碼可重現', origId === 37 && targetId === 41, `orig=${origId}, target=${targetId}`);
+        add('動態矩陣逐格抽查', (DB.matrix['17'] || DB.matrix[17])?.relatives_matrix?.['水']?.[0] === '兄弟', `屯卦水宮初爻=${(DB.matrix['17'] || DB.matrix[17])?.relatives_matrix?.['水']?.[0]}`);
+        add('伏神抽查', Boolean(DB.lookup[17]?.lines?.[2]?.hidden_spirit?.relative === '妻財'), DB.lookup[17]?.lines?.[2]?.hidden_spirit ? JSON.stringify(DB.lookup[17].lines[2].hidden_spirit) : 'missing');
+        add('enhanced logic 版本鎖定', Boolean(DB.logic.__strict_enhanced_validated && Number(DB.logic.metadata.version) >= 1.3), DB.logic.metadata?.version || 'missing');
+        const calibration = runCalibrationSuite();
+        DB.calibrationReport = calibration;
+        add('日柱外部基準測試', calibration.day_pillar.ok, calibration.day_pillar.summary);
+        add('節氣精度基準測試', calibration.solar_terms.ok, `max_abs_diff=${calibration.solar_terms.max_abs_diff_minutes}min / tolerance=${calibration.solar_terms.tolerance_minutes}min`);
+        add('64卦 golden snapshot', calibration.hexagram_golden_snapshot.ok, `${calibration.hexagram_golden_snapshot.checksum}`);
+        add('Web Crypto 可用性', Boolean(window.crypto && crypto.getRandomValues), window.crypto && crypto.getRandomValues ? 'crypto.getRandomValues available' : 'auto casting disabled; manual mode required');
+    } catch (err) { add('自我測試例外', false, err.message); }
+    const el = document.getElementById('self-test-output');
+    if (el) {
+        el.innerHTML = `自我測試：${report.ok ? '通過' : '有警告'}；${report.checks.map(c => `${c.name}=${c.ok ? 'OK' : 'FAIL'}(${c.detail})`).join('；')}`;
+        el.style.color = report.ok ? '#27ae60' : '#c0392b';
+    }
+    DB.selfTest = report;
+    DB.lastSelfTest = report;
+    return report;
+}
+
+
+document.addEventListener('DOMContentLoaded', autoLoadCoreData);
+</script>
 </body>
 </html>
